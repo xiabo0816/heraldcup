@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>第三届 先锋杯 TI 开赛海报</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      background: radial-gradient(circle at top, #4c1d95 0, #020617 45%, #000000 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: #e5e7eb;
+    }
+
+    .poster {
+      width: 100%;
+      max-width: 980px;
+      background: radial-gradient(circle at top, rgba(30, 64, 175, 0.8), rgba(15, 23, 42, 0.9));
+      border-radius: 26px;
+      padding: 30px 30px 22px;
+      box-shadow:
+        0 26px 52px rgba(15, 23, 42, 0.95),
+        0 0 0 1px rgba(148, 163, 184, 0.7);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .poster::before {
+      content: "";
+      position: absolute;
+      inset: -50%;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(251, 113, 133, 0.28), transparent 60%),
+        radial-gradient(circle at 90% 100%, rgba(96, 165, 250, 0.32), transparent 60%),
+        radial-gradient(circle at 50% 30%, rgba(250, 250, 250, 0.06), transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.9;
+    }
+
+    .header {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .season-pill {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 10px 14px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(248, 250, 252, 0.4);
+      box-shadow: 0 0 20px rgba(248, 250, 252, 0.25);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #e5e7eb;
+    }
+
+    .season-pill span.highlight {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fef3c7;
+    }
+
+    .title-block {
+      text-align: center;
+    }
+
+    .subtitle-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(190, 242, 100, 0.9);
+      color: #bbf7d0;
+      margin-bottom: 10px;
+      backdrop-filter: blur(8px);
+    }
+
+    .subtitle-tag .icon {
+      font-size: 16px;
+    }
+
+    .main-title {
+      font-size: 30px;
+      line-height: 1.25;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #e0f2fe;
+    }
+
+    .main-title span.highlight {
+      background: linear-gradient(90deg, #22c55e, #ecfeff);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .sub-line {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #e5e7eb;
+      opacity: 0.9;
+    }
+
+    .round-badge {
+      width: 90px;
+      height: 90px;
+      border-radius: 999px;
+      background: conic-gradient(
+        from 200deg,
+        #f97316,
+        #facc15,
+        #22c55e,
+        #38bdf8,
+        #a855f7,
+        #f97316
+      );
+      padding: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 0 28px rgba(251, 191, 36, 0.7),
+        0 0 0 2px rgba(15, 23, 42, 0.8);
+      position: relative;
+    }
+
+    .round-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 10%, #0f172a, #020617);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #f9fafb;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .round-inner span.big {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+    }
+
+    .info-row {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.5fr 1.5fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      font-size: 14px;
+    }
+
+    .info-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      background: radial-gradient(circle, rgba(248, 250, 252, 0.2), transparent 60%);
+    }
+
+    .info-label {
+      font-size: 12px;
+      opacity: 0.75;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #cbd5f5;
+    }
+
+    .info-text {
+      font-size: 14px;
+      color: #f9fafb;
+    }
+
+    .info-text a {
+      color: #a5b4fc;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(165, 180, 252, 0.7);
+      word-break: break-all;
+    }
+
+    .info-text a:hover {
+      border-bottom-style: solid;
+    }
+
+    .divider {
+      position: relative;
+      height: 1px;
+      margin: 14px 0 18px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(248, 250, 252, 0.9),
+        transparent
+      );
+      opacity: 0.9;
+      z-index: 1;
+    }
+
+    .duel-title {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      margin-bottom: 14px;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #c7d2fe;
+      opacity: 0.9;
+    }
+
+    .teams-row {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .team-card {
+      border-radius: 20px;
+      padding: 16px 16px 12px;
+      background: linear-gradient(
+        145deg,
+        rgba(15, 23, 42, 0.98),
+        rgba(8, 47, 73, 0.95)
+      );
+      border: 1px solid rgba(59, 130, 246, 0.9);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .team-card.team-b {
+      background: linear-gradient(
+        145deg,
+        rgba(15, 23, 42, 0.98),
+        rgba(88, 28, 135, 0.95)
+      );
+      border-color: rgba(192, 132, 252, 0.95);
+    }
+
+    .team-card::before {
+      content: "";
+      position: absolute;
+      inset: -25%;
+      background: radial-gradient(circle at 0 0, rgba(248, 250, 252, 0.16), transparent 60%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .team-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .team-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .team-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: #e0f2fe;
+    }
+
+    .team-name span.en {
+      font-size: 13px;
+      opacity: 0.9;
+      display: block;
+    }
+
+    .team-tag {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: rgba(15, 23, 42, 0.9);
+      color: #fef3c7;
+      border: 1px solid rgba(253, 224, 71, 0.9);
+    }
+
+    .coach-line {
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #bfdbfe;
+    }
+
+    .coach-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      opacity: 0.8;
+      margin-right: 4px;
+    }
+
+    .player-list {
+      list-style: none;
+      margin: 4px 0 4px;
+    }
+
+    .player-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 4px 0;
+      border-bottom: 1px dashed rgba(148, 163, 184, 0.55);
+      font-size: 13px;
+    }
+
+    .player-item:last-child {
+      border-bottom: none;
+    }
+
+    .player-left {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .player-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #facc15;
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.9);
+      flex-shrink: 0;
+    }
+
+    .player-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 130px;
+    }
+
+    .player-id {
+      font-size: 11px;
+      opacity: 0.85;
+      color: #cbd5f5;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .footer-text {
+      position: relative;
+      margin-top: 18px;
+      padding-top: 12px;
+      font-size: 13px;
+      text-align: center;
+      color: #e5e7eb;
+      z-index: 1;
+    }
+
+    .footer-text::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 170px;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(248, 250, 252, 0.9),
+        transparent
+      );
+      transform: translateX(-50%);
+      opacity: 0.85;
+    }
+
+    .footer-text strong {
+      color: #fef9c3;
+    }
+
+    .footer-emojis {
+      display: block;
+      margin-top: 3px;
+      font-size: 15px;
+      color: #bfdbfe;
+    }
+
+    @media (max-width: 820px) {
+      .poster {
+        padding: 22px 16px 18px;
+        border-radius: 20px;
+      }
+
+      .header {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+      }
+
+      .season-pill {
+        order: 2;
+        margin-top: 4px;
+      }
+
+      .info-row {
+        grid-template-columns: 1fr;
+      }
+
+      .teams-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .main-title {
+        font-size: 22px;
+        letter-spacing: 0.12em;
+      }
+
+      .team-name span.en {
+        font-size: 12px;
+      }
+
+      .player-name {
+        max-width: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="poster">
+    <!-- 顶部标题区域 -->
+    <div class="header">
+      <div class="season-pill">
+        <span>Herald Cup</span>
+        <span class="highlight">Season 3</span>
+      </div>
+
+      <div class="title-block">
+        <div class="subtitle-tag">
+          <span class="icon">🔥</span>
+          <span>第三届 先锋杯 TI</span>
+        </div>
+        <h1 class="main-title">
+          <span class="highlight">开赛夜</span><br />
+          Duel of Legends
+        </h1>
+        <div class="sub-line">
+          食神 vs 牛牛小小说话吊吊 —— 食欲与精神双重担当的一场对决。
+        </div>
+      </div>
+
+      <div class="round-badge">
+        <div class="round-inner">
+          <span>2025</span>
+          <span class="big">12·05</span>
+          <span>21:00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 关键信息 -->
+    <div class="info-row">
+      <div class="info-item">
+        <div class="info-icon">⏰</div>
+        <div>
+          <div class="info-label">开赛时间</div>
+          <div class="info-text">2025 年 12 月 5 日 · 晚上 9:00 准时开赛</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🎧</div>
+        <div>
+          <div class="info-label">语音频道</div>
+          <div class="info-text">
+            <a href="https://kook.vip/55vnqn" target="_blank">https://kook.vip/55vnqn</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="duel-title">LINEUP · 阵容公布</div>
+
+    <!-- 双方队伍 -->
+    <div class="teams-row">
+      <!-- 食神 -->
+      <div class="team-card team-a">
+        <div class="team-inner">
+          <div class="team-header">
+            <div class="team-name">
+              食神
+              <span class="en">Shí Shén</span>
+            </div>
+            <div class="team-tag">Chef Squad</div>
+          </div>
+
+          <ul class="player-list">
+            <li class="player-item">
+              <div class="player-left">
+                <span class="player-dot"></span>
+                <span class="player-name">iScream</span>
+              </div>
+              <span class="player-id">141776098</span>
+            </li>
+            <li class="player-item">
+              <div class="player-left">
+                <span class="player-dot"></span>
+                <span class="player-name">饭饭</span>
+              </div>
+              <span class="player-id">1760580548</span>
+            </li>
+            <li class="player-item">
+              <div class="player-left">
+                <span class="player-dot"></span>
+                <span class="player-name">王绿茶</span>
+              </div>
+              <span class="player-id">149809096</span>
+            </li>
+            <li class="player-item">
+              <div class="player-left">
+                <span class="player-dot"></span>
+                <span class="player-name">隔壁老王</span>
+              </div>
+              <span class="player-id">122924336</span>
+            </li>
+            <li class="player-item">
+              <div class="player-left">
+                <span class="player-dot"></span>
+                <span class="player-name">友善的火元素</span>
+              </div>
+              <span class="player-id">335600266</span>
+            </li>
+            <li class="player-item">
+              <div class="player-left">
+                <span class="player-dot"></span>
+                <span class="player-name">红色巧克李</span>
+              </div>
+              <span class="player-id">249512491</span>
+            </li>
+          </ul>
+
+                    <div class="coach-line">
+            <span class="coach-label">教练</span>
+            <span>雪晴落晚风</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 牛牛小小说话吊吊 -->
+      <div class="team-card team-b">
+        <div class="team-inner">
+          <div class="team-header">
+            <div class="team-name">
+              牛牛小小说话吊吊
+              <span class="en">Niuniu Talk Big</span>
+            </div>
+            <div class="team-tag">Captain Squad</div>
+          </div>
+
+          <ul class="player-list">
+            <li class="player-item">
+              <div class="player-left">
+                <span class="player-dot"></span>
+                <span class="player-name">鲨鱼辣椒</span>
+                <span class="coach-label">队长</span>
+              </div>
+              <span class="player-id">214184305</span>
+                          </li>
+            <li class="player-item">
+              <div class="player-left">
+                <span class="player-dot"></span>
+                <span class="player-name">geihei</span>
+              </div>
+              <span class="player-id">167578873</span>
+            </li>
+            <li class="player-item">
+              <div class="player-left">
+                <span class="player-dot"></span>
+                <span class="player-name">杀猪酱</span>
+              </div>
+              <span class="player-id">828761861</span>
+            </li>
+            <li class="player-item">
+              <div class="player-left">
+                <span class="player-dot"></span>
+                <span class="player-name">up ships！！</span>
+              </div>
+              <span class="player-id">145169945</span>
+            </li>
+            <li class="player-item">
+              <div class="player-left">
+                <span class="player-dot"></span>
+                <span class="player-name">无敌LOL大王</span>
+              </div>
+              <span class="player-id">373652178</span>
+            </li>
+            <li class="player-item">
+              <div class="player-left">
+                <span class="player-dot"></span>
+                <span class="player-name">Cthulhu</span>
+              </div>
+              <span class="player-id">197448576</span>
+            </li>
+            <li class="player-item">
+              <div class="player-left">
+                <span class="player-dot"></span>
+                <span class="player-name">黄师傅龙虾</span>
+              </div>
+              <span class="player-id">136251992</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部文案 -->
+    <div class="footer-text">
+      <span>
+        第三届先锋杯 TI 战幕再启，今晚九点，不见不散！
+      </span>
+      <span class="footer-emojis">✨ GLHF · 欢迎围观直播间一起嗨 ✨</span>
+    </div>
+  </div>
+</body>
+</html>

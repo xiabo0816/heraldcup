@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>先锋杯 · Dota2 业余联赛</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="先锋杯，低分段玩家的轻娱乐竞技赛。来自小红书与微信群「DotA2今晚就来」，以及游戏内工会「今晚就来」的玩家联赛。"
+  />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100">
+  <div class="min-h-screen flex flex-col relative overflow-hidden">
+    <!-- 背景小光斑（ACG风格一点） -->
+    <div class="pointer-events-none absolute inset-0 opacity-60">
+      <div class="absolute -top-32 -left-24 w-72 h-72 bg-emerald-400/10 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-40 right-0 w-80 h-80 bg-sky-400/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- 顶部导航 -->
+    <header class="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <a href="" class="flex items-center gap-2 group">
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-2xl bg-gradient-to-br from-emerald-400 to-sky-400 shadow shadow-emerald-400/40 group-hover:scale-105 transition-transform">
+              <!-- 简单盾牌+塔 SVG -->
+              <svg class="w-6 h-6 text-slate-950" viewBox="0 0 24 24" fill="none">
+                <path d="M5 5L12 3L19 5V12.5C19 16.642 16.493 20.215 12.5 21.5C8.507 20.215 6 16.642 6 12.5V5H5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                <path d="M10 17L10 9L12 7L14 9L14 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <div class="flex flex-col leading-tight">
+              <span class="text-sm font-semibold tracking-wide">先锋杯</span>
+              <span class="text-[11px] text-slate-400">Dota2 业余联赛</span>
+            </div>
+          </a>
+
+          <!-- 导航 -->
+          <nav class="hidden lg:flex items-center gap-6 text-[13px]">
+            <a href="" class="hover:text-emerald-300 hover:-translate-y-0.5 transition">首页</a>
+            <a href="#about" class="hover:text-emerald-300 hover:-translate-y-0.5 transition">赛事介绍</a>
+            <a href="#schedule" class="hover:text-emerald-300 hover:-translate-y-0.5 transition">赛程 &amp; 战报</a>
+            <a href="#champions" class="hover:text-emerald-300 hover:-translate-y-0.5 transition">历届冠军</a>
+            <a href="#teams" class="hover:text-emerald-300 hover:-translate-y-0.5 transition">战队 &amp; 选手</a>
+            <a href="#standings" class="hover:text-emerald-300 hover:-translate-y-0.5 transition">数据排行</a>
+            <a href="#highlights" class="hover:text-emerald-300 hover:-translate-y-0.5 transition">精彩集锦</a>
+            <a href="#news" class="hover:text-emerald-300 hover:-translate-y-0.5 transition">新闻公告</a>
+            <a href="#partners" class="hover:text-emerald-300 hover:-translate-y-0.5 transition">合作伙伴</a>
+            <a href="#about-us" class="hover:text-emerald-300 hover:-translate-y-0.5 transition">关于我们</a>
+          </nav>
+
+          <!-- 当前赛季标记 -->
+          <div class="hidden lg:flex items-center gap-2 text-[11px] text-slate-300">
+            <span class="inline-flex items-center gap-1 rounded-full border border-emerald-400/40 px-3 py-1 bg-slate-900/80 shadow-sm shadow-emerald-400/20">
+              <svg class="w-3.5 h-3.5 text-emerald-300" viewBox="0 0 24 24" fill="none">
+                <rect x="4" y="5" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M9 3V7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M15 3V7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M4 10H20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              <span>当前：第五届先锋杯 · 比赛进行中</span>
+            </span>
+          </div>
+
+          <!-- 移动端提示 -->
+          <div class="lg:hidden text-[11px] text-slate-400">
+            <span>向下滑动查看菜单 ✨</span>
+          </div>
+        </div>
+
+        <!-- 移动端横向导航 -->
+        <div class="lg:hidden pb-3 overflow-x-auto">
+          <nav class="flex gap-3 text-[11px] text-slate-300 whitespace-nowrap">
+            <a href="#home" class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40">首页</a>
+            <a href="#about" class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">赛事介绍</a>
+            <a href="#schedule" class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">赛程</a>
+            <a href="#champions" class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">冠军</a>
+            <a href="#teams" class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">战队</a>
+            <a href="#standings" class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">排行</a>
+            <a href="#highlights" class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">集锦</a>
+            <a href="#news" class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">公告</a>
+            <a href="#partners" class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">合作</a>
+            <a href="#about-us" class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">关于</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- 主体 -->
+    <main class="flex-1 relative z-10">
+      <!-- Hero + 当前赛季 -->
+      <section id="home" class="border-b border-slate-800/70 bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900/40">
+        <div class="max-w-6xl mx-auto px-4 pt-10 pb-16 md:pt-16 md:pb-20">
+          <div class="grid md:grid-cols-2 gap-10 items-center">
+            <!-- 左侧文案 -->
+            <div>
+              <div class="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-3 py-1 text-[11px] text-emerald-200 mb-4">
+                <span class="inline-flex w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
+                <span>Dota2 业余联赛 · 先锋杯</span>
+                <span class="text-[10px] text-emerald-200/70">来自「今晚就来」小宇宙</span>
+              </div>
+              <h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight mb-3">
+                我要上场打比赛！ <span class="text-emerald-300 text-2xl align-middle">★</span>
+              </h1>
+              <p class="text-[13px] md:text-sm text-slate-300 mb-4 leading-relaxed">
+                先锋杯，专为低分段玩家准备的轻娱乐竞技赛。<br class="hidden md:block">
+                上班摸鱼，下班开黑，正经打完一整届联赛。
+              </p>
+              <p class="text-[12px] text-slate-400 mb-6">
+                来自小红书和微信群
+                <span class="font-medium text-slate-200">「DotA2今晚就来」</span>，<br class="hidden sm:block">
+                以及游戏内工会 <span class="font-medium text-slate-200">「今晚就来」</span> 的玩家自发联赛。
+              </p>
+
+              <div class="flex flex-wrap gap-3 mb-8">
+                <a href="5s.html" class="inline-flex items-center gap-2 rounded-full bg-emerald-400 text-slate-950 text-[13px] font-medium px-5 py-2.5 shadow-lg shadow-emerald-500/40 hover:bg-emerald-300 hover:-translate-y-0.5 hover:shadow-emerald-400/60 transition">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <path d="M5 19C6.933 19 8.5 17.433 8.5 15.5C8.5 13.567 6.933 12 5 12C3.067 12 1.5 13.567 1.5 15.5C1.5 17.433 3.067 19 5 19Z" stroke="currentColor" stroke-width="1.6"/>
+                    <path d="M19 12C20.933 12 22.5 10.433 22.5 8.5C22.5 6.567 20.933 5 19 5C17.067 5 15.5 6.567 15.5 8.5C15.5 10.433 17.067 12 19 12Z" stroke="currentColor" stroke-width="1.6"/>
+                    <path d="M8.2 14.3L15.8 9.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  </svg>
+                  查看第五届开赛海报
+                </a>
+                <a href="#about" class="inline-flex items-center gap-2 rounded-full border border-slate-600 text-[13px] px-4 py-2.5 bg-slate-900/70 hover:border-emerald-400/60 hover:text-emerald-200 hover:-translate-y-0.5 transition">
+                  <span>什么是先锋杯？</span>
+                </a>
+              </div>
+
+              <div class="grid grid-cols-3 gap-4 text-[11px] text-slate-300">
+                <div>
+                  <div class="text-2xl font-bold text-emerald-300">5届</div>
+                  <div class="text-slate-400">已举办赛季</div>
+                </div>
+                <div>
+                  <div class="text-2xl font-bold text-sky-300">50+</div>
+                  <div class="text-slate-400">参赛选手</div>
+                </div>
+                <div>
+                  <div class="text-2xl font-bold text-purple-300">100+</div>
+                  <div class="text-slate-400">对局场次</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 右侧当前赛季信息卡 -->
+            <div class="rounded-3xl border border-slate-800 bg-gradient-to-b from-slate-900/90 via-slate-900/60 to-slate-900/40 p-5 md:p-6 shadow-2xl shadow-slate-950/80 relative overflow-hidden">
+              <div class="pointer-events-none absolute -right-6 -top-6 w-32 h-32 bg-emerald-400/10 rounded-full blur-2xl"></div>
+              <div class="relative z-10">
+                <div class="inline-flex items-center gap-1.5 rounded-full border border-sky-400/40 bg-sky-400/10 px-2.5 py-1 text-[10px] text-sky-200 mb-3 uppercase tracking-wider">
+                  <span class="inline-flex w-1.5 h-1.5 rounded-full bg-sky-300 animate-pulse"></span>
+                  <span>第五届先锋杯 TI · 进行中</span>
+                </div>
+
+                <h2 class="text-xl md:text-2xl font-semibold mb-2">
+                  花开富贵 <span class="text-orange-300">vs</span> 草帽小子海贼团
+                </h2>
+
+                <p class="text-sm text-slate-300 mb-4">
+                  上届冠军草帽小子海贼团能否卫冕成功？花开富贵能否阻击海贼？
+                </p>
+
+                <div class="grid grid-cols-2 gap-3 mb-4 text-[12px]">
+                  <div class="rounded-xl border border-slate-700 bg-slate-900/60 p-3">
+                    <div class="text-slate-400 mb-1">开赛时间</div>
+                    <div class="font-medium text-slate-100">2025.12.19</div>
+                    <div class="text-slate-400 text-[11px]">21:00 · 队长模式</div>
+                  </div>
+                  <div class="rounded-xl border border-slate-700 bg-slate-900/60 p-3">
+                    <div class="text-slate-400 mb-1">比赛形式</div>
+                    <div class="font-medium text-slate-100">BO3 淘汰赛</div>
+                    <div class="text-slate-400 text-[11px]">KOOK语音</div>
+                  </div>
+                </div>
+
+                <a href="5s.html" class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500/90 to-sky-500/90 text-slate-950 text-sm font-medium px-4 py-2.5 w-full justify-center hover:from-emerald-400 hover:to-sky-400 hover:-translate-y-0.5 transition shadow-lg shadow-emerald-500/30">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <path d="M15 10L19 14L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 14H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  <span>查看开赛详情</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 赛事介绍 -->
+      <section id="about" class="border-b border-slate-800/70 bg-slate-950">
+        <div class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+          <div class="mb-8">
+            <h2 class="text-xl md:text-2xl font-semibold mb-2">什么是先锋杯？</h2>
+            <p class="text-sm text-slate-400">一场低分段玩家的轻娱乐联赛，来自「今晚就来」社群的实验性项目。</p>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="rounded-2xl border border-slate-800 bg-slate-900/40 p-5 hover:border-emerald-400/50 hover:-translate-y-1 transition">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400/20 to-emerald-600/20 flex items-center justify-center mb-3">
+                <svg class="w-5 h-5 text-emerald-300" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="text-base font-semibold mb-2">轻度竞技，硬核比赛</h3>
+              <p class="text-[13px] text-slate-300 leading-relaxed">
+                虽然分数不高，但认真起来谁输谁尴尬。<br>
+                队长模式、BP、团队配合，该有的一样不少。
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-slate-800 bg-slate-900/40 p-5 hover:border-sky-400/50 hover:-translate-y-1 transition">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400/20 to-sky-600/20 flex items-center justify-center mb-3">
+                <svg class="w-5 h-5 text-sky-300" viewBox="0 0 24 24" fill="none">
+                  <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="text-base font-semibold mb-2">社群驱动，朋友一起</h3>
+              <p class="text-[13px] text-slate-300 leading-relaxed">
+                来自小红书、微信群和游戏内工会，<br>
+                老朋友组队，新朋友加入，一起来玩。
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-slate-800 bg-slate-900/40 p-5 hover:border-purple-400/50 hover:-translate-y-1 transition">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400/20 to-purple-600/20 flex items-center justify-center mb-3">
+                <svg class="w-5 h-5 text-purple-300" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2V6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M12 18V22" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M4.93 4.93L7.76 7.76" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M16.24 16.24L19.07 19.07" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M2 12H6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M18 12H22" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M4.93 19.07L7.76 16.24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M16.24 7.76L19.07 4.93" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <h3 class="text-base font-semibold mb-2">专属海报，比赛记录</h3>
+              <p class="text-[13px] text-slate-300 leading-relaxed">
+                每一届都有专属海报，战报和集锦。<br>
+                虽然分不高，但仪式感要拉满。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 赛程 & 战报 -->
+      <section id="schedule" class="border-b border-slate-800/70 bg-slate-900/30">
+        <div class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+          <div class="mb-8">
+            <h2 class="text-xl md:text-2xl font-semibold mb-2">赛程 &amp; 战报</h2>
+            <p class="text-sm text-slate-400">五届先锋杯，每一场比赛都值得记录。</p>
+          </div>
+
+          <div class="space-y-4">
+            <!-- 第五届 - 进行中 -->
+            <div class="rounded-2xl border border-emerald-400/60 bg-gradient-to-r from-slate-900/90 to-emerald-900/20 p-5 relative overflow-hidden">
+              <div class="pointer-events-none absolute -right-8 -top-8 w-32 h-32 bg-emerald-400/10 rounded-full blur-2xl"></div>
+              <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex-1">
+                  <div class="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-2 py-0.5 text-[10px] text-emerald-200 mb-2 uppercase tracking-wider">
+                    <span class="inline-flex w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
+                    <span>正在进行</span>
+                  </div>
+                  <h3 class="text-lg font-semibold mb-1">第五届先锋杯 TI · 2025</h3>
+                  <p class="text-sm text-slate-300 mb-2">
+                    花开富贵 vs 草帽小子海贼团 · 2025年12月19日 21:00
+                  </p>
+                  <div class="flex flex-wrap gap-2 text-xs">
+                    <span class="px-2 py-1 rounded-full bg-slate-800/60 text-slate-300">BO3淘汰赛</span>
+                    <span class="px-2 py-1 rounded-full bg-slate-800/60 text-slate-300">队长模式</span>
+                  </div>
+                </div>
+                <a href="5s.html" class="inline-flex items-center gap-2 rounded-xl border border-emerald-400/60 bg-emerald-400/10 text-emerald-200 text-sm font-medium px-4 py-2 hover:bg-emerald-400/20 hover:-translate-y-0.5 transition whitespace-nowrap">
+                  <span>查看开赛海报</span>
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- 第四届 - 已完赛 -->
+            <div class="rounded-2xl border border-slate-700 bg-slate-900/60 p-5 hover:border-slate-600 transition">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex-1">
+                  <div class="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 text-[10px] text-amber-200 mb-2 uppercase tracking-wider">
+                    <span>🏆</span>
+                    <span>已完赛</span>
+                  </div>
+                  <h3 class="text-lg font-semibold mb-1">第四届先锋杯 TI · 2025</h3>
+                  <p class="text-sm text-slate-300 mb-2">
+                    冠军：<span class="font-semibold text-amber-300">草帽小子海贼团</span> · 2025年12月18日
+                  </p>
+                  <p class="text-xs text-slate-400 mb-2">
+                    决赛：草帽小子海贼团 vs 牛牛小小说话劲劲 · 开赛：2025年12月12日
+                  </p>
+                  <div class="flex flex-wrap gap-2 text-xs">
+                    <span class="px-2 py-1 rounded-full bg-slate-800/60 text-slate-300">BO3淘汰赛</span>
+                    <span class="px-2 py-1 rounded-full bg-slate-800/60 text-slate-300">队长模式</span>
+                  </div>
+                </div>
+                <div class="flex gap-2">
+                  <a href="4s.html" class="inline-flex items-center gap-2 rounded-xl border border-slate-600 text-slate-300 text-sm px-4 py-2 hover:border-slate-500 hover:-translate-y-0.5 transition whitespace-nowrap">
+                    <span>开赛海报</span>
+                  </a>
+                  <a href="4e.html" class="inline-flex items-center gap-2 rounded-xl border border-amber-500/60 bg-amber-500/10 text-amber-200 text-sm px-4 py-2 hover:bg-amber-500/20 hover:-translate-y-0.5 transition whitespace-nowrap">
+                    <span>冠军海报</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- 第三届 - 已完赛 -->
+            <div class="rounded-2xl border border-slate-700 bg-slate-900/60 p-5 hover:border-slate-600 transition">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex-1">
+                  <div class="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 text-[10px] text-amber-200 mb-2 uppercase tracking-wider">
+                    <span>🏆</span>
+                    <span>已完赛</span>
+                  </div>
+                  <h3 class="text-lg font-semibold mb-1">第三届先锋杯 TI · 2025</h3>
+                  <p class="text-sm text-slate-300 mb-2">
+                    冠军：<span class="font-semibold text-amber-300">牛牛小小说话劲劲</span> · 2025年12月5日
+                  </p>
+                  <div class="flex flex-wrap gap-2 text-xs">
+                    <span class="px-2 py-1 rounded-full bg-slate-800/60 text-slate-300">BO3淘汰赛</span>
+                    <span class="px-2 py-1 rounded-full bg-slate-800/60 text-slate-300">队长模式</span>
+                  </div>
+                </div>
+                <a href="3e.html" class="inline-flex items-center gap-2 rounded-xl border border-amber-500/60 bg-amber-500/10 text-amber-200 text-sm px-4 py-2 hover:bg-amber-500/20 hover:-translate-y-0.5 transition whitespace-nowrap">
+                  <span>冠军海报</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- 第二届、第一届（简略信息） -->
+            <div class="rounded-2xl border border-slate-700 bg-slate-900/40 p-5 opacity-60">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="text-base font-semibold mb-1">第二届 & 第一届先锋杯</h3>
+                  <p class="text-sm text-slate-400">历史赛季，海报和战报整理中...</p>
+                </div>
+                <div class="text-xs text-slate-500">敬请期待</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 历届冠军 -->
+      <section id="champions" class="border-b border-slate-800/70 bg-slate-950">
+        <div class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+          <div class="mb-8">
+            <h2 class="text-xl md:text-2xl font-semibold mb-2">历届冠军</h2>
+            <p class="text-sm text-slate-400">每一支冠军战队，都值得被记住。</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 第四届冠军 -->
+            <div class="group rounded-2xl border border-slate-700 bg-gradient-to-b from-slate-900/80 to-slate-900/40 p-6 hover:border-amber-400/60 hover:-translate-y-1 transition-all hover:shadow-xl hover:shadow-amber-500/20">
+              <div class="flex items-start justify-between mb-4">
+                <div class="text-5xl">🏴‍☠️</div>
+                <div class="text-xs px-2 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40">
+                  第四届
+                </div>
+              </div>
+              <h3 class="text-lg font-bold mb-1 group-hover:text-amber-300 transition">草帽小子海贼团</h3>
+              <p class="text-xs text-slate-400 mb-3">2025年12月18日</p>
+              <p class="text-sm text-slate-300 mb-4 leading-relaxed">
+                以高强度协作与稳定节奏一路突破，团战决策果断，资源分配清晰，在关键局面稳住心态拿下胜利。
+              </p>
+              <div class="space-y-1 text-xs text-slate-400">
+                <div>队员：黄师傅龙虾、最近不太行、友善的火元素、饭饭、烟雨、阿丢思-邓布利多</div>
+                <div>主教练：雪晴落晚风（卫士先锋大统领，卵蛋冠军第一人）</div>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-700/50 text-xs text-slate-500">
+                "把不可能变成可能，这就是冒险！"
+              </div>
+              <a href="4e.html" class="mt-3 inline-flex items-center gap-1 text-sm text-amber-300 hover:text-amber-200 transition">
+                <span>查看冠军海报</span>
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+
+            <!-- 第三届冠军 -->
+            <div class="group rounded-2xl border border-slate-700 bg-gradient-to-b from-slate-900/80 to-slate-900/40 p-6 hover:border-amber-400/60 hover:-translate-y-1 transition-all hover:shadow-xl hover:shadow-amber-500/20">
+              <div class="flex items-start justify-between mb-4">
+                <div class="text-5xl">🐮</div>
+                <div class="text-xs px-2 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40">
+                  第三届
+                </div>
+              </div>
+              <h3 class="text-lg font-bold mb-1 group-hover:text-amber-300 transition">牛牛小小说话劲劲</h3>
+              <p class="text-xs text-slate-400 mb-3">2025年12月5日</p>
+              <p class="text-sm text-slate-300 mb-4 leading-relaxed">
+                凭借极致配合、细腻运营与稳定心态，在强强对抗中一路高歌猛进，最终登上冠军宝座。
+              </p>
+              <div class="space-y-1 text-xs text-slate-400">
+                <div>队长：鲨鱼辣椒（214184305）</div>
+                <div>队员：geihei、怼猪酱、up ships!!、无敌LOL大王</div>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-700/50 text-xs text-slate-500">
+                "我们还行吧？""那当然！"
+              </div>
+              <a href="3e.html" class="mt-3 inline-flex items-center gap-1 text-sm text-amber-300 hover:text-amber-200 transition">
+                <span>查看冠军海报</span>
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+
+            <!-- 第二届、第一届（占位） -->
+            <div class="rounded-2xl border border-dashed border-slate-700 bg-slate-900/20 p-6 flex flex-col items-center justify-center text-center min-h-[300px] opacity-50">
+              <div class="text-4xl mb-3">🏆</div>
+              <h3 class="text-base font-semibold text-slate-400 mb-2">第二届 & 第一届</h3>
+              <p class="text-sm text-slate-500">冠军信息整理中...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 战队 & 选手 -->
+      <section id="teams" class="border-b border-slate-800/70 bg-slate-900/30">
+        <div class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+          <div class="mb-8">
+            <h2 class="text-xl md:text-2xl font-semibold mb-2">战队 &amp; 选手</h2>
+            <p class="text-sm text-slate-400">第五届参赛队伍及历届强队。</p>
+          </div>
+
+          <!-- 第五届参赛队伍 -->
+          <div class="mb-8">
+            <h3 class="text-base font-semibold mb-4 text-emerald-300">第五届参赛队伍</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+              <!-- 花开富贵 -->
+              <div class="rounded-2xl border border-slate-700 bg-slate-900/60 p-5 hover:border-emerald-400/60 hover:-translate-y-1 transition">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <h4 class="text-lg font-bold mb-1">花开富贵</h4>
+                    <p class="text-xs text-slate-400">花开富贵 · 竹报平安</p>
+                  </div>
+                  <div class="text-2xl">🌸</div>
+                </div>
+                <div class="space-y-2 text-sm text-slate-300">
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-emerald-400/20 flex items-center justify-center text-xs">
+                        <!-- <img src="assets/py1.png" alt="选手名字" class="w-full h-full object-cover rounded-full" /> -->
+                         大
+                    </div>
+                    <span>大威天龙 · 127854241</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-sky-400/20 flex items-center justify-center text-xs">冷</div>
+                    <span>冷暴力大法师 · 127854241</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-purple-400/20 flex items-center justify-center text-xs">听</div>
+                    <span>听风 · 323504396</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-emerald-400/20 flex items-center justify-center text-xs">作</div>
+                    <span>作风优良能打胜仗 · 248470348</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-sky-400/20 flex items-center justify-center text-xs">大</div>
+                    <span>大鹅 · 1766191251</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-purple-400/20 flex items-center justify-center text-xs">M</div>
+                    <span>M · 192584364</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-emerald-400/20 flex items-center justify-center text-xs">G</div>
+                    <span>geihei · 167578873</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 草帽小子海贼团 -->
+              <div class="rounded-2xl border border-slate-700 bg-slate-900/60 p-5 hover:border-amber-400/60 hover:-translate-y-1 transition">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <h4 class="text-lg font-bold mb-1">草帽小子海贼团</h4>
+                    <p class="text-xs text-slate-400">要成为海贼王的队伍！ · 第四届冠军</p>
+                  </div>
+                  <div class="text-2xl">🏴‍☠️</div>
+                </div>
+                <div class="space-y-2 text-sm text-slate-300">
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-emerald-400/20 flex items-center justify-center text-xs">友</div>
+                    <span>友善的火元素 · 335600266</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-sky-400/20 flex items-center justify-center text-xs">派</div>
+                    <span>派Π · 175135322</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-purple-400/20 flex items-center justify-center text-xs">烟</div>
+                    <span>烟雨 · 455955960</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-emerald-400/20 flex items-center justify-center text-xs">阿</div>
+                    <span>阿丢思-邓布利多 · 140695102</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-sky-400/20 flex items-center justify-center text-xs">饭</div>
+                    <span>饭饭 · 1760580548</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-purple-400/20 flex items-center justify-center text-xs">V</div>
+                    <span>Vic茶 · 152696226</span>
+                  </div>
+                  <div class="flex items-center gap-2 border-t border-slate-700 pt-2 mt-2">
+                    <div class="w-6 h-6 rounded-full bg-amber-400/20 flex items-center justify-center text-xs">雪</div>
+                    <span class="text-amber-300">主教练：雪晴落晚风</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 历届强队 -->
+          <div>
+            <h3 class="text-base font-semibold mb-4">历届强队</h3>
+            <div class="grid md:grid-cols-3 gap-4">
+              <!-- 牛牛小小说话劲劲 -->
+              <div class="rounded-xl border border-slate-700 bg-slate-900/40 p-4 hover:border-slate-600 transition">
+                <div class="flex items-center justify-between mb-2">
+                  <h4 class="font-semibold">牛牛小小说话劲劲</h4>
+                  <span class="text-xs px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300">第3届冠军</span>
+                </div>
+                <p class="text-xs text-slate-400">鲨鱼辣椒、geihei、怼猪酱、up ships!!、无敌LOL大王</p>
+              </div>
+
+              <!-- 占位卡片 -->
+              <div class="rounded-xl border border-dashed border-slate-700 bg-slate-900/20 p-4 flex items-center justify-center opacity-40">
+                <p class="text-sm text-slate-500">更多战队整理中...</p>
+              </div>
+              <div class="rounded-xl border border-dashed border-slate-700 bg-slate-900/20 p-4 flex items-center justify-center opacity-40">
+                <p class="text-sm text-slate-500">更多战队整理中...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 数据排行（占位区域） -->
+      <section id="standings" class="border-b border-slate-800/70 bg-slate-950">
+        <div class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+          <div class="mb-8">
+            <h2 class="text-xl md:text-2xl font-semibold mb-2">数据排行</h2>
+            <p class="text-sm text-slate-400">选手数据、战队统计，整理中...</p>
+          </div>
+
+          <div class="rounded-2xl border border-dashed border-slate-700 bg-slate-900/20 p-12 text-center">
+            <div class="text-5xl mb-4">📊</div>
+            <h3 class="text-lg font-semibold mb-2 text-slate-300">数据统计正在路上</h3>
+            <p class="text-sm text-slate-400 mb-4">
+              选手KDA、英雄使用率、团战胜率等数据，<br>
+              正在收集整理中，敬请期待！
+            </p>
+            <div class="inline-flex items-center gap-2 text-xs text-slate-500">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/>
+              </svg>
+              <span>预计下次更新时完善</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 精彩集锦（占位区域） -->
+      <section id="highlights" class="border-b border-slate-800/70 bg-slate-900/30">
+        <div class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+          <div class="mb-8">
+            <h2 class="text-xl md:text-2xl font-semibold mb-2">精彩集锦</h2>
+            <p class="text-sm text-slate-400">比赛回放、名场面、花絮视频。</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <!-- 占位视频卡片 -->
+            <div class="rounded-2xl border border-slate-700 bg-slate-900/60 overflow-hidden hover:border-slate-600 transition group">
+              <div class="aspect-video bg-slate-800/60 flex items-center justify-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-sky-500/10"></div>
+                <div class="relative z-10 text-center">
+                  <div class="text-4xl mb-2">🎬</div>
+                  <p class="text-sm text-slate-400">视频剪辑中...</p>
+                </div>
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold mb-1 text-slate-300">第五届精彩集锦</h3>
+                <p class="text-xs text-slate-500">即将上线</p>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-slate-700 bg-slate-900/60 overflow-hidden hover:border-slate-600 transition group">
+              <div class="aspect-video bg-slate-800/60 flex items-center justify-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-amber-500/10"></div>
+                <div class="relative z-10 text-center">
+                  <div class="text-4xl mb-2">🎥</div>
+                  <p class="text-sm text-slate-400">花絮整理中...</p>
+                </div>
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold mb-1 text-slate-300">第四届赛事回顾</h3>
+                <p class="text-xs text-slate-500">即将上线</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 text-center">
+            <p class="text-sm text-slate-400 mb-3">
+              视频内容将发布在 Bilibili 和小红书平台
+            </p>
+            <div class="flex items-center justify-center gap-3">
+              <a href="#" class="inline-flex items-center gap-2 text-sm text-sky-300 hover:text-sky-200 transition">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                  <rect x="4" y="6" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M9 4L7 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M15 4L17 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+                <span>Bilibili · 啵酱该吃饭了</span>
+              </a>
+              <span class="text-slate-600">·</span>
+              <a href="#" class="inline-flex items-center gap-2 text-sm text-emerald-300 hover:text-emerald-200 transition">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                  <rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" stroke-width="1.6"/>
+                </svg>
+                <span>小红书 · 啵酱该吃饭了</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 新闻公告 -->
+      <section id="news" class="border-b border-slate-800/70 bg-slate-950">
+        <div class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+          <div class="mb-8">
+            <h2 class="text-xl md:text-2xl font-semibold mb-2">新闻公告</h2>
+            <p class="text-sm text-slate-400">最新赛事动态、规则更新。</p>
+          </div>
+
+          <div class="space-y-4">
+            <!-- 第五届开赛公告 -->
+            <div class="rounded-2xl border border-emerald-400/40 bg-emerald-400/5 p-5">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-emerald-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg class="w-4 h-4 text-emerald-300" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2V6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                    <path d="M12 18V22" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="inline-flex px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 text-[10px] uppercase tracking-wide">最新</span>
+                    <span class="text-xs text-slate-400">2025-12-19</span>
+                  </div>
+                  <h3 class="text-base font-semibold mb-2">第五届先锋杯 TI 今晚21:00开战！</h3>
+                  <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                    花开富贵 vs 草帽小子海贼团，上届冠军海贼团能否成功卫冕？花开富贵能否阻击海贼王？今晚21:00，KOOK语音频道见！
+                  </p>
+                  <a href="5s.html" class="inline-flex items-center gap-1 text-sm text-emerald-300 hover:text-emerald-200">
+                    <span>查看开赛海报</span>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                      <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- 第四届冠军公告 -->
+            <div class="rounded-2xl border border-slate-700 bg-slate-900/60 p-5">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-amber-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span class="text-base">🏆</span>
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xs text-slate-400">2025-12-18</span>
+                  </div>
+                  <h3 class="text-base font-semibold mb-2">草帽小子海贼团夺得第四届冠军！</h3>
+                  <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                    恭喜草帽小子海贼团以高强度协作与稳定节奏夺得第四届先锋杯TI总冠军！"把不可能变成可能，这就是冒险！"
+                  </p>
+                  <a href="4e.html" class="inline-flex items-center gap-1 text-sm text-amber-300 hover:text-amber-200">
+                    <span>查看冠军海报</span>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                      <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- 第三届冠军公告 -->
+            <div class="rounded-2xl border border-slate-700 bg-slate-900/40 p-5 opacity-75">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span class="text-base">🏆</span>
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xs text-slate-500">2025-12-05</span>
+                  </div>
+                  <h3 class="text-base font-semibold mb-2 text-slate-300">牛牛小小说话劲劲夺得第三届冠军！</h3>
+                  <p class="text-sm text-slate-400 leading-relaxed">
+                    恭喜牛牛小小说话劲劲凭借极致配合与稳定心态夺冠！
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 合作伙伴（占位） -->
+      <section id="partners" class="border-b border-slate-800/70 bg-slate-900/30">
+        <div class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+          <div class="mb-8">
+            <h2 class="text-xl md:text-2xl font-semibold mb-2">合作伙伴</h2>
+            <p class="text-sm text-slate-400">欢迎品牌和社区伙伴一起玩。</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-8">
+            <div>
+              <h3 class="text-sm font-semibold text-slate-200 mb-4">合作机会</h3>
+              <div class="space-y-3">
+                <div class="flex items-center gap-3 rounded-2xl border border-dashed border-slate-700 bg-slate-900/60 px-4 py-3 hover:border-emerald-400/60 hover:-translate-y-0.5 transition">
+                  <div class="w-9 h-9 rounded-2xl bg-slate-800/80 flex items-center justify-center text-[10px] text-slate-400">
+                    Logo
+                  </div>
+                  <div>
+                    <div class="text-slate-100 text-xs">你的品牌？</div>
+                    <div class="text-[11px] text-slate-400">一起把低分局拍得像世界赛</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 rounded-2xl border border-dashed border-slate-700 bg-slate-900/60 px-4 py-3 hover:border-sky-400/60 hover:-translate-y-0.5 transition">
+                  <div class="w-9 h-9 rounded-2xl bg-slate-800/80 flex items-center justify-center text-[10px] text-slate-400">
+                    Logo
+                  </div>
+                  <div>
+                    <div class="text-slate-100 text-xs">联动合作位</div>
+                    <div class="text-[11px] text-slate-400">奖品 / 内容 / 联名 都可以聊</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-semibold text-slate-200 mb-3">合作品牌（预留格子）</h3>
+              <div class="flex flex-wrap gap-3">
+                <div class="w-16 h-10 rounded-xl bg-slate-900/70 border border-dashed border-slate-700 flex items-center justify-center text-[10px] text-slate-400 hover:border-emerald-400/60 transition">Logo</div>
+                <div class="w-16 h-10 rounded-xl bg-slate-900/70 border border-dashed border-slate-700 flex items-center justify-center text-[10px] text-slate-400 hover:border-emerald-400/60 transition">Logo</div>
+                <div class="w-16 h-10 rounded-xl bg-slate-900/70 border border-dashed border-slate-700 flex items-center justify-center text-[10px] text-slate-400 hover:border-emerald-400/60 transition">Logo</div>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-2">
+                想把自己 Logo 放在这里，可以直接邮件 / 私信联系我们。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 关于我们 -->
+      <section id="about-us" class="bg-slate-950">
+        <div class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+          <div class="grid md:grid-cols-2 gap-10">
+            <div>
+              <h2 class="text-xl md:text-2xl font-semibold mb-1">关于我们</h2>
+              <p class="text-sm text-slate-400 mb-4">
+                幕后其实就几个人，但梗很多。
+              </p>
+              <h3 class="text-sm font-semibold text-slate-100 mb-2">谁在折腾这届杯赛？</h3>
+              <p class="text-[13px] text-slate-300 leading-relaxed mb-4">
+                先锋杯是从小红书和微信群
+                <span class="font-medium text-slate-100">「DotA2今晚就来」</span>，以及游戏内工会
+                <span class="font-medium text-slate-100">「今晚就来」</span> 里长出来的联赛项目。<br><br>
+                没有大公司站台，也没有职业战队，只有一群热爱 Dota2、又还没放弃上分梦想的普通玩家。<br><br>
+                我们希望：<br>
+                · 给低分段玩家一个好好打完一届联赛的机会<br>
+                · 给同事和朋友一个不谈 KPI、只谈推塔的夜晚<br>
+                · 给每一个爱玩、但不想太卷的人，一个站上「冠军」字样的理由
+              </p>
+
+              <h3 class="text-sm font-semibold text-slate-100 mb-2">比赛结束之后，故事还在继续</h3>
+              <p class="text-[13px] text-slate-300 leading-relaxed mb-4">
+                联赛的碎片、花絮、吐槽和名场面，我们会尽量剪成视频、写成小记，发在这些地方：
+              </p>
+              <ul class="text-sm text-slate-200 space-y-1 mb-4">
+                <li>· 小红书：<span class="font-semibold text-emerald-300">啵酱该吃饭了</span></li>
+                <li>· Bilibili：<span class="font-semibold text-emerald-300">啵酱该吃饭了</span></li>
+              </ul>
+              <p class="text-[12px] text-slate-400">
+                想报名未来几届、或者有合作想法，也可以在这些平台私信我们。
+              </p>
+            </div>
+
+            <div class="space-y-6">
+              <div>
+                <h3 class="text-sm font-semibold text-slate-100 mb-3">严肃一点的联系方式</h3>
+                <div class="space-y-2 text-sm text-slate-300">
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="none">
+                      <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/>
+                      <path d="M5 7L12 12L19 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>统一邮箱：<span class="font-mono text-emerald-300">contact@xianfengcup.com</span></span>
+                  </div>
+                  <p class="text-[12px] text-slate-400 pl-6">
+                    不论是赛事咨询、商务合作，还是单纯想说「这届还搞不搞」，都可以发邮件来。
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-sm font-semibold text-slate-100 mb-3">关注我们</h3>
+                <div class="flex flex-wrap gap-3 text-[12px] text-slate-200">
+                  <button class="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/80 px-3 py-1.5 hover:border-emerald-400/60 hover:-translate-y-0.5 transition">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                      <rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" stroke-width="1.6"/>
+                      <path d="M9 9H11V15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                      <path d="M13 9H15V15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                    </svg>
+                    <span>小红书 · 啵酱该吃饭了</span>
+                  </button>
+                  <button class="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/80 px-3 py-1.5 hover:border-sky-400/60 hover:-translate-y-0.5 transition">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                      <rect x="4" y="6" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/>
+                      <path d="M9 4L7 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                      <path d="M15 4L17 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                      <path d="M10 11H10.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                      <path d="M14 11H14.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                      <path d="M9 14C9.5 15 10.5 16 12 16C13.5 16 14.5 15 15 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                    </svg>
+                    <span>Bilibili · 啵酱该吃饭了</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="border-t border-slate-800 bg-slate-950">
+      <div class="max-w-6xl mx-auto px-4 py-6 text-[11px] text-slate-500">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+          <div>
+            主办：先锋杯组委会 · 发起自小红书 &amp; 微信群「DotA2今晚就来」
+          </div>
+          <div class="flex items-center gap-4">
+            <span>内容 / 记录：<span class="text-emerald-300">啵酱该吃饭了</span></span>
+          </div>
+        </div>
+        <div class="mt-2 flex flex-col md:flex-row md:items-center md:justify-between gap-1">
+          <div>在小红书 &amp; Bilibili 搜索：<span class="text-emerald-300">啵酱该吃饭了</span></div>
+          <div>联系邮箱：<span class="font-mono text-slate-300">contact@xianfengcup.com</span></div>
+        </div>
+        <div class="mt-4 text-center text-slate-600">
+          <p>© 2025 先锋杯 · Dota2业余联赛 · 让低分局也有高光时刻 ✨</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
