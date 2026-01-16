@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>第八届先锋杯开赛海报（H8S）</title>
+    <!-- Tailwind CDN（本地已集成 Tailwind 可删除） -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center px-6 py-8">
+    <section
+      class="relative w-full max-w-6xl overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/60 shadow-[0_24px_60px_rgba(2,6,23,0.75)]"
+    >
+      <!-- 氛围光斑（Emerald × Sky） -->
+      <div
+        class="pointer-events-none absolute -inset-40 opacity-90"
+        style="
+          background:
+            radial-gradient(circle at 15% 0%, rgba(52, 211, 153, 0.18), transparent 55%),
+            radial-gradient(circle at 85% 100%, rgba(56, 189, 248, 0.22), transparent 60%),
+            radial-gradient(circle at 65% 15%, rgba(16, 185, 129, 0.12), transparent 55%);
+        "
+      ></div>
+
+      <div class="relative z-10 p-8 md:p-10">
+        <!-- Header -->
+        <header class="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+          <div class="flex-1">
+            <div
+              class="inline-flex items-center gap-2 rounded-full border border-emerald-400/60 bg-slate-900/40 px-3 py-1 text-xs tracking-[0.2em] uppercase text-sky-200 backdrop-blur"
+            >
+              <span class="text-base leading-none">⚔️</span>
+              <span>第八届 先锋杯</span>
+            </div>
+
+            <h1 class="mt-4 text-3xl md:text-4xl font-extrabold tracking-[0.18em] uppercase leading-tight">
+              <span class="bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent">开赛预告</span><br />
+              第八届 · 先锋杯
+            </h1>
+
+            <p class="mt-3 text-sm md:text-base text-slate-300/90">
+              四队集结，<span class="text-slate-100 font-semibold">半决赛</span> →
+              <span class="text-slate-100 font-semibold">决赛</span>，见证冠军诞生。
+            </p>
+          </div>
+
+          <div class="flex flex-col items-start md:items-end gap-2">
+            <div
+              class="inline-flex items-center rounded-full bg-gradient-to-r from-emerald-500/90 to-sky-500/90 px-4 py-2 text-xs font-extrabold tracking-[0.22em] uppercase text-slate-950 shadow-emerald-500/30"
+            >
+              GAME START
+            </div>
+          </div>
+        </header>
+
+        <!-- Info Row -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="flex items-start gap-3 rounded-2xl border border-slate-800 bg-slate-900/40 px-4 py-4 backdrop-blur">
+            <div class="grid h-10 w-10 place-items-center rounded-full bg-emerald-400/10 border border-emerald-400/40">
+              <span class="text-lg">🏁</span>
+            </div>
+            <div class="flex-1">
+              <div class="text-[11px] text-slate-400 tracking-[0.18em] uppercase">赛制</div>
+              <div class="mt-1 text-sm text-slate-100">半决赛BO3 + 决赛BO3</div>
+              <div class="mt-1 text-xs text-slate-300">4支队伍</div>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 rounded-2xl border border-slate-800 bg-slate-900/40 px-4 py-4 backdrop-blur">
+            <div class="grid h-10 w-10 place-items-center rounded-full bg-sky-400/10 border border-sky-400/40">
+              <span class="text-lg">📅</span>
+            </div>
+            <div class="flex-1">
+              <div class="text-[11px] text-slate-400 tracking-[0.18em] uppercase">4进2半决赛BO3</div>
+              <div class="mt-1 text-sm text-slate-100">1月16日（周五）</div>
+              <div class="mt-1 text-xs text-slate-300">21:00 · What'up VS 患者</div>
+              <div class="mt-1 text-xs text-slate-300">21:00 · 西普军校教导队 VS 花开富贵</div>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 rounded-2xl border border-slate-800 bg-slate-900/40 px-4 py-4 backdrop-blur">
+            <div class="grid h-10 w-10 place-items-center rounded-full bg-amber-300/10 border border-amber-300/40">
+              <span class="text-lg">🏆</span>
+            </div>
+            <div class="flex-1">
+              <div class="text-[11px] text-slate-400 tracking-[0.18em] uppercase">决赛</div>
+              <div class="mt-1 text-sm text-slate-100">1月23日（周五）· BO3</div>
+              <div class="mt-1 text-xs text-slate-300">TBD1 VS TBD2</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="my-7 h-px w-full bg-gradient-to-r from-transparent via-slate-400/80 to-transparent opacity-80"></div>
+
+        <!-- Schedule -->
+        <section>
+          <div class="flex items-center justify-between gap-3">
+            <h2 class="text-lg font-extrabold tracking-[0.18em] uppercase">
+              <span class="bg-gradient-to-r from-emerald-300 to-sky-300 bg-clip-text text-transparent">赛程安排</span>
+            </h2>
+            <div class="text-xs tracking-[0.18em] uppercase text-slate-300/80">第八届 · 先锋杯</div>
+          </div>
+
+          <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Match 1 -->
+            <article class="rounded-2xl border border-emerald-400/50 bg-gradient-to-br from-slate-900/60 to-emerald-900/10 p-5 backdrop-blur">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <div class="text-[11px] tracking-[0.18em] uppercase text-slate-400">半决赛</div>
+                  <div class="mt-1 text-sm text-slate-100">1月16日 · 21:00 · BO3</div>
+                </div>
+                <div class="rounded-full border border-emerald-400/60 bg-slate-900/40 px-3 py-1 text-[11px] tracking-[0.16em] uppercase text-emerald-200">
+                  Match 1
+                </div>
+              </div>
+
+              <div class="mt-4 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                <div class="rounded-xl border border-slate-800 bg-slate-900/40 px-3 py-3 text-center">
+                  <div class="text-sm font-extrabold tracking-[0.14em] uppercase">What'up</div>
+                </div>
+                <div class="grid h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-amber-100 to-orange-500 text-slate-950 font-extrabold tracking-[0.18em] shadow-[0_0_26px_rgba(248,250,252,0.45)] ring-4 ring-slate-950/70">
+                  VS
+                </div>
+                <div class="rounded-xl border border-slate-800 bg-slate-900/40 px-3 py-3 text-center">
+                  <div class="text-sm font-extrabold tracking-[0.14em] uppercase">患者</div>
+                </div>
+              </div>
+
+              <div class="mt-4 text-xs text-slate-300">胜者进入决赛（TBD1）</div>
+            </article>
+
+            <!-- Match 2 -->
+            <article class="rounded-2xl border border-sky-400/50 bg-gradient-to-br from-slate-900/60 to-sky-900/10 p-5 backdrop-blur">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <div class="text-[11px] tracking-[0.18em] uppercase text-slate-400">半决赛</div>
+                  <div class="mt-1 text-sm text-slate-100">1月16日 · 22:00 · BO3</div>
+                </div>
+                <div class="rounded-full border border-sky-400/60 bg-slate-900/40 px-3 py-1 text-[11px] tracking-[0.16em] uppercase text-sky-200">
+                  Match 2
+                </div>
+              </div>
+
+              <div class="mt-4 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                <div class="rounded-xl border border-slate-800 bg-slate-900/40 px-3 py-3 text-center">
+                  <div class="text-sm font-extrabold tracking-[0.14em] uppercase">西普军校<br>教导队</div>
+                </div>
+                <div class="grid h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-amber-100 to-orange-500 text-slate-950 font-extrabold tracking-[0.18em] shadow-[0_0_26px_rgba(248,250,252,0.45)] ring-4 ring-slate-950/70">
+                  VS
+                </div>
+                <div class="rounded-xl border border-slate-800 bg-slate-900/40 px-3 py-3 text-center">
+                  <div class="text-sm font-extrabold tracking-[0.14em] uppercase">花开富贵</div>
+                </div>
+              </div>
+
+              <div class="mt-4 text-xs text-slate-300">胜者进入决赛（TBD2）</div>
+            </article>
+
+            <!-- Final -->
+            <article class="rounded-2xl border border-amber-300/50 bg-gradient-to-br from-slate-900/60 to-amber-900/10 p-5 backdrop-blur">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <div class="text-[11px] tracking-[0.18em] uppercase text-slate-400">决赛 · Final</div>
+                  <div class="mt-1 text-sm text-slate-100">1月23日（周五）· BO3</div>
+                </div>
+                <div class="rounded-full border border-amber-300/60 bg-slate-900/40 px-3 py-1 text-[11px] tracking-[0.16em] uppercase text-amber-200">
+                  FINAL
+                </div>
+              </div>
+
+              <div class="mt-4 rounded-2xl border border-slate-800 bg-slate-900/40 px-4 py-4 text-center">
+                <div class="text-sm font-extrabold tracking-[0.14em] uppercase">TBD1</div>
+                <div class="my-2 text-xs text-slate-300/90 tracking-[0.18em] uppercase">VS</div>
+                <div class="text-sm font-extrabold tracking-[0.14em] uppercase">TBD2</div>
+              </div>
+
+              <div class="mt-4 text-xs text-slate-300">由两场淘汰赛胜者产生</div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Divider -->
+        <div class="my-7 h-px w-full bg-gradient-to-r from-transparent via-slate-400/80 to-transparent opacity-80"></div>
+
+        <!-- Teams -->
+        <section>
+          <div class="flex items-center justify-between gap-3">
+            <h2 class="text-lg font-extrabold tracking-[0.18em] uppercase">
+              <span class="bg-gradient-to-r from-emerald-300 to-sky-300 bg-clip-text text-transparent">参赛队伍</span>
+            </h2>
+            <div class="text-xs tracking-[0.18em] uppercase text-slate-300/80">4 Teams · H8S</div>
+          </div>
+
+          <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Team: What'up -->
+            <article class="rounded-2xl border border-emerald-400/60 bg-gradient-to-br from-slate-900/60 to-emerald-900/10 p-5 backdrop-blur shadow-[0_18px_44px_rgba(2,6,23,0.55)]">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <div class="text-lg font-extrabold tracking-[0.22em] uppercase text-slate-100">What'up</div>
+                  <div class="mt-1 text-xs text-slate-300">大名单 · 7人</div>
+                </div>
+                <div class="rounded-full border border-emerald-400/60 bg-slate-900/40 px-3 py-1 text-[11px] tracking-[0.16em] uppercase text-emerald-200">
+                  Team A
+                </div>
+              </div>
+
+              <ul class="mt-4 space-y-2">
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@Pablo Escobar</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@TheBadGuy</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@xxbee</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@七</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@喜剧演员</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@海鸥不再眷恋大海</span></li>
+                <li class="flex gap-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@koi</span></li>
+              </ul>
+            </article>
+
+            <!-- Team: 患者 -->
+            <article class="rounded-2xl border border-sky-400/60 bg-gradient-to-br from-slate-900/60 to-sky-900/10 p-5 backdrop-blur shadow-[0_18px_44px_rgba(2,6,23,0.55)]">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <div class="text-lg font-extrabold tracking-[0.22em] uppercase text-slate-100">患者</div>
+                  <div class="mt-1 text-xs text-slate-300">大名单 · 5人</div>
+                </div>
+                <div class="rounded-full border border-sky-400/60 bg-slate-900/40 px-3 py-1 text-[11px] tracking-[0.16em] uppercase text-sky-200">
+                  Team B
+                </div>
+              </div>
+
+              <ul class="mt-4 space-y-2">
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@cook</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@德普大王</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@玉玉症患者</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@伍六七</span></li>
+                <li class="flex gap-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@++</span></li>
+              </ul>
+            </article>
+
+            <!-- Team: 西普军校教导队 -->
+            <article class="rounded-2xl border border-emerald-400/60 bg-gradient-to-br from-slate-900/60 to-emerald-900/10 p-5 backdrop-blur shadow-[0_18px_44px_rgba(2,6,23,0.55)]">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <div class="text-lg font-extrabold tracking-[0.22em] uppercase text-slate-100">西普军校教导队</div>
+                  <div class="mt-1 text-xs text-slate-300">大名单 · 6人</div>
+                </div>
+                <div class="rounded-full border border-emerald-400/60 bg-slate-900/40 px-3 py-1 text-[11px] tracking-[0.16em] uppercase text-emerald-200">
+                  Team C
+                </div>
+              </div>
+
+              <ul class="mt-4 space-y-2">
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@杀猪酱 卫士</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@up ships！！</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@入江</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@V</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@无敌lol大王</span></li>
+                <li class="flex gap-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@敏思者睿</span></li>
+              </ul>
+            </article>
+
+            <!-- Team: 花开富贵 -->
+            <article class="rounded-2xl border border-sky-400/60 bg-gradient-to-br from-slate-900/60 to-sky-900/10 p-5 backdrop-blur shadow-[0_18px_44px_rgba(2,6,23,0.55)]">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <div class="text-lg font-extrabold tracking-[0.22em] uppercase text-slate-100">花开富贵</div>
+                  <div class="mt-1 text-xs text-slate-300">大名单 · 7人</div>
+                </div>
+                <div class="rounded-full border border-sky-400/60 bg-slate-900/40 px-3 py-1 text-[11px] tracking-[0.16em] uppercase text-sky-200">
+                  Team D
+                </div>
+              </div>
+
+              <ul class="mt-4 space-y-2">
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@9071</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@大威天龙</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@听风</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@大鹅</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@赢一把睡觉</span></li>
+                <li class="flex gap-2 border-b border-dashed border-slate-700/70 pb-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@冷暴力大法师</span></li>
+                <li class="flex gap-2 text-sm"><span class="mt-2 h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.9)]"></span><span>@M</span></li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-8 text-center">
+          <div class="mx-auto mb-3 h-px w-44 bg-gradient-to-r from-transparent via-slate-400/80 to-transparent opacity-80"></div>
+          <p class="text-sm text-slate-200">
+            第八届先锋杯 正式开打，<span class="font-extrabold text-emerald-200">淘汰赛见真章</span>，一路打到决赛！
+          </p>
+          <p class="mt-2 text-base text-sky-200/90">🔥 GLHF · 先锋杯 H8S 🔥</p>
+        </footer>
+      </div>
+    </section>
+  </body>
+</html>
