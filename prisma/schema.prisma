@@ -1,0 +1,213 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  PLAYER
+}
+
+enum TournamentKind {
+  PIONEER
+  GUANJUE
+  LEGEND
+  CUSTOM
+}
+
+enum MatchStatus {
+  DRAFT
+  SCHEDULED
+  LIVE
+  FINISHED
+  ARCHIVED
+}
+
+enum BindingStatus {
+  PENDING
+  ACTIVE
+  FAILED
+  UNBOUND
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String?  @unique
+  role         UserRole @default(PLAYER)
+  playerId     String?  @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  player       Player?  @relation(fields: [playerId], references: [id])
+}
+
+model Tournament {
+  id          String           @id @default(cuid())
+  name        String
+  slug        String           @unique
+  kind        TournamentKind
+  description String?
+  seasons     TournamentSeason[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model TournamentSeason {
+  id             String    @id @default(cuid())
+  tournamentId   String
+  title          String
+  slug           String    @unique
+  seasonNumber   Int
+  startDate      DateTime?
+  endDate        DateTime?
+  statusLabel    String?
+  themeColor     String?
+  summary        String?
+  featured       Boolean   @default(false)
+  tournament     Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  teams          Team[]
+  matches        Match[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Team {
+  id            String       @id @default(cuid())
+  seasonId      String?
+  name          String
+  slug          String       @unique
+  shortName     String?
+  slogan        String?
+  logoUrl       String?
+  coach         String?
+  captain       String?
+  active        Boolean      @default(true)
+  summary       String?
+  season        TournamentSeason? @relation(fields: [seasonId], references: [id], onDelete: SetNull)
+  members       TeamMember[]
+  homeMatches   Match[]      @relation("HomeTeam")
+  awayMatches   Match[]      @relation("AwayTeam")
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Player {
+  id              String          @id @default(cuid())
+  displayName     String
+  slug            String          @unique
+  steamId         String?         @unique
+  avatarUrl       String?
+  primaryRole     String?
+  heroPool        String[]
+  highlightMatchIds String[]
+  bio             String?
+  active          Boolean         @default(true)
+  users           User[]
+  teamMemberships TeamMember[]
+  bindings        PlayerBinding[]
+  reports         PlayerReport[]
+  highlights      MatchHighlight[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+model TeamMember {
+  id          String   @id @default(cuid())
+  teamId      String
+  playerId    String
+  inGameRole  String?
+  joinedAt    DateTime?
+  leftAt      DateTime?
+  isCurrent   Boolean  @default(true)
+  team        Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  player      Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, playerId, isCurrent])
+}
+
+model Match {
+  id               String         @id @default(cuid())
+  seasonId         String?
+  title            String
+  slug             String         @unique
+  externalMatchId  String?
+  scheduledAt      DateTime?
+  format           String?
+  status           MatchStatus    @default(DRAFT)
+  scoreHome        Int?
+  scoreAway        Int?
+  streamUrl        String?
+  summary          String?
+  homeTeamId       String?
+  awayTeamId       String?
+  season           TournamentSeason? @relation(fields: [seasonId], references: [id], onDelete: SetNull)
+  homeTeam         Team?          @relation("HomeTeam", fields: [homeTeamId], references: [id], onDelete: SetNull)
+  awayTeam         Team?          @relation("AwayTeam", fields: [awayTeamId], references: [id], onDelete: SetNull)
+  highlights       MatchHighlight[]
+  contentPages     ContentPage[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model MatchHighlight {
+  id          String   @id @default(cuid())
+  matchId     String
+  playerId    String?
+  title       String
+  description String?
+  highlightAt String?
+  match       Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  player      Player?   @relation(fields: [playerId], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now())
+}
+
+model PlayerBinding {
+  id             String         @id @default(cuid())
+  playerId       String
+  steamId        String
+  openDotaId     Int?
+  status         BindingStatus  @default(PENDING)
+  lastBoundAt    DateTime?
+  lastError      String?
+  player         Player         @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  reports        PlayerReport[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@unique([playerId, steamId])
+}
+
+model PlayerReport {
+  id                String          @id @default(cuid())
+  playerId          String
+  bindingId         String?
+  steamId           String
+  reportVersion     Int             @default(1)
+  summary           Json
+  topHeroes         Json
+  recentMatches     Json
+  rawPayload        Json
+  generatedAt       DateTime        @default(now())
+  syncedAt          DateTime?
+  player            Player          @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  binding           PlayerBinding?  @relation(fields: [bindingId], references: [id], onDelete: SetNull)
+}
+
+model ContentPage {
+  id            String    @id @default(cuid())
+  matchId       String?
+  title         String
+  slug          String    @unique
+  pageType      String
+  excerpt       String?
+  body          Json
+  publishedAt   DateTime?
+  featured      Boolean   @default(false)
+  match         Match?    @relation(fields: [matchId], references: [id], onDelete: SetNull)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
