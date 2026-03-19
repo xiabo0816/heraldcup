@@ -10,7 +10,10 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "tsx prisma/seed.ts",
-    "prisma:seed:historical": "tsx prisma/seed-historical.ts"
+    "prisma:seed:historical": "tsx prisma/seed-historical.ts",
+    "prisma:seed:heroes": "tsx prisma/seed-heroes.ts",
+    "prisma:seed:community": "tsx prisma/seed-community-archive.ts",
+    "prisma:repair:slugs": "tsx prisma/repair-community-slugs.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.6.0",

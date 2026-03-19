@@ -1,0 +1,163 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { HeroChip } from "@/components/hero-chip";
+import { PlayerAvatar } from "@/components/player-avatar";
+import { Shell } from "@/components/shell";
+import { TeamMark } from "@/components/team-mark";
+import { getTeamDetailById } from "@/lib/queries";
+import { playerPath } from "@/lib/routes";
+
+const matchStatusLabels: Record<string, string> = {
+  SCHEDULED: "即将开打",
+  ONGOING: "正在进行",
+  FINISHED: "已完赛",
+  CANCELLED: "已取消"
+};
+
+export default async function TeamDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const team = await getTeamDetailById(id);
+
+  if (!team) {
+    notFound();
+  }
+
+  const featuredMembers = team.members.slice(0, 3);
+  const recentMatches = team.matches.slice(0, 4);
+
+  return (
+    <Shell>
+      <section className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.16),transparent_24%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.12),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))] p-8 shadow-glow md:p-10">
+        <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr] xl:items-start">
+          <div>
+            <div className="text-xs uppercase tracking-[0.3em] text-amber-200">Team Detail</div>
+            <div className="mt-4 flex items-start gap-4">
+              <TeamMark name={team.name} logoUrl={team.logoUrl} size="lg" />
+              <div className="min-w-0 flex-1">
+                <h1 className="text-4xl font-semibold tracking-tight text-white md:text-5xl">{team.name}</h1>
+                <p className="mt-3 text-sm leading-8 text-slate-300 md:text-base">{team.summary ?? team.slogan ?? "这支队伍的故事还在继续，先从阵容、战绩和关键比赛认识他们。"}</p>
+              </div>
+            </div>
+
+            <div className="mt-8 grid gap-4 md:grid-cols-4">
+              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">社区积分</div>
+                <div className="mt-3 text-3xl font-semibold text-white">{team.honorScore}</div>
+              </article>
+              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">冠军次数</div>
+                <div className="mt-3 text-3xl font-semibold text-white">{team.championshipCount}</div>
+              </article>
+              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">当前战绩</div>
+                <div className="mt-3 text-xl font-semibold text-white">{team.wins}-{team.losses}-{team.draws}</div>
+              </article>
+              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">阵容人数</div>
+                <div className="mt-3 text-3xl font-semibold text-white">{team.members.length}</div>
+              </article>
+            </div>
+          </div>
+
+          <article className="rounded-[32px] border border-white/10 bg-white/5 p-6">
+            <div className="text-xs uppercase tracking-[0.24em] text-amber-200">队伍画像</div>
+            <div className="mt-4 space-y-4 text-sm leading-7 text-slate-300">
+              <p>赛事：{team.tournamentName ?? "社区赛事"}</p>
+              <p>所属赛季：{team.seasonTitle ?? "未绑定赛季"}</p>
+              <p>口号：{team.slogan ?? "尚未设置队伍口号"}</p>
+              <p>教练：{team.coach ?? "未设置"}</p>
+              <p>队长：{team.captain ?? "未设置"}</p>
+            </div>
+
+            <div className="mt-6 rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
+              <div className="text-[11px] uppercase tracking-[0.22em] text-slate-500">推荐浏览</div>
+              <p className="mt-3 text-sm leading-7 text-slate-300">先看核心阵容，再翻最近战绩，很快就能知道这支队伍现在的状态。</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section className="mt-6 grid gap-6 xl:grid-cols-[0.96fr_1.04fr]">
+        <article className="rounded-[32px] border border-white/10 bg-panel/80 p-6 shadow-glow backdrop-blur">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <div className="text-xs uppercase tracking-[0.28em] text-cyan-300">核心阵容</div>
+              <h2 className="mt-2 text-3xl font-semibold text-white">先看这支队伍的门面</h2>
+            </div>
+          </div>
+
+          <div className="mt-6 space-y-4">
+            {featuredMembers.length ? featuredMembers.map((member) => (
+              <Link key={member.id} href={playerPath(member.id)} className="block rounded-[28px] border border-white/10 bg-white/5 p-5 transition hover:border-cyan-300/25">
+                <div className="flex items-start gap-4">
+                  <PlayerAvatar src={member.avatarUrl} alt={member.displayName} size="md" />
+                  <div className="min-w-0 flex-1">
+                    <div className="text-xs uppercase tracking-[0.22em] text-cyan-200">{member.primaryRole ?? "未分配位置"}</div>
+                    <div className="mt-2 text-xl font-semibold text-white">{member.displayName}</div>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {member.heroCards.length ? member.heroCards.slice(0, 4).map((hero) => (
+                        <HeroChip key={`${member.slug}-${hero.label}`} hero={hero} compact />
+                      )) : <span className="text-sm text-slate-500">暂未维护英雄池</span>}
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">这支队伍暂时还没有现役成员。</div>}
+          </div>
+        </article>
+
+        <article className="rounded-[32px] border border-white/10 bg-panel/80 p-6 shadow-glow backdrop-blur">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <div className="text-xs uppercase tracking-[0.28em] text-amber-300">全员名单</div>
+              <h2 className="mt-2 text-3xl font-semibold text-white">阵容墙</h2>
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {team.members.length ? team.members.map((member) => (
+              <Link key={member.id} href={playerPath(member.id)} className="block rounded-[28px] border border-white/10 bg-white/5 p-5 transition hover:border-amber-300/25">
+                <div className="flex items-start gap-4">
+                  <PlayerAvatar src={member.avatarUrl} alt={member.displayName} size="md" />
+                  <div className="min-w-0 flex-1">
+                    <div className="text-xs uppercase tracking-[0.22em] text-slate-500">{member.primaryRole ?? "未分配位置"}</div>
+                    <div className="mt-2 text-xl font-semibold text-white">{member.displayName}</div>
+                  </div>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {member.heroCards.length ? member.heroCards.slice(0, 4).map((hero) => (
+                    <HeroChip key={`${member.slug}-${hero.label}`} hero={hero} compact />
+                  )) : <span className="text-sm text-slate-500">暂未维护英雄池</span>}
+                </div>
+              </Link>
+            )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">这支队伍暂时还没有完整阵容。</div>}
+          </div>
+        </article>
+      </section>
+
+      <section className="mt-6 rounded-[32px] border border-white/10 bg-panel/80 p-6 shadow-glow backdrop-blur">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <div className="text-xs uppercase tracking-[0.28em] text-accent-gold">相关比赛</div>
+            <h2 className="mt-2 text-3xl font-semibold text-white">最近几场能说明这支队伍</h2>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          {recentMatches.length ? recentMatches.map((match) => (
+            <Link key={match.slug} href={`/matches/${match.slug}`} className="block rounded-[28px] border border-white/10 bg-white/5 p-5 transition hover:border-accent-gold/40">
+              <div className="flex items-center justify-between gap-3">
+                <div className="text-xs uppercase tracking-[0.22em] text-accent-gold">{match.seasonTitle ?? "社区赛事"}</div>
+                <div className="text-xs uppercase tracking-[0.22em] text-slate-500">{matchStatusLabels[match.status] ?? match.status}</div>
+              </div>
+              <h3 className="mt-3 text-xl font-semibold text-white">{match.title}</h3>
+              <p className="mt-3 text-sm text-slate-400">对手：{match.opponentName}</p>
+              <p className="mt-2 text-sm text-slate-300">比分：{match.scoreHome ?? "-"} : {match.scoreAway ?? "-"}</p>
+              <p className="mt-3 text-sm leading-7 text-slate-400">{match.summary ?? "这场对局的战况回顾正在整理中，先看比分与对手。"}</p>
+            </Link>
+          )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">这支队伍暂时还没有关联比赛。</div>}
+        </div>
+      </section>
+    </Shell>
+  );
+}

@@ -10,8 +10,11 @@ export function AdminTeamRow({
     name: string;
     slug: string;
     slogan: string | null;
+    logoUrl: string | null;
+    honorPoints: number;
     coach: string | null;
     captain: string | null;
+    summary: string | null;
     seasonId: string;
     seasonTitle: string;
     memberCount: number;
@@ -62,6 +65,24 @@ export function AdminTeamRow({
           />
         </label>
         <label className="grid gap-2 text-sm text-slate-300">
+          <span>战队积分</span>
+          <input
+            name="honorPoints"
+            type="number"
+            min="0"
+            defaultValue={team.honorPoints}
+            className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none"
+          />
+        </label>
+        <label className="grid gap-2 text-sm text-slate-300">
+          <span>队徽 / 头像 URL</span>
+          <input
+            name="logoUrl"
+            defaultValue={team.logoUrl ?? ""}
+            className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none"
+          />
+        </label>
+        <label className="grid gap-2 text-sm text-slate-300">
           <span>教练</span>
           <input
             name="coach"
@@ -74,6 +95,15 @@ export function AdminTeamRow({
           <input
             name="captain"
             defaultValue={team.captain ?? ""}
+            className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none"
+          />
+        </label>
+        <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
+          <span>战队介绍</span>
+          <textarea
+            name="summary"
+            defaultValue={team.summary ?? ""}
+            rows={4}
             className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none"
           />
         </label>

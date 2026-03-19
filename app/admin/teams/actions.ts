@@ -11,8 +11,11 @@ export async function createTeamAction(_: TeamFormState, formData: FormData): Pr
     name: formData.get("name"),
     slug: formData.get("slug"),
     slogan: formData.get("slogan"),
+    logoUrl: formData.get("logoUrl"),
+    honorPoints: formData.get("honorPoints"),
     coach: formData.get("coach"),
     captain: formData.get("captain"),
+    summary: formData.get("summary"),
     seasonId: formData.get("seasonId")
   });
 
@@ -29,8 +32,11 @@ export async function createTeamAction(_: TeamFormState, formData: FormData): Pr
         name: payload.data.name,
         slug: payload.data.slug,
         slogan: payload.data.slogan || null,
+        logoUrl: payload.data.logoUrl || null,
+        honorPoints: payload.data.honorPoints,
         coach: payload.data.coach || null,
         captain: payload.data.captain || null,
+        summary: payload.data.summary || null,
         seasonId: payload.data.seasonId || null
       }
     });
@@ -70,8 +76,11 @@ export async function updateTeamAction(formData: FormData) {
     name: formData.get("name"),
     slug: formData.get("slug"),
     slogan: formData.get("slogan"),
+    logoUrl: formData.get("logoUrl"),
+    honorPoints: formData.get("honorPoints"),
     coach: formData.get("coach"),
     captain: formData.get("captain"),
+    summary: formData.get("summary"),
     seasonId: formData.get("seasonId")
   });
 
@@ -85,8 +94,11 @@ export async function updateTeamAction(formData: FormData) {
       name: payload.data.name,
       slug: payload.data.slug,
       slogan: payload.data.slogan || null,
+      logoUrl: payload.data.logoUrl || null,
+      honorPoints: payload.data.honorPoints,
       coach: payload.data.coach || null,
       captain: payload.data.captain || null,
+      summary: payload.data.summary || null,
       seasonId: payload.data.seasonId || null
     }
   });

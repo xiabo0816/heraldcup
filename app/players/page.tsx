@@ -1,46 +1,141 @@
 import Link from "next/link";
+import { HeroChip } from "@/components/hero-chip";
+import { PlayerAvatar } from "@/components/player-avatar";
 import { Shell } from "@/components/shell";
-import { SectionCard } from "@/components/section-card";
 import { getPlayers } from "@/lib/queries";
+import { playerPath, teamPath } from "@/lib/routes";
 
 export default async function PlayersPage() {
   const players = await getPlayers();
+  const champions = players.filter((player) => player.championshipCount > 0).sort((left, right) => right.championshipCount - left.championshipCount).slice(0, 6);
+  const roleLeaders = [...players].sort((left, right) => right.heroCards.length - left.heroCards.length || right.championshipCount - left.championshipCount).slice(0, 4);
 
   return (
     <Shell>
-      <SectionCard title="选手池" eyebrow="Players">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {players.map((player) => (
-            <article key={player.id} className="rounded-3xl border border-white/10 bg-white/5 p-5">
-              <div className="text-xs uppercase tracking-[0.26em] text-accent-cyan">{player.primaryRole ?? "未分配位置"}</div>
-              <h3 className="mt-2 text-xl font-semibold text-white">
-                <Link href={`/players/${player.slug}`} className="transition hover:text-accent-cyan">
-                  {player.displayName}
-                </Link>
-              </h3>
-              <p className="mt-1 text-sm text-slate-400">当前队伍：{player.teamName}</p>
-              <div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-200">
-                {player.heroPool.map((hero) => (
-                  <span key={hero} className="rounded-full border border-white/10 bg-ink px-3 py-1.5">
-                    {hero}
-                  </span>
+      <section className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.16),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.12),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))] p-8 shadow-glow md:p-10">
+        <div className="grid gap-6 xl:grid-cols-[1fr_1fr] xl:items-start">
+          <div>
+            <div className="text-xs uppercase tracking-[0.3em] text-cyan-200">Player Wall</div>
+            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white md:text-5xl">先记住人，再去翻比赛和队伍。</h1>
+            <p className="mt-5 max-w-3xl text-sm leading-8 text-slate-300 md:text-base">选手页现在先给冠军常客和英雄池更厚的人，再把整面选手墙拉开。你能更快看到谁在社区里留下了痕迹。</p>
+
+            <div className="mt-8 grid gap-4 md:grid-cols-3">
+              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">选手总数</div>
+                <div className="mt-3 text-3xl font-semibold text-white">{players.length}</div>
+                <p className="mt-2 text-sm text-slate-400">位选手已经进入社区名册。</p>
+              </article>
+              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">冠军常客</div>
+                <div className="mt-3 text-3xl font-semibold text-white">{champions.length}</div>
+                <p className="mt-2 text-sm text-slate-400">位选手至少拿过一次冠军。</p>
+              </article>
+              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">英雄池最厚</div>
+                <div className="mt-3 text-lg font-semibold text-white">{roleLeaders[0]?.displayName ?? "待更新"}</div>
+                <p className="mt-2 text-sm text-slate-400">更适合当首页和社区的记忆点。</p>
+              </article>
+            </div>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2">
+            {roleLeaders.map((player) => (
+              <article key={player.id} className="rounded-[28px] border border-white/10 bg-white/5 p-5">
+                <div className="flex items-center gap-3">
+                  <PlayerAvatar src={player.avatarUrl} alt={player.displayName} size="md" />
+                  <div>
+                    <div className="text-xs uppercase tracking-[0.24em] text-amber-300">焦点选手</div>
+                    <h2 className="mt-2 text-xl font-semibold text-white">
+                      <Link href={playerPath(player.id)} className="transition hover:text-accent-cyan">{player.displayName}</Link>
+                    </h2>
+                  </div>
+                </div>
+                <p className="mt-3 text-sm text-slate-400">{player.primaryRole ?? "社区常驻"} · {player.championshipCount} 冠</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {player.heroCards.slice(0, 3).map((hero) => (
+                    <HeroChip key={`${player.slug}-${hero.label}`} hero={hero} compact />
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-[32px] border border-white/10 bg-panel/80 p-6 shadow-glow backdrop-blur">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <div className="text-xs uppercase tracking-[0.28em] text-amber-300">冠军常客</div>
+            <h2 className="mt-2 text-3xl font-semibold text-white">先看最常被记住的几个人</h2>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {champions.length ? champions.map((player) => (
+            <article key={player.id} className="rounded-[28px] border border-white/10 bg-white/5 p-5">
+              <div className="flex items-center gap-3">
+                <PlayerAvatar src={player.avatarUrl} alt={player.displayName} size="md" />
+                <div>
+                  <div className="text-xs uppercase tracking-[0.24em] text-amber-300">冠军常客</div>
+                  <h3 className="mt-2 text-xl font-semibold text-white">
+                    <Link href={playerPath(player.id)} className="transition hover:text-accent-cyan">{player.displayName}</Link>
+                  </h3>
+                </div>
+              </div>
+              <p className="mt-3 text-sm text-slate-400">夺冠 {player.championshipCount} 次</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {player.heroCards.slice(0, 3).map((hero) => (
+                  <HeroChip key={`${player.slug}-${hero.label}`} hero={hero} compact />
                 ))}
               </div>
-              <div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-300">
-                {player.highlightMatchIds.length ? (
-                  player.highlightMatchIds.map((matchSlug) => (
-                    <Link key={matchSlug} href={`/matches/${matchSlug}`} className="rounded-full border border-white/10 bg-ink px-3 py-1.5 transition hover:border-accent-gold/40 hover:text-white">
-                      {matchSlug}
-                    </Link>
-                  ))
-                ) : (
-                  <span className="text-slate-400">未设置高光比赛</span>
-                )}
-              </div>
             </article>
-          ))}
+          )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm leading-7 text-slate-400">冠军数据还没积起来。</div>}
         </div>
-      </SectionCard>
+      </section>
+
+      <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {players.map((player) => (
+          <article key={player.id} className="rounded-[28px] border border-white/10 bg-panel/80 p-5 shadow-glow backdrop-blur">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-start gap-3">
+                <PlayerAvatar src={player.avatarUrl} alt={player.displayName} size="md" />
+                <div>
+                  <div className="text-xs uppercase tracking-[0.24em] text-accent-cyan">{player.primaryRole ?? "常驻选手"}</div>
+                  <h3 className="mt-2 text-xl font-semibold text-white">
+                    <Link href={playerPath(player.id)} className="transition hover:text-accent-cyan">
+                      {player.displayName}
+                    </Link>
+                  </h3>
+                </div>
+              </div>
+              <div className="rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-xs font-semibold text-amber-200">
+                {player.championshipCount} 冠
+              </div>
+            </div>
+
+            <p className="mt-3 text-sm text-slate-400">
+              当前队伍：
+              {player.teamId ? <Link href={teamPath(player.teamId)} className="transition hover:text-accent-cyan">{player.teamName}</Link> : player.teamName}
+            </p>
+
+            <div className="mt-2 text-sm text-slate-500">历史队伍 {player.formerTeams.length} 支</div>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              {player.heroCards.length ? player.heroCards.slice(0, 5).map((hero) => (
+                <HeroChip key={`${player.slug}-${hero.label}`} hero={hero} compact />
+              )) : <span className="text-sm text-slate-500">英雄池资料正在补充中</span>}
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-300">
+              {player.formerTeams.length ? player.formerTeams.slice(0, 4).map((team) => (
+                <Link key={`${player.id}-${team.id}`} href={teamPath(team.id)} className="rounded-full border border-white/10 bg-ink px-3 py-1.5 transition hover:border-accent-gold/40 hover:text-white">
+                  {team.name}
+                </Link>
+              )) : <span className="text-slate-500">还没有历史队伍记录</span>}
+            </div>
+          </article>
+        ))}
+      </section>
     </Shell>
   );
 }

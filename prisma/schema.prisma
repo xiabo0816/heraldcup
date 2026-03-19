@@ -83,16 +83,34 @@ model Team {
   shortName     String?
   slogan        String?
   logoUrl       String?
+  honorPoints   Int          @default(0)
   coach         String?
   captain       String?
+  championshipCount Int      @default(0)
   active        Boolean      @default(true)
   summary       String?
   season        TournamentSeason? @relation(fields: [seasonId], references: [id], onDelete: SetNull)
   members       TeamMember[]
   homeMatches   Match[]      @relation("HomeTeam")
   awayMatches   Match[]      @relation("AwayTeam")
+  championMatches Match[]    @relation("ChampionTeam")
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+}
+
+model Hero {
+  id            String   @id @default(cuid())
+  heroId        Int?     @unique
+  name          String   @unique
+  slug          String   @unique
+  localizedName String   @unique
+  primaryAttr   String?
+  attackType    String?
+  roles         String[]
+  iconUrl       String?
+  imageUrl      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Player {
@@ -104,6 +122,7 @@ model Player {
   primaryRole     String?
   heroPool        String[]
   highlightMatchIds String[]
+  championshipCount Int           @default(0)
   bio             String?
   active          Boolean         @default(true)
   users           User[]
@@ -142,11 +161,14 @@ model Match {
   scoreAway        Int?
   streamUrl        String?
   summary          String?
+  participantTeamNames String[]
   homeTeamId       String?
   awayTeamId       String?
+  championTeamId   String?
   season           TournamentSeason? @relation(fields: [seasonId], references: [id], onDelete: SetNull)
   homeTeam         Team?          @relation("HomeTeam", fields: [homeTeamId], references: [id], onDelete: SetNull)
   awayTeam         Team?          @relation("AwayTeam", fields: [awayTeamId], references: [id], onDelete: SetNull)
+  championTeam     Team?          @relation("ChampionTeam", fields: [championTeamId], references: [id], onDelete: SetNull)
   highlights       MatchHighlight[]
   contentPages     ContentPage[]
   createdAt        DateTime       @default(now())

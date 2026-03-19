@@ -18,7 +18,7 @@ export function AdminTeamForm({
     <form action={formAction} className="rounded-[28px] border border-white/10 bg-panel/80 p-6 shadow-glow backdrop-blur">
       <div className="text-xs uppercase tracking-[0.28em] text-accent-cyan">Create Team</div>
       <h2 className="mt-2 text-2xl font-semibold text-white">新增队伍</h2>
-      <p className="mt-3 text-sm leading-7 text-slate-400">slogan 会直接用于首页焦点对阵、后续海报页和队伍详情页展示。</p>
+      <p className="mt-3 text-sm leading-7 text-slate-400">这里把战队积分、队徽、介绍和 slogan 一次性录全，前台的荣誉感会明显更完整。</p>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <label className="grid gap-2 text-sm text-slate-300">
@@ -34,12 +34,24 @@ export function AdminTeamForm({
           <input name="slogan" className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" placeholder="兄弟们再冲一次" />
         </label>
         <label className="grid gap-2 text-sm text-slate-300">
+          <span>战队积分</span>
+          <input name="honorPoints" type="number" min="0" defaultValue="0" className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" placeholder="120" />
+        </label>
+        <label className="grid gap-2 text-sm text-slate-300">
+          <span>队徽 / 头像 URL</span>
+          <input name="logoUrl" className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" placeholder="https://..." />
+        </label>
+        <label className="grid gap-2 text-sm text-slate-300">
           <span>教练</span>
           <input name="coach" className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" placeholder="koi" />
         </label>
         <label className="grid gap-2 text-sm text-slate-300">
           <span>队长</span>
           <input name="captain" className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" placeholder="cook" />
+        </label>
+        <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
+          <span>战队介绍</span>
+          <textarea name="summary" rows={4} className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" placeholder="这支固定队的风格、荣誉和来历。" />
         </label>
         <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
           <span>所属赛季</span>
