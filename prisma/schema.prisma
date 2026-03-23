@@ -86,10 +86,12 @@ model Team {
   honorPoints   Int          @default(0)
   coach         String?
   captain       String?
+  captainPlayerId String?
   championshipCount Int      @default(0)
   active        Boolean      @default(true)
   summary       String?
   season        TournamentSeason? @relation(fields: [seasonId], references: [id], onDelete: SetNull)
+  captainPlayer Player?      @relation("TeamCaptain", fields: [captainPlayerId], references: [id], onDelete: SetNull)
   members       TeamMember[]
   homeMatches   Match[]      @relation("HomeTeam")
   awayMatches   Match[]      @relation("AwayTeam")
@@ -120,18 +122,40 @@ model Player {
   steamId         String?         @unique
   avatarUrl       String?
   primaryRole     String?
+  preferredRoles  String[]        @default([])
   heroPool        String[]
+  ladderScore     Int?
+  gameYears       Int?
+  playStyles      String[]        @default([])
   highlightMatchIds String[]
   championshipCount Int           @default(0)
   bio             String?
+  gameUnderstanding String?
   active          Boolean         @default(true)
   users           User[]
+  captainOfTeams  Team[]          @relation("TeamCaptain")
   teamMemberships TeamMember[]
   bindings        PlayerBinding[]
   reports         PlayerReport[]
+  authoredReviews PlayerReview[]  @relation("PlayerReviewAuthor")
+  receivedReviews PlayerReview[]  @relation("PlayerReviewTarget")
   highlights      MatchHighlight[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
+}
+
+model PlayerReview {
+  id             String   @id @default(cuid())
+  authorPlayerId String
+  targetPlayerId String
+  content        String
+  showOnProfile  Boolean  @default(false)
+  authorPlayer   Player   @relation("PlayerReviewAuthor", fields: [authorPlayerId], references: [id], onDelete: Cascade)
+  targetPlayer   Player   @relation("PlayerReviewTarget", fields: [targetPlayerId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([authorPlayerId, targetPlayerId])
 }
 
 model TeamMember {
@@ -151,6 +175,7 @@ model TeamMember {
 model Match {
   id               String         @id @default(cuid())
   seasonId         String?
+  topicId          String?
   title            String
   slug             String         @unique
   externalMatchId  String?
@@ -166,6 +191,7 @@ model Match {
   awayTeamId       String?
   championTeamId   String?
   season           TournamentSeason? @relation(fields: [seasonId], references: [id], onDelete: SetNull)
+  topic            CommunityTopic? @relation(fields: [topicId], references: [id], onDelete: SetNull)
   homeTeam         Team?          @relation("HomeTeam", fields: [homeTeamId], references: [id], onDelete: SetNull)
   awayTeam         Team?          @relation("AwayTeam", fields: [awayTeamId], references: [id], onDelete: SetNull)
   championTeam     Team?          @relation("ChampionTeam", fields: [championTeamId], references: [id], onDelete: SetNull)
@@ -222,6 +248,7 @@ model PlayerReport {
 model ContentPage {
   id            String    @id @default(cuid())
   matchId       String?
+  topicId       String?
   title         String
   slug          String    @unique
   pageType      String
@@ -230,6 +257,69 @@ model ContentPage {
   publishedAt   DateTime?
   featured      Boolean   @default(false)
   match         Match?    @relation(fields: [matchId], references: [id], onDelete: SetNull)
+  topic         CommunityTopic? @relation(fields: [topicId], references: [id], onDelete: SetNull)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+}
+
+model Announcement {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String?
+  body        Json
+  publishedAt DateTime?
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CommunityTopic {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  description  String?
+  activityNote String?
+  featured     Boolean  @default(false)
+  matches      Match[]
+  contentPages ContentPage[]
+  events       CommunityEvent[]
+  recruitmentPosts RecruitmentPost[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model CommunityEvent {
+  id        String   @id @default(cuid())
+  topicId   String?
+  title     String
+  slug      String   @unique
+  summary   String?
+  body      Json
+  startsAt  DateTime?
+  endsAt    DateTime?
+  location  String?
+  status    String   @default("UPCOMING")
+  ctaLabel  String?
+  ctaHref   String?
+  featured  Boolean  @default(false)
+  topic     CommunityTopic? @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RecruitmentPost {
+  id          String   @id @default(cuid())
+  topicId     String?
+  title       String
+  slug        String   @unique
+  teamName    String
+  contact     String?
+  neededRoles String[]
+  status      String   @default("OPEN")
+  excerpt     String?
+  featured    Boolean  @default(false)
+  topic       CommunityTopic? @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

@@ -19,6 +19,9 @@ function revalidateContentViews() {
   revalidatePath("/admin/content-pages");
   revalidatePath("/matches");
   revalidatePath("/");
+  revalidatePath("/content");
+  revalidatePath("/community");
+  revalidatePath("/community/topics");
 }
 
 function toContentData(payload: {
@@ -30,6 +33,7 @@ function toContentData(payload: {
   publishedAt?: string;
   featured: boolean;
   matchId?: string;
+  topicId?: string;
 }) {
   return {
     title: payload.title,
@@ -41,7 +45,8 @@ function toContentData(payload: {
     },
     publishedAt: normalizeDateTime(payload.publishedAt),
     featured: payload.featured,
-    matchId: payload.matchId || null
+    matchId: payload.matchId || null,
+    topicId: payload.topicId || null
   };
 }
 
@@ -57,7 +62,8 @@ export async function createContentPageAction(
     bodyText: formData.get("bodyText"),
     publishedAt: formData.get("publishedAt"),
     featured: formData.get("featured"),
-    matchId: formData.get("matchId")
+    matchId: formData.get("matchId"),
+    topicId: formData.get("topicId")
   });
 
   if (!payload.success) {
@@ -103,7 +109,8 @@ export async function updateContentPageAction(formData: FormData) {
     bodyText: formData.get("bodyText"),
     publishedAt: formData.get("publishedAt"),
     featured: formData.get("featured"),
-    matchId: formData.get("matchId")
+    matchId: formData.get("matchId"),
+    topicId: formData.get("topicId")
   });
 
   if (!payload.success) {

@@ -18,7 +18,7 @@ export function AdminTeamForm({
     <form action={formAction} className="rounded-[28px] border border-white/10 bg-panel/80 p-6 shadow-glow backdrop-blur">
       <div className="text-xs uppercase tracking-[0.28em] text-accent-cyan">Create Team</div>
       <h2 className="mt-2 text-2xl font-semibold text-white">新增队伍</h2>
-      <p className="mt-3 text-sm leading-7 text-slate-400">这里把战队积分、队徽、介绍和 slogan 一次性录全，前台的荣誉感会明显更完整。</p>
+      <p className="mt-3 text-sm leading-7 text-slate-400">尽量一次补齐积分、队徽、介绍和口号，前台展示会更完整，也更方便后续运营使用。</p>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <label className="grid gap-2 text-sm text-slate-300">

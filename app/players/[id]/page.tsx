@@ -31,7 +31,7 @@ export default async function PlayerDetailPage({ params }: { params: Promise<{ i
               <div className="min-w-0 flex-1">
                 <div className="text-xs uppercase tracking-[0.3em] text-cyan-200">Player Detail</div>
                 <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white md:text-5xl">{player.displayName}</h1>
-                <p className="mt-3 text-sm leading-8 text-slate-300 md:text-base">{player.bio ?? "这位选手的个人档案正在持续完善，先从位置、英雄池和代表作认识他。"}</p>
+                <p className="mt-3 text-sm leading-8 text-slate-300 md:text-base">{player.bio ?? "先从位置、英雄池和代表作认识这位选手，再顺着比赛与队伍了解他的赛场轨迹。"}</p>
               </div>
             </div>
 
@@ -41,12 +41,16 @@ export default async function PlayerDetailPage({ params }: { params: Promise<{ i
                 <div className="mt-3 text-lg font-semibold text-white">{player.primaryRole ?? "社区选手"}</div>
               </article>
               <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">冠军次数</div>
-                <div className="mt-3 text-3xl font-semibold text-white">{player.championshipCount}</div>
+                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">天梯分</div>
+                <div className="mt-3 text-3xl font-semibold text-white">{player.ladderScore ?? "待补充"}</div>
               </article>
               <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">英雄池</div>
-                <div className="mt-3 text-3xl font-semibold text-white">{player.heroCards.length}</div>
+                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">游戏年数</div>
+                <div className="mt-3 text-3xl font-semibold text-white">{player.gameYears ?? "待补充"}</div>
+              </article>
+              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
+                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">冠军次数</div>
+                <div className="mt-3 text-3xl font-semibold text-white">{player.championshipCount}</div>
               </article>
               <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
                 <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">高光比赛</div>
@@ -56,22 +60,23 @@ export default async function PlayerDetailPage({ params }: { params: Promise<{ i
           </div>
 
           <article className="rounded-[32px] border border-white/10 bg-white/5 p-6">
-            <div className="text-xs uppercase tracking-[0.24em] text-cyan-200">当前身份</div>
+            <div className="text-xs uppercase tracking-[0.24em] text-cyan-200">认领身份</div>
             <div className="mt-4 flex flex-wrap gap-3">
               <PlayerClaimAction playerId={player.id} playerName={player.displayName} />
             </div>
             <div className="mt-5 space-y-4 text-sm leading-7 text-slate-300">
               <p>
-                当前队伍：
+                所属战队：
                 {player.teamId ? (
                   <Link href={teamPath(player.teamId)} className="transition hover:text-cyan-100">{player.teamName}</Link>
                 ) : player.teamName}
               </p>
               <p>SteamID：{player.steamId ?? "未绑定"}</p>
+              <p>擅长位置：{player.preferredRoles.length ? player.preferredRoles.join(" / ") : (player.primaryRole ?? "待补充")}</p>
             </div>
             <div className="mt-6 rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-              <div className="text-[11px] uppercase tracking-[0.22em] text-slate-500">推荐浏览</div>
-              <p className="mt-3 text-sm leading-7 text-slate-300">先看英雄池，再翻代表作，最后顺着队伍线继续了解他的比赛历程。</p>
+              <div className="text-[11px] uppercase tracking-[0.22em] text-slate-500">浏览建议</div>
+              <p className="mt-3 text-sm leading-7 text-slate-300">先看英雄池，再翻代表作，最后顺着战队主页继续了解他的比赛经历。</p>
             </div>
           </article>
         </div>
@@ -79,13 +84,22 @@ export default async function PlayerDetailPage({ params }: { params: Promise<{ i
 
       <section className="mt-6 grid gap-6 xl:grid-cols-[0.96fr_1.04fr]">
         <article className="rounded-[32px] border border-white/10 bg-panel/80 p-6 shadow-glow backdrop-blur">
+          <div className="flex flex-wrap gap-2">
+            {player.playStyles.length ? player.playStyles.map((style) => (
+              <span key={`${player.id}-${style}`} className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1.5 text-xs font-semibold text-cyan-100">
+                {style}
+              </span>
+            )) : (
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-400">打法风格仍在整理中</span>
+            )}
+          </div>
           <div className="text-xs uppercase tracking-[0.28em] text-cyan-300">英雄池</div>
           <h2 className="mt-2 text-3xl font-semibold text-white">这位选手靠什么留下印象</h2>
 
           <div className="mt-6 flex flex-wrap gap-3">
             {player.heroCards.length ? player.heroCards.map((hero) => (
               <HeroChip key={`${player.slug}-${hero.label}`} hero={hero} />
-            )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">暂时还没有维护英雄池。</div>}
+            )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">这位选手暂未公开英雄池资料。</div>}
           </div>
 
           <div className="mt-6 rounded-[28px] border border-white/10 bg-white/5 p-5">
@@ -96,6 +110,52 @@ export default async function PlayerDetailPage({ params }: { params: Promise<{ i
                   {team.name}
                 </Link>
               )) : <span className="text-slate-500">暂无历史队伍记录</span>}
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-[28px] border border-white/10 bg-white/5 p-5">
+            <div className="text-xs uppercase tracking-[0.22em] text-slate-500">我的游戏理解</div>
+            <p className="mt-4 text-sm leading-8 text-slate-300">
+              {player.gameUnderstanding ?? "这位选手暂时还没有公开自己的游戏理解。"}
+            </p>
+          </div>
+
+          <div className="mt-6 rounded-[28px] border border-white/10 bg-white/5 p-5">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <div className="text-xs uppercase tracking-[0.22em] text-slate-500">公开互评</div>
+                <h3 className="mt-2 text-2xl font-semibold text-white">其他选手怎么评价他</h3>
+              </div>
+              <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1.5 text-xs font-semibold text-slate-300">公开中 {player.publicReviews.length} 条</span>
+            </div>
+
+            <div className="mt-5 space-y-4">
+              {player.publicReviews.length ? player.publicReviews.map((review) => (
+                <article key={review.id} className="rounded-[24px] border border-white/10 bg-slate-950/55 p-4">
+                  <div className="flex items-start gap-4">
+                    <PlayerAvatar src={review.authorPlayerAvatarUrl} alt={review.authorPlayerName} size="md" className="h-12 w-12 rounded-2xl" />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2 text-sm text-slate-300">
+                        <span className="font-semibold text-white">{review.authorPlayerName}</span>
+                        <span>·</span>
+                        <span>{review.authorPrimaryRole ?? "社区选手"}</span>
+                        {review.authorTeamId && review.authorTeamSlug ? (
+                          <>
+                            <span>·</span>
+                            <Link href={teamPath(review.authorTeamId)} className="transition hover:text-cyan-100">{review.authorTeamName}</Link>
+                          </>
+                        ) : review.authorTeamName ? (
+                          <>
+                            <span>·</span>
+                            <span>{review.authorTeamName}</span>
+                          </>
+                        ) : null}
+                      </div>
+                      <p className="mt-3 text-sm leading-7 text-slate-300">{review.content}</p>
+                    </div>
+                  </div>
+                </article>
+              )) : <div className="rounded-[24px] border border-dashed border-white/10 bg-slate-950/35 p-5 text-sm leading-7 text-slate-400">这位选手暂时还没有公开的互评内容。</div>}
             </div>
           </div>
         </article>
@@ -113,9 +173,9 @@ export default async function PlayerDetailPage({ params }: { params: Promise<{ i
                 </div>
                 <h3 className="mt-3 text-xl font-semibold text-white">{match.title}</h3>
                 <p className="mt-3 text-sm text-slate-400">{(match.homeTeamName ?? "待定") + " vs " + (match.awayTeamName ?? "待定")}</p>
-                <p className="mt-3 text-sm leading-7 text-slate-400">{match.summary ?? "这场比赛值得回看，完整战况正在补齐。"}</p>
+                <p className="mt-3 text-sm leading-7 text-slate-400">{match.summary ?? "这场比赛值得回看，想认识他的代表作，可以先从这里开始。"}</p>
               </Link>
-            )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">这位选手暂时还没有收录高光比赛。</div>}
+            )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">这位选手暂时还没有收录代表比赛。</div>}
           </div>
         </article>
       </section>

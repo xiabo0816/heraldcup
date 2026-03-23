@@ -5,7 +5,8 @@ const pageTypes = ["poster", "champion", "news", "recap", "custom"] as const;
 
 export function AdminContentPageRow({
   page,
-  matches
+  matches,
+  topics
 }: {
   page: {
     id: string;
@@ -18,8 +19,11 @@ export function AdminContentPageRow({
     featured: boolean;
     matchId: string;
     matchTitle: string;
+    topicId: string;
+    topicTitle: string;
   };
   matches: Array<{ id: string; title: string }>;
+  topics: Array<{ id: string; title: string }>;
 }) {
   return (
     <article className="rounded-3xl border border-white/10 bg-white/5 p-5">
@@ -28,6 +32,7 @@ export function AdminContentPageRow({
           <div className="text-xs uppercase tracking-[0.24em] text-accent-cyan">{page.pageType}</div>
           <h2 className="mt-2 text-2xl font-semibold text-white">{page.title}</h2>
           <p className="mt-2 text-sm leading-7 text-slate-300">{page.matchTitle}</p>
+          <p className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-500">{page.topicTitle}</p>
         </div>
         <form action={deleteContentPageAction}>
           <input type="hidden" name="id" value={page.id} />
@@ -66,6 +71,17 @@ export function AdminContentPageRow({
             {matches.map((match) => (
               <option key={match.id} value={match.id}>
                 {match.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
+          <span>关联话题</span>
+          <select name="topicId" defaultValue={page.topicId} className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none">
+            <option value="">暂不关联话题</option>
+            {topics.map((topic) => (
+              <option key={topic.id} value={topic.id}>
+                {topic.title}
               </option>
             ))}
           </select>

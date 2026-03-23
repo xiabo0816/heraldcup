@@ -7,9 +7,11 @@ import { initialContentPageFormState } from "@/app/admin/content-pages/form-stat
 const pageTypes = ["poster", "champion", "news", "recap", "custom"] as const;
 
 export function AdminContentPageForm({
-  matches
+  matches,
+  topics
 }: {
   matches: Array<{ id: string; title: string }>;
+  topics: Array<{ id: string; title: string }>;
 }) {
   const [state, formAction, pending] = useActionState(createContentPageAction, initialContentPageFormState);
 
@@ -17,7 +19,7 @@ export function AdminContentPageForm({
     <form action={formAction} className="rounded-[28px] border border-white/10 bg-panel/80 p-6 shadow-glow backdrop-blur">
       <div className="text-xs uppercase tracking-[0.28em] text-accent-cyan">Create Content</div>
       <h2 className="mt-2 text-2xl font-semibold text-white">新增内容页</h2>
-      <p className="mt-3 text-sm leading-7 text-slate-400">可用来维护海报页、冠军页、快报页和赛后战报，后续统一从比赛详情页挂出。</p>
+      <p className="mt-3 text-sm leading-7 text-slate-400">这里可以维护海报、冠军页、快报和战报，发布后会自动参与前台内容展示。</p>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <label className="grid gap-2 text-sm text-slate-300">
@@ -49,6 +51,17 @@ export function AdminContentPageForm({
             {matches.map((match) => (
               <option key={match.id} value={match.id}>
                 {match.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
+          <span>关联话题</span>
+          <select name="topicId" className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none">
+            <option value="">暂不关联话题</option>
+            {topics.map((topic) => (
+              <option key={topic.id} value={topic.id}>
+                {topic.title}
               </option>
             ))}
           </select>

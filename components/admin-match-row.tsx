@@ -6,7 +6,8 @@ const matchStatuses = ["DRAFT", "SCHEDULED", "LIVE", "FINISHED", "ARCHIVED"] as 
 export function AdminMatchRow({
   match,
   seasons,
-  teams
+  teams,
+  topics
 }: {
   match: {
     id: string;
@@ -20,6 +21,8 @@ export function AdminMatchRow({
     scoreAway: number | null;
     streamUrl: string | null;
     summary: string | null;
+    topicId: string;
+    topicTitle: string;
     seasonId: string;
     seasonTitle: string;
     homeTeamId: string;
@@ -29,6 +32,7 @@ export function AdminMatchRow({
   };
   seasons: Array<{ id: string; title: string }>;
   teams: Array<{ id: string; name: string }>;
+  topics: Array<{ id: string; title: string }>;
 }) {
   return (
     <article className="rounded-3xl border border-white/10 bg-white/5 p-5">
@@ -39,6 +43,7 @@ export function AdminMatchRow({
           <p className="mt-2 text-sm leading-7 text-slate-300">
             {match.homeTeamName} vs {match.awayTeamName}
           </p>
+          <p className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-500">{match.topicTitle}</p>
         </div>
         <form action={deleteMatchAction}>
           <input type="hidden" name="id" value={match.id} />
@@ -107,6 +112,17 @@ export function AdminMatchRow({
         <label className="grid gap-2 text-sm text-slate-300">
           <span>客队比分</span>
           <input name="scoreAway" type="number" min="0" defaultValue={match.scoreAway ?? ""} className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" />
+        </label>
+        <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
+          <span>关联话题</span>
+          <select name="topicId" defaultValue={match.topicId} className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none">
+            <option value="">暂不关联话题</option>
+            {topics.map((topic) => (
+              <option key={topic.id} value={topic.id}>
+                {topic.title}
+              </option>
+            ))}
+          </select>
         </label>
         <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
           <span>所属赛季</span>

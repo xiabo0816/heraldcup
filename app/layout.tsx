@@ -1,11 +1,17 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { getSiteSearchIndex } from "@/lib/queries";
 
 export const metadata: Metadata = {
-  title: "Herald Cup",
-  description: "Dota2 社区赛事的全栈管理与展示系统。"
+  title: "今晚就来社区",
+  description: "围绕 Dota2 社区赛事、战队、选手与战报构建的轻社区门户。"
+};
+
+export const viewport: Viewport = {
+  colorScheme: "dark",
+  themeColor: "#0a0f1d"
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -13,9 +19,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 
   return (
     <html lang="zh-CN">
-      <body className="bg-arena">
+      <body>
         <SiteHeader searchItems={searchItems} />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );

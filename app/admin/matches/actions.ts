@@ -19,6 +19,8 @@ function revalidateMatchViews() {
   revalidatePath("/admin/matches");
   revalidatePath("/matches");
   revalidatePath("/");
+  revalidatePath("/community");
+  revalidatePath("/community/topics");
 }
 
 function toMatchData(payload: {
@@ -32,6 +34,7 @@ function toMatchData(payload: {
   scoreAway?: number;
   streamUrl?: string;
   summary?: string;
+  topicId?: string;
   seasonId?: string;
   homeTeamId?: string;
   awayTeamId?: string;
@@ -47,6 +50,7 @@ function toMatchData(payload: {
     scoreAway: payload.scoreAway ?? null,
     streamUrl: payload.streamUrl || null,
     summary: payload.summary || null,
+    topicId: payload.topicId || null,
     seasonId: payload.seasonId || null,
     homeTeamId: payload.homeTeamId || null,
     awayTeamId: payload.awayTeamId || null
@@ -65,6 +69,7 @@ export async function createMatchAction(_: MatchFormState, formData: FormData): 
     scoreAway: formData.get("scoreAway"),
     streamUrl: formData.get("streamUrl"),
     summary: formData.get("summary"),
+    topicId: formData.get("topicId"),
     seasonId: formData.get("seasonId"),
     homeTeamId: formData.get("homeTeamId"),
     awayTeamId: formData.get("awayTeamId")
@@ -116,6 +121,7 @@ export async function updateMatchAction(formData: FormData) {
     scoreAway: formData.get("scoreAway"),
     streamUrl: formData.get("streamUrl"),
     summary: formData.get("summary"),
+    topicId: formData.get("topicId"),
     seasonId: formData.get("seasonId"),
     homeTeamId: formData.get("homeTeamId"),
     awayTeamId: formData.get("awayTeamId")

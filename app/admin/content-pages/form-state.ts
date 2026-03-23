@@ -5,5 +5,5 @@ export type ContentPageFormState = {
 
 export const initialContentPageFormState: ContentPageFormState = {
   status: "idle",
-  message: "正文先按纯文本维护，后续再升级成结构化 block 或 markdown。"
+  message: "录入标题、摘要和正文后，就可以先用于前台内容展示。"
 };

@@ -27,7 +27,7 @@ export default async function TeamsPage() {
               <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
                 <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">榜首积分</div>
                 <div className="mt-3 text-3xl font-semibold text-white">{leaderboard[0]?.honorScore ?? 0}</div>
-                <p className="mt-2 text-sm text-slate-400">当前社区最高积分。</p>
+                <p className="mt-2 text-sm text-slate-400">目前排在社区积分榜最前面。</p>
               </article>
               <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
                 <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">冠军线</div>
@@ -48,6 +48,7 @@ export default async function TeamsPage() {
                 <h2 className="mt-2 text-xl font-semibold text-white">
                   <Link href={teamPath(team.id)} className="transition hover:text-accent-gold">{team.name}</Link>
                 </h2>
+                <p className="mt-2 text-sm font-medium text-amber-100/90">{team.slogan ?? "口号待补充"}</p>
                 <p className="mt-2 text-sm text-slate-400">社区积分 {team.honorScore} · {team.championshipCount} 冠</p>
               </article>
             ))}
@@ -67,7 +68,8 @@ export default async function TeamsPage() {
                 <TeamMark name={team.name} logoUrl={team.logoUrl} size="sm" />
                 <div className="min-w-0 flex-1">
                   <Link href={teamPath(team.id)} className="text-lg font-semibold text-white transition hover:text-amber-200">{team.name}</Link>
-                  <p className="mt-1 text-sm text-slate-400">{team.summary ?? team.slogan ?? "这支队伍的介绍正在完善中。"}</p>
+                  <p className="mt-1 text-sm font-medium text-amber-100/90">{team.slogan ?? "口号待补充"}</p>
+                  <p className="mt-2 text-sm text-slate-400">{team.summary ?? "这支队伍的风格和故事，先从阵容与战绩里认识。"}</p>
                 </div>
                 <div className="text-right text-sm text-slate-300">
                   <div>积分 {team.honorScore}</div>
@@ -94,6 +96,7 @@ export default async function TeamsPage() {
                         <h3 className="mt-2 text-2xl font-semibold text-white">
                           <Link href={teamPath(team.id)} className="transition hover:text-accent-gold">{team.name}</Link>
                         </h3>
+                        <p className="mt-2 text-sm font-medium text-amber-100/90">{team.slogan ?? "口号待补充"}</p>
                       </div>
                       <div className="rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-xs font-semibold text-amber-200">{team.championshipCount} 冠</div>
                     </div>
@@ -103,7 +106,7 @@ export default async function TeamsPage() {
                       <div className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3">战绩 {team.wins}-{team.losses}-{team.draws}</div>
                     </div>
 
-                    <p className="mt-4 text-sm leading-7 text-slate-400">{team.summary ?? team.slogan ?? "这支队伍的介绍正在补充中，先看看当前阵容。"}</p>
+                    <p className="mt-4 text-sm leading-7 text-slate-400">{team.summary ?? "先看看这支队伍的当前阵容和战绩，很快就能摸清他们的风格。"}</p>
                     <div className="mt-4 text-xs uppercase tracking-[0.18em] text-slate-500">成员数 {team.memberCount}</div>
                   </div>
 

@@ -16,7 +16,7 @@ export default async function AdminTournamentsPage() {
             <div className="text-xs uppercase tracking-[0.28em] text-accent-cyan">Admin Resource</div>
             <h1 className="mt-2 text-3xl font-semibold text-white">赛事管理</h1>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">
-              这里统一维护赛事系列与届次。首页展示会自动使用当前被标记为 featured 的赛季。
+              在这里统一维护赛事系列与届次，首页会自动优先展示被标记为推荐的赛季。
             </p>
           </div>
 

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { readLocalPlayerBinding, type LocalPlayerBinding } from "@/lib/local-binding";
+import { readLocalPlayerBinding, subscribeToLocalPlayerBinding, type LocalPlayerBinding } from "@/lib/local-binding";
 import { playerPath, teamPath } from "@/lib/routes";
 
 type SpotlightPlayer = {
@@ -71,6 +71,7 @@ export function HomeIdentitySpotlight({
 
   useEffect(() => {
     setBinding(readLocalPlayerBinding());
+    return subscribeToLocalPlayerBinding(setBinding);
   }, []);
 
   const currentPlayer = binding ? players.find((player) => player.id === binding.playerId || player.slug === binding.playerSlug) ?? null : null;
@@ -83,33 +84,33 @@ export function HomeIdentitySpotlight({
   if (!currentPlayer) {
     return (
       <article className="brand-shell border-cyan-300/20 bg-[linear-gradient(180deg,rgba(8,16,29,0.94),rgba(8,40,48,0.82))] p-6">
-        <div className="section-kicker">我的入口</div>
-        <h2 className="mt-3 text-2xl font-semibold text-white">认领自己后，首页才会真的对你有用</h2>
+        <div className="section-kicker">专属看板</div>
+        <h2 className="mt-3 text-2xl font-semibold text-white">认领之后，今晚该追的比赛会主动来到你面前</h2>
         <p className="mt-3 text-sm leading-7 text-slate-300">
-          认领 SteamID 后，首页会自动把你的下一场、战队入口和个人档案排到最前面。
+          认领之后，比赛、战队和个人档案会集中到同一个入口；如果你再补上 SteamID，就能继续生成自己的公开战绩报告。
         </p>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
           <div className="brand-card p-4">
             <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">我的下一场</div>
-            <div className="mt-2 text-sm font-semibold text-white">自动挂到首页</div>
+            <div className="mt-2 text-sm font-semibold text-white">赛程优先送达</div>
           </div>
           <div className="brand-card p-4">
             <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">我的战队</div>
-            <div className="mt-2 text-sm font-semibold text-white">直接回到队伍档案</div>
+            <div className="mt-2 text-sm font-semibold text-white">一键回到队伍主页</div>
           </div>
           <div className="brand-card p-4">
             <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">我的荣誉</div>
-            <div className="mt-2 text-sm font-semibold text-white">从个人页继续沉淀</div>
+            <div className="mt-2 text-sm font-semibold text-white">个人记录持续累积</div>
           </div>
         </div>
 
         <div className="mt-5 flex flex-wrap gap-3">
           <Link href="/my" className="rounded-full bg-gradient-to-r from-cyan-300 to-emerald-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:opacity-90">
-            去绑定 SteamID
+            去认领自己
           </Link>
           <Link href="/players" className="rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:border-cyan-300/50 hover:text-white">
-            先找找我的选手页
+            先找我的选手页
           </Link>
         </div>
       </article>
@@ -120,8 +121,8 @@ export function HomeIdentitySpotlight({
     <article className="brand-shell border-amber-300/20 bg-[linear-gradient(180deg,rgba(8,16,29,0.96),rgba(62,35,8,0.82))] p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <div className="text-xs uppercase tracking-[0.24em] text-amber-200">我的入口</div>
-          <h2 className="mt-3 text-2xl font-semibold text-white">{currentPlayer.displayName}，今晚先看你的安排</h2>
+          <div className="text-xs uppercase tracking-[0.24em] text-amber-200">专属看板</div>
+          <h2 className="mt-3 text-2xl font-semibold text-white">{currentPlayer.displayName}，今晚和你有关的比赛都在这里</h2>
         </div>
         <div className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-100">
           已认领
@@ -149,7 +150,7 @@ export function HomeIdentitySpotlight({
           <div className="text-xs uppercase tracking-[0.2em] text-slate-500">我的身份</div>
           <div className="mt-2 text-lg font-semibold text-white">{currentPlayer.primaryRole ?? "社区选手"}</div>
           <div className="mt-2 text-sm text-slate-300">冠军 {currentPlayer.championshipCount} 次</div>
-          <div className="mt-1 text-sm text-slate-400">{binding?.steamId ?? "已完成本地身份绑定"}</div>
+          <div className="mt-1 text-sm text-slate-400">{binding?.steamId ? `SteamID ${binding.steamId}` : "已认领，尚未补充 SteamID"}</div>
         </div>
         <div className="brand-card p-4">
           <div className="text-xs uppercase tracking-[0.2em] text-slate-500">我的战队</div>
@@ -164,9 +165,9 @@ export function HomeIdentitySpotlight({
           <div className="mt-1 text-sm text-slate-400">冠军 {currentTeam?.championshipCount ?? 0} 次</div>
         </div>
         <div className="brand-card p-4">
-          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">我的节奏</div>
-          <div className="mt-2 text-lg font-semibold text-white">{myMatches.length ? `${myMatches.length} 场相关比赛` : "等待赛程更新"}</div>
-          <div className="mt-2 text-sm text-slate-300">先看比赛，再顺着队伍和选手线继续逛。</div>
+          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">近期安排</div>
+          <div className="mt-2 text-lg font-semibold text-white">{myMatches.length ? `${myMatches.length} 场相关比赛` : "近期赛程待更新"}</div>
+          <div className="mt-2 text-sm text-slate-300">从这里进入比赛、战队和社区讨论，整条观看路线会更顺。</div>
         </div>
       </div>
 
@@ -186,7 +187,7 @@ export function HomeIdentitySpotlight({
             ))}
           </div>
         ) : (
-          <div className="mt-3 text-sm leading-7 text-slate-400">认领已完成，你的战队近期赛程还在整理中。</div>
+          <div className="mt-3 text-sm leading-7 text-slate-400">你的认领信息已经就位，近期还没有排到新的比赛。</div>
         )}
       </div>
 

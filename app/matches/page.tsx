@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Shell } from "@/components/shell";
-import { getMatches } from "@/lib/queries";
+import { getContentPages, getMatches } from "@/lib/queries";
 import { teamPath } from "@/lib/routes";
 import { getTournamentTheme } from "@/lib/tournament-theme";
 
@@ -25,10 +25,19 @@ function formatDateLabel(value: Date | string | null) {
 }
 
 export default async function MatchesPage() {
-  const matches = await getMatches();
+  const [matches, contentPages] = await Promise.all([getMatches(), getContentPages()]);
   const upcomingMatches = [...matches].reverse().filter((match) => match.status !== "FINISHED");
   const finishedMatches = matches.filter((match) => match.status === "FINISHED");
   const liveMatch = upcomingMatches.find((match) => match.status === "ONGOING") ?? upcomingMatches[0] ?? matches[0] ?? null;
+  const pagesByMatchSlug = contentPages.reduce<Record<string, typeof contentPages>>((accumulator, page) => {
+    if (!page.matchSlug) {
+      return accumulator;
+    }
+
+    accumulator[page.matchSlug] ??= [];
+    accumulator[page.matchSlug].push(page);
+    return accumulator;
+  }, {});
 
   return (
     <Shell>
@@ -41,13 +50,13 @@ export default async function MatchesPage() {
           <div>
             <div className="text-xs uppercase tracking-[0.3em] text-rose-200">Match Center</div>
             <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white md:text-5xl">先看今晚和本周，再慢慢翻历届。</h1>
-            <p className="mt-5 max-w-3xl text-sm leading-8 text-slate-300 md:text-base">赛事页现在不再只是历史清单，而是把正在进行、即将开打、最近完赛和历届记录分开给你。顺着比赛可以继续跳战队、内容页和冠军归档。</p>
+            <p className="mt-5 max-w-3xl text-sm leading-8 text-slate-300 md:text-base">无论你是想追今晚焦点、补看刚结束的结果，还是回翻历届记录，这一页都把比赛按节奏分好了，找信息会更直接。</p>
 
             <div className="mt-8 grid gap-4 md:grid-cols-3">
               <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
                 <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">待开打</div>
                 <div className="mt-3 text-3xl font-semibold text-white">{upcomingMatches.length}</div>
-                <p className="mt-2 text-sm text-slate-400">场比赛已经排在前面，今晚先从这里锁定焦点对局。</p>
+                <p className="mt-2 text-sm text-slate-400">场比赛已经排好，今晚先从这里锁定最值得追的一场。</p>
               </article>
               <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
                 <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">已完赛</div>
@@ -55,9 +64,9 @@ export default async function MatchesPage() {
                 <p className="mt-2 text-sm text-slate-400">场结果已经沉到社区档案里。</p>
               </article>
               <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">主入口</div>
-                <div className="mt-3 text-lg font-semibold text-white">比赛页优先</div>
-                <p className="mt-2 text-sm text-slate-400">从这里跳队伍、战报、冠军页，路径最短。</p>
+                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">看比赛</div>
+                <div className="mt-3 text-lg font-semibold text-white">一页追完整条线</div>
+                <p className="mt-2 text-sm text-slate-400">比分、队伍、战报和赛后讨论都能顺着往下看。</p>
               </article>
             </div>
           </div>
@@ -81,13 +90,16 @@ export default async function MatchesPage() {
                   <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.22em] text-slate-400">VS</span>
                   <span>{liveMatch.awayTeamName}</span>
                 </div>
-                <p className="mt-4 text-sm leading-7 text-slate-400">{liveMatch.summary ?? "这场对局的比分、战报和冠军内容，都会从这里持续补齐。"}</p>
+                <p className="mt-4 text-sm leading-7 text-slate-400">{liveMatch.summary ?? "先锁定这场对局，比分、战报和赛后内容会围绕它持续展开。"}</p>
                 <div className="mt-5 flex flex-wrap gap-3">
                   <Link href={`/matches/${liveMatch.slug}`} className="rounded-full border border-rose-300/40 px-5 py-2.5 text-sm font-semibold text-rose-100 transition hover:border-rose-200/60">
                     进入比赛页
                   </Link>
                   <Link href="/content" className="rounded-full border border-white/10 px-5 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-white/20 hover:text-white">
-                    看对应内容
+                    看资讯回流
+                  </Link>
+                  <Link href="/community" className="rounded-full border border-white/10 px-5 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-white/20 hover:text-white">
+                    去社区页
                   </Link>
                 </div>
               </>
@@ -127,7 +139,7 @@ export default async function MatchesPage() {
                           {match.title}
                         </Link>
                       </h3>
-                      <p className="mt-3 text-sm leading-7 text-slate-400">{match.summary ?? "赛前看点正在整理中，先锁定对阵和开赛时间。"}</p>
+                      <p className="mt-3 text-sm leading-7 text-slate-400">{match.summary ?? "对阵和开赛时间已经明确，先记下这一场，临近开赛再回来补看点。"}</p>
                       <div className="mt-4 flex flex-wrap gap-2 text-sm text-slate-300">
                         {(match.participantTeamNames.length ? match.participantTeamNames : [match.homeTeamName, match.awayTeamName]).map((teamName) => {
                           const teamId = teamName === match.homeTeamName ? match.homeTeamId : teamName === match.awayTeamName ? match.awayTeamId : null;
@@ -141,6 +153,17 @@ export default async function MatchesPage() {
                             </span>
                           );
                         })}
+                        {match.topicSlug ? (
+                          <Link href={`/community/topics/${match.topicSlug}`} className="rounded-full border border-rose-400/20 bg-rose-400/5 px-3 py-1.5 transition hover:border-rose-300/40 hover:text-white">
+                            #{match.topicTitle}
+                          </Link>
+                        ) : null}
+                      </div>
+                      <div className="mt-4 flex flex-wrap gap-2 text-xs uppercase tracking-[0.18em] text-slate-400">
+                        <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1.5">{(pagesByMatchSlug[match.slug] ?? []).length} 条内容回流</span>
+                        <Link href="/community" className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1.5 transition hover:border-cyan-300/30 hover:text-white">
+                          赛后讨论
+                        </Link>
                       </div>
                     </div>
                     <div className="rounded-full border border-white/10 bg-slate-950/60 px-4 py-2 text-sm font-semibold text-slate-200">{match.format ?? "赛事记录"}</div>
@@ -148,7 +171,7 @@ export default async function MatchesPage() {
                 </article>
               );
             }) : (
-              <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm leading-7 text-slate-400">赛程更新后，这里会第一时间挂出下一场焦点对局。</div>
+              <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm leading-7 text-slate-400">下一场焦点对局确认后，会第一时间出现在这里。</div>
             )}
           </div>
         </article>
@@ -175,11 +198,21 @@ export default async function MatchesPage() {
                     </h3>
                     <div className="mt-3 text-sm text-slate-300">{match.homeTeamName} {match.scoreHome ?? "-"} : {match.scoreAway ?? "-"} {match.awayTeamName}</div>
                     {match.championTeamName ? <div className="mt-3 text-sm text-amber-200">冠军：{match.championTeamId ? <Link href={teamPath(match.championTeamId)} className="transition hover:text-amber-100">{match.championTeamName}</Link> : match.championTeamName}</div> : null}
+                    {match.topicSlug ? <div className="mt-3 text-xs uppercase tracking-[0.18em] text-rose-200">话题主线 #{match.topicTitle}</div> : null}
+                    <div className="mt-3 flex flex-wrap gap-2 text-xs uppercase tracking-[0.18em] text-slate-400">
+                      <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1.5">{(pagesByMatchSlug[match.slug] ?? []).length} 条相关内容</span>
+                      <Link href="/content" className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1.5 transition hover:border-amber-300/30 hover:text-white">
+                        去看战报
+                      </Link>
+                      <Link href="/community" className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1.5 transition hover:border-cyan-300/30 hover:text-white">
+                        去社区讨论
+                      </Link>
+                    </div>
                   </div>
                   <div className="text-xs uppercase tracking-[0.22em] text-slate-500">已完赛</div>
                 </div>
               </article>
-            )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm leading-7 text-slate-400">当前还没有完赛记录。</div>}
+            )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm leading-7 text-slate-400">最近还没有完赛记录，等比赛结束后再回来补看结果。</div>}
           </div>
         </article>
       </section>
@@ -216,7 +249,7 @@ export default async function MatchesPage() {
                     {match.title}
                   </Link>
                 </h2>
-                <p className="mt-3 text-sm leading-7 text-slate-400">{match.summary ?? "这场比赛的战况摘要正在整理中。"}</p>
+                <p className="mt-3 text-sm leading-7 text-slate-400">{match.summary ?? "比分已经收录，想继续了解赛况，可以顺着这场比赛往下看。"}</p>
 
                 <div className="mt-4 flex flex-wrap gap-2 text-sm text-slate-300">
                   {(match.participantTeamNames.length ? match.participantTeamNames : [match.homeTeamName, match.awayTeamName]).map((teamName) => {
@@ -231,6 +264,21 @@ export default async function MatchesPage() {
                       </span>
                     );
                   })}
+                  {match.topicSlug ? (
+                    <Link href={`/community/topics/${match.topicSlug}`} className="rounded-full border border-rose-400/20 bg-rose-400/5 px-3 py-1.5 transition hover:border-rose-300/40 hover:text-white">
+                      #{match.topicTitle}
+                    </Link>
+                  ) : null}
+                </div>
+
+                <div className="mt-4 flex flex-wrap gap-2 text-xs uppercase tracking-[0.18em] text-slate-400">
+                  <span className="rounded-full border border-white/10 bg-ink px-3 py-1.5">{(pagesByMatchSlug[match.slug] ?? []).length} 条相关内容</span>
+                  <Link href={pagesByMatchSlug[match.slug]?.[0] ? `/content/${pagesByMatchSlug[match.slug][0].slug}` : "/content"} className="rounded-full border border-white/10 bg-ink px-3 py-1.5 transition hover:border-accent-cyan/40 hover:text-white">
+                    {(pagesByMatchSlug[match.slug] ?? []).length ? "打开对应战报" : "查看资讯流"}
+                  </Link>
+                  <Link href="/community" className="rounded-full border border-white/10 bg-ink px-3 py-1.5 transition hover:border-accent-cyan/40 hover:text-white">
+                    去社区页
+                  </Link>
                 </div>
               </div>
             </div>

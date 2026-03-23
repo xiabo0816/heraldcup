@@ -10,9 +10,14 @@ export function AdminPlayerRow({
     slug: string;
     steamId: string | null;
     primaryRole: string | null;
+    preferredRoles: string[];
     heroPool: string[];
+    ladderScore: number | null;
+    gameYears: number | null;
+    playStyles: string[];
     highlightMatchIds: string[];
     bio: string | null;
+    gameUnderstanding: string | null;
     active: boolean;
     teamName: string;
   };
@@ -49,9 +54,25 @@ export function AdminPlayerRow({
           <span>位置</span>
           <input name="primaryRole" defaultValue={player.primaryRole ?? ""} className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" />
         </label>
+        <label className="grid gap-2 text-sm text-slate-300">
+          <span>天梯分数</span>
+          <input name="ladderScore" type="number" min="0" defaultValue={player.ladderScore ?? ""} className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" />
+        </label>
+        <label className="grid gap-2 text-sm text-slate-300">
+          <span>游戏年数</span>
+          <input name="gameYears" type="number" min="0" defaultValue={player.gameYears ?? ""} className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" />
+        </label>
+        <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
+          <span>擅长位置</span>
+          <textarea name="preferredRolesText" defaultValue={player.preferredRoles.join(", ")} rows={2} className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" />
+        </label>
         <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
           <span>擅长英雄</span>
           <textarea name="heroPoolText" defaultValue={player.heroPool.join(", ")} rows={3} className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" />
+        </label>
+        <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
+          <span>打法风格</span>
+          <textarea name="playStylesText" defaultValue={player.playStyles.join(", ")} rows={2} className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" />
         </label>
         <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
           <span>高光比赛 ID</span>
@@ -60,6 +81,10 @@ export function AdminPlayerRow({
         <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
           <span>简介</span>
           <textarea name="bio" defaultValue={player.bio ?? ""} rows={3} className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" />
+        </label>
+        <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
+          <span>我的游戏理解</span>
+          <textarea name="gameUnderstanding" defaultValue={player.gameUnderstanding ?? ""} rows={5} className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" />
         </label>
         <label className="flex items-center gap-3 text-sm text-slate-300 md:col-span-2">
           <input type="checkbox" name="active" defaultChecked={player.active} className="h-4 w-4 rounded border-white/10 bg-ink" />

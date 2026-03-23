@@ -34,7 +34,7 @@ export function AdminEntryList({
           ))}
         </div>
         <div className="mt-5 rounded-2xl border border-dashed border-accent-gold/40 bg-accent-gold/5 px-4 py-4 text-sm leading-7 text-slate-300">
-          这里后续会接 Prisma 查询、表单提交和状态流转。当前先保留为资源入口和字段设计页，避免在没有数据库迁移前把 CRUD 逻辑写死。
+          当前页会先承接字段整理和资源梳理，后续再补充更完整的维护流程。
         </div>
         <button type="button" className="mt-5 rounded-full bg-accent-gold px-5 py-3 text-sm font-semibold text-ink">
           {createLabel}

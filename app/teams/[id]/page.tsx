@@ -35,7 +35,8 @@ export default async function TeamDetailPage({ params }: { params: Promise<{ id:
               <TeamMark name={team.name} logoUrl={team.logoUrl} size="lg" />
               <div className="min-w-0 flex-1">
                 <h1 className="text-4xl font-semibold tracking-tight text-white md:text-5xl">{team.name}</h1>
-                <p className="mt-3 text-sm leading-8 text-slate-300 md:text-base">{team.summary ?? team.slogan ?? "这支队伍的故事还在继续，先从阵容、战绩和关键比赛认识他们。"}</p>
+                <p className="mt-3 text-lg font-medium text-amber-100 md:text-xl">{team.slogan ?? "口号待补充"}</p>
+                <p className="mt-3 text-sm leading-8 text-slate-300 md:text-base">{team.summary ?? "先从阵容、战绩和关键比赛认识这支队伍，再顺着他们的赛季轨迹继续看下去。"}</p>
               </div>
             </div>
 
@@ -70,8 +71,8 @@ export default async function TeamDetailPage({ params }: { params: Promise<{ id:
             </div>
 
             <div className="mt-6 rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-              <div className="text-[11px] uppercase tracking-[0.22em] text-slate-500">推荐浏览</div>
-              <p className="mt-3 text-sm leading-7 text-slate-300">先看核心阵容，再翻最近战绩，很快就能知道这支队伍现在的状态。</p>
+              <div className="text-[11px] uppercase tracking-[0.22em] text-slate-500">浏览建议</div>
+              <p className="mt-3 text-sm leading-7 text-slate-300">先看核心阵容，再翻最近战绩，很快就能感受到这支队伍当前的状态和气质。</p>
             </div>
           </article>
         </div>
@@ -97,12 +98,12 @@ export default async function TeamDetailPage({ params }: { params: Promise<{ id:
                     <div className="mt-3 flex flex-wrap gap-2">
                       {member.heroCards.length ? member.heroCards.slice(0, 4).map((hero) => (
                         <HeroChip key={`${member.slug}-${hero.label}`} hero={hero} compact />
-                      )) : <span className="text-sm text-slate-500">暂未维护英雄池</span>}
+                      )) : <span className="text-sm text-slate-500">暂未公开英雄池</span>}
                     </div>
                   </div>
                 </div>
               </Link>
-            )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">这支队伍暂时还没有现役成员。</div>}
+            )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">这支队伍目前还没有公开现役成员名单。</div>}
           </div>
         </article>
 
@@ -127,10 +128,10 @@ export default async function TeamDetailPage({ params }: { params: Promise<{ id:
                 <div className="mt-4 flex flex-wrap gap-2">
                   {member.heroCards.length ? member.heroCards.slice(0, 4).map((hero) => (
                     <HeroChip key={`${member.slug}-${hero.label}`} hero={hero} compact />
-                  )) : <span className="text-sm text-slate-500">暂未维护英雄池</span>}
+                  )) : <span className="text-sm text-slate-500">暂未公开英雄池</span>}
                 </div>
               </Link>
-            )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">这支队伍暂时还没有完整阵容。</div>}
+            )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">这支队伍的完整阵容还没有全部公开。</div>}
           </div>
         </article>
       </section>
@@ -153,9 +154,9 @@ export default async function TeamDetailPage({ params }: { params: Promise<{ id:
               <h3 className="mt-3 text-xl font-semibold text-white">{match.title}</h3>
               <p className="mt-3 text-sm text-slate-400">对手：{match.opponentName}</p>
               <p className="mt-2 text-sm text-slate-300">比分：{match.scoreHome ?? "-"} : {match.scoreAway ?? "-"}</p>
-              <p className="mt-3 text-sm leading-7 text-slate-400">{match.summary ?? "这场对局的战况回顾正在整理中，先看比分与对手。"}</p>
+              <p className="mt-3 text-sm leading-7 text-slate-400">{match.summary ?? "比分和对手已经明确，想补看这支队伍的代表比赛，可以先从这里开始。"}</p>
             </Link>
-          )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">这支队伍暂时还没有关联比赛。</div>}
+          )) : <div className="rounded-[28px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">这支队伍暂时还没有收录相关比赛。</div>}
         </div>
       </section>
     </Shell>

@@ -56,7 +56,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                 {page.title}
               </h1>
 
-              <p className="mt-3 text-sm text-slate-300/90 md:text-base">{page.excerpt ?? "这篇内容的导语正在整理中。"}</p>
+              <p className="mt-3 text-sm text-slate-300/90 md:text-base">{page.excerpt ?? "这是一篇与比赛主线相关的内容，继续往下看就能补完整个故事。"}</p>
             </div>
 
             <div className="flex flex-col items-start gap-2 md:items-end">
@@ -134,7 +134,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                 </article>
 
                 <article className={`rounded-2xl border p-6 backdrop-blur ${theme.secondaryCard}`}>
-                  <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400">入口</div>
+                  <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400">继续浏览</div>
                   <div className="mt-3 flex flex-wrap gap-3">
                     <Link href={`/matches/${page.matchSlug}`} className={`inline-flex rounded-full border px-4 py-2 text-sm font-semibold transition ${theme.secondaryButton}`}>
                       查看赛事详情
@@ -144,6 +144,9 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                         冠军队伍主页
                       </Link>
                     ) : null}
+                    <Link href="/community" className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:border-white/20 hover:text-white">
+                      回到社区页
+                    </Link>
                   </div>
                 </article>
               </div>
@@ -155,6 +158,60 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
           <article className={`rounded-2xl border p-6 whitespace-pre-wrap backdrop-blur ${theme.primaryCard}`}>
             {page.bodyText}
           </article>
+
+          {page.topic ? (
+            <section className="mt-6 grid gap-4 lg:grid-cols-[0.92fr_1.08fr]">
+              <Link href={`/community/topics/${page.topic.slug}`} className="rounded-[24px] border border-cyan-300/20 bg-cyan-300/10 p-5 transition hover:border-cyan-300/40">
+                <div className="text-xs uppercase tracking-[0.22em] text-cyan-100">所属话题</div>
+                <div className="mt-2 text-xl font-semibold text-white">#{page.topic.title}</div>
+                <p className="mt-3 text-sm leading-7 text-slate-300">{page.topic.description ?? "回到这个话题页，还能继续追比赛、内容和招募动态。"}</p>
+              </Link>
+
+              <article className="rounded-[24px] border border-white/10 bg-white/5 p-5">
+                <div className="text-xs uppercase tracking-[0.22em] text-slate-500">同话题延展</div>
+                <div className="mt-4 grid gap-3 md:grid-cols-2">
+                  {page.relatedRecruitments.slice(0, 2).map((post) => (
+                    <Link key={post.id} href={`/community/recruitments/${post.slug}`} className="rounded-[20px] border border-white/10 bg-slate-950/35 p-4 transition hover:border-white/20">
+                      <div className="text-xs uppercase tracking-[0.18em] text-slate-500">{post.teamName}</div>
+                      <div className="mt-2 text-lg font-semibold text-white">{post.title}</div>
+                    </Link>
+                  ))}
+                  {page.relatedTopicPages.slice(0, 2).map((item) => (
+                    <Link key={item.id} href={`/content/${item.slug}`} className="rounded-[20px] border border-white/10 bg-slate-950/35 p-4 transition hover:border-white/20">
+                      <div className="text-xs uppercase tracking-[0.18em] text-slate-500">{pageTypeLabels[item.pageType] ?? item.pageType}</div>
+                      <div className="mt-2 text-lg font-semibold text-white">{item.title}</div>
+                    </Link>
+                  ))}
+                  {page.relatedTopicMatches.slice(0, 2).map((match) => (
+                    <Link key={match.id} href={`/matches/${match.slug}`} className="rounded-[20px] border border-white/10 bg-slate-950/35 p-4 transition hover:border-white/20">
+                      <div className="text-xs uppercase tracking-[0.18em] text-slate-500">{match.status}</div>
+                      <div className="mt-2 text-lg font-semibold text-white">{match.title}</div>
+                    </Link>
+                  ))}
+                </div>
+              </article>
+            </section>
+          ) : null}
+
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            <Link href="/community" className="rounded-[24px] border border-white/10 bg-white/5 p-5 transition hover:border-white/20">
+              <div className="text-xs uppercase tracking-[0.22em] text-slate-500">社区</div>
+              <div className="mt-2 text-xl font-semibold text-white">回到社区页</div>
+              <p className="mt-3 text-sm leading-7 text-slate-400">回到社区继续看公告、话题和招募，别让浏览停在这一页。</p>
+            </Link>
+            {page.matchSlug ? (
+              <Link href={`/matches/${page.matchSlug}`} className="rounded-[24px] border border-white/10 bg-white/5 p-5 transition hover:border-white/20">
+                <div className="text-xs uppercase tracking-[0.22em] text-slate-500">对应比赛</div>
+                <div className="mt-2 text-xl font-semibold text-white">回到比赛详情</div>
+                <p className="mt-3 text-sm leading-7 text-slate-400">回到比分、队伍和相关高光，把这条线补完整。</p>
+              </Link>
+            ) : null}
+            <Link href="/content" className="rounded-[24px] border border-white/10 bg-white/5 p-5 transition hover:border-white/20">
+              <div className="text-xs uppercase tracking-[0.22em] text-slate-500">资讯流</div>
+                <div className="mt-2 text-xl font-semibold text-white">查看更多内容</div>
+              <p className="mt-3 text-sm leading-7 text-slate-400">官方资讯、赛事战报和归档海报已经分层整理好了。</p>
+            </Link>
+          </div>
         </div>
       </section>
     </Shell>

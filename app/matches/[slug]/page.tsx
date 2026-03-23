@@ -115,7 +115,7 @@ function TeamPanel({
               {slogan ?? "待命"}
             </div>
           </div>
-          <p className="mt-3 text-sm leading-7 text-slate-300">{summary ?? "这支队伍暂时还没有维护简介。"}</p>
+          <p className="mt-3 text-sm leading-7 text-slate-300">{summary ?? "这支队伍的介绍暂未公开，先从阵容和比赛表现认识他们。"}</p>
           <div className="mt-3 grid gap-3 text-sm text-slate-300 sm:grid-cols-2">
             <div className="rounded-2xl border border-white/10 bg-slate-950/35 px-4 py-3">教练：{coach ?? "未设置"}</div>
             <div className="rounded-2xl border border-white/10 bg-slate-950/35 px-4 py-3">队长：{captain ?? "未设置"}</div>
@@ -141,7 +141,7 @@ function TeamPanel({
             ))}
           </div>
         ) : (
-          <div className="mt-3 rounded-2xl border border-dashed border-white/10 bg-slate-950/35 p-4 text-sm text-slate-400">这支队伍的成员名单正在补充中。</div>
+          <div className="mt-3 rounded-2xl border border-dashed border-white/10 bg-slate-950/35 p-4 text-sm text-slate-400">这支队伍的成员名单暂未全部公开。</div>
         )}
       </div>
     </article>
@@ -215,6 +215,14 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ sl
             </article>
           </div>
 
+          {match.topic ? (
+            <Link href={`/community/topics/${match.topic.slug}`} className="mt-6 block rounded-[24px] border border-cyan-300/20 bg-cyan-300/10 p-5 transition hover:border-cyan-300/40">
+              <div className="text-xs uppercase tracking-[0.22em] text-cyan-100">所属话题</div>
+              <div className="mt-2 text-2xl font-semibold text-white">#{match.topic.title}</div>
+              <p className="mt-3 text-sm leading-7 text-slate-300">{match.topic.description ?? "回到话题页，还能继续看相关内容、招募动态和赛后讨论。"}</p>
+            </Link>
+          ) : null}
+
           <div className="mt-8 grid gap-3 md:grid-cols-3">
             <div className="flex items-start gap-3 rounded-2xl border border-slate-800 bg-slate-900/40 px-4 py-4 backdrop-blur">
               <div className={`grid h-10 w-10 place-items-center rounded-full border ${theme.infoIcon}`}>
@@ -245,7 +253,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ sl
               <div className="min-w-0 flex-1">
                 <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400">{isFinished ? "冠军结果" : "直播 / 解说"}</div>
                 <div className="mt-1 break-all text-sm text-slate-100">{isFinished ? (match.championTeamName ?? "冠军待定") : (match.streamUrl ?? "暂未设置")}</div>
-                {championPage ? <div className="mt-1 text-xs text-slate-300">已关联冠军海报</div> : <div className="mt-1 text-xs text-slate-300">冠军海报正在筹备中</div>}
+                {championPage ? <div className="mt-1 text-xs text-slate-300">已关联冠军页</div> : <div className="mt-1 text-xs text-slate-300">冠军页稍后上线</div>}
               </div>
             </div>
           </div>
@@ -269,7 +277,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ sl
                   <div className="rounded-2xl border border-amber-400/30 bg-amber-400/10 px-5 py-5 text-center">
                     <div className="text-[11px] uppercase tracking-[0.18em] text-amber-200">冠军战队</div>
                     <div className={`mt-2 text-3xl font-extrabold uppercase tracking-[0.18em] ${theme.trophyText}`}>{match.championTeamName ?? "冠军待定"}</div>
-                    <div className="mt-2 text-sm text-slate-300">{(match.scoreHome !== null || match.scoreAway !== null) ? `最终比分 ${match.scoreHome ?? "-"} : ${match.scoreAway ?? "-"}` : "最终比分待补充"}</div>
+                    <div className="mt-2 text-sm text-slate-300">{(match.scoreHome !== null || match.scoreAway !== null) ? `最终比分 ${match.scoreHome ?? "-"} : ${match.scoreAway ?? "-"}` : "最终比分稍后公布"}</div>
                   </div>
 
                   <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
@@ -290,29 +298,29 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ sl
                 <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
                   <div className="rounded-xl border border-slate-800 bg-slate-900/40 px-3 py-5 text-center">
                     <div className="text-lg font-extrabold tracking-[0.14em] uppercase text-slate-100">{match.homeTeamName ?? "待定"}</div>
-                    <div className="mt-2 text-xs text-slate-400">{match.homeTeamSlogan ?? "尚未设置队伍口号"}</div>
+                    <div className="mt-2 text-xs text-slate-400">{match.homeTeamSlogan ?? "为今晚这场比赛全力以赴"}</div>
                   </div>
                   <div className="grid h-14 w-14 place-items-center rounded-full bg-[radial-gradient(circle_at_30%_0%,#fff7ed,#f59e0b)] text-slate-950 font-extrabold tracking-[0.18em] ring-4 ring-slate-950/60 shadow-lg shadow-amber-500/30">
                     VS
                   </div>
                   <div className="rounded-xl border border-slate-800 bg-slate-900/40 px-3 py-5 text-center">
                     <div className="text-lg font-extrabold tracking-[0.14em] uppercase text-slate-100">{match.awayTeamName ?? "待定"}</div>
-                    <div className="mt-2 text-xs text-slate-400">{match.awayTeamSlogan ?? "尚未设置队伍口号"}</div>
+                    <div className="mt-2 text-xs text-slate-400">{match.awayTeamSlogan ?? "目标只有赢下这一场"}</div>
                   </div>
                 </div>
               )}
 
-              <p className="mt-5 text-sm leading-7 text-slate-300">{match.summary ?? "这场比赛暂时还没有补充摘要。"}</p>
+              <p className="mt-5 text-sm leading-7 text-slate-300">{match.summary ?? "这场比赛的关键看点会围绕比分、对阵和赛后内容持续展开。"}</p>
             </article>
 
             <article className={`rounded-2xl border p-6 backdrop-blur ${theme.secondaryCard}`}>
-              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400">{isFinished ? "恭喜组件" : "相关入口"}</div>
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400">{isFinished ? "冠军入口" : "继续浏览"}</div>
               <div className="mt-3 space-y-3 text-sm text-slate-200">
                 {isFinished && match.championTeamName ? (
                   <div className="rounded-2xl border border-amber-400/30 bg-amber-400/10 px-4 py-4">
                     <div className="text-[11px] uppercase tracking-[0.18em] text-amber-200">恭喜</div>
                     <div className={`mt-2 text-xl font-bold ${theme.trophyText}`}>{match.championTeamName} 夺冠</div>
-                    <div className="mt-2 text-sm text-slate-300">这场比赛已经结束，现在主入口应该是赛果与恭喜海报。</div>
+                    <div className="mt-2 text-sm text-slate-300">比赛已经结束，接下来最值得回看的就是赛果、冠军页和赛后内容。</div>
                   </div>
                 ) : null}
                 {match.homeTeamId ? (
@@ -330,6 +338,9 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ sl
                     {isFinished ? "进入恭喜海报" : "查看恭喜海报"}
                   </Link>
                 ) : null}
+                <Link href="/community" className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:border-white/20 hover:text-white">
+                  去社区讨论
+                </Link>
               </div>
 
               {match.championTeamName ? (
@@ -392,7 +403,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ sl
                 </Link>
               ))
             ) : (
-              <div className="rounded-3xl border border-dashed border-white/10 bg-white/5 p-4 text-sm text-slate-400">这场比赛暂时还没有关联选手。</div>
+              <div className="rounded-3xl border border-dashed border-white/10 bg-white/5 p-4 text-sm text-slate-400">这场比赛暂时还没有公开焦点选手。</div>
             )}
           </div>
         </article>
@@ -405,15 +416,47 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ sl
                 <Link key={page.slug} href={`/content/${page.slug}`} className="block rounded-3xl border border-white/10 bg-white/5 p-4 transition hover:border-white/20">
                   <div className="text-xs uppercase tracking-[0.22em] text-slate-500">{pageTypeLabels[page.pageType] ?? page.pageType}</div>
                   <div className="mt-2 text-lg font-semibold text-white">{page.title}</div>
-                  <p className="mt-2 text-sm leading-7 text-slate-400">{page.excerpt ?? "这篇内容的导语正在整理中，点进去看完整内容。"}</p>
+                  <p className="mt-2 text-sm leading-7 text-slate-400">{page.excerpt ?? "点进这条内容，继续补完整场比赛的上下文。"}</p>
                 </Link>
               ))
             ) : (
-              <div className="rounded-3xl border border-dashed border-white/10 bg-white/5 p-4 text-sm text-slate-400">这场比赛暂时还没有关联海报或战报。</div>
+              <div className="rounded-3xl border border-dashed border-white/10 bg-white/5 p-4 text-sm text-slate-400">这场比赛暂时还没有关联海报或战报内容。</div>
             )}
           </div>
         </article>
       </section>
+
+      {(match.relatedRecruitments.length || match.topicContentPages.length) ? (
+        <section className="mt-6 grid gap-6 lg:grid-cols-2">
+          <article className={`rounded-[28px] border p-6 shadow-glow backdrop-blur ${theme.panelBorder} ${theme.panelBackground}`}>
+            <div className={`text-xs uppercase tracking-[0.24em] ${theme.accentText}`}>相关招募</div>
+            <h2 className="mt-2 text-3xl font-semibold text-white">围绕这场比赛的招募动态</h2>
+            <div className="mt-6 space-y-3">
+              {match.relatedRecruitments.length ? match.relatedRecruitments.map((post) => (
+                <Link key={post.id} href={`/community/recruitments/${post.slug}`} className="block rounded-3xl border border-white/10 bg-white/5 p-4 transition hover:border-white/20">
+                  <div className="text-xs uppercase tracking-[0.22em] text-slate-500">{post.teamName} · {post.status}</div>
+                  <div className="mt-2 text-lg font-semibold text-white">{post.title}</div>
+                  <p className="mt-2 text-sm leading-7 text-slate-400">{post.excerpt ?? "点开这条招募，继续看看队伍现在缺什么位置。"}</p>
+                </Link>
+              )) : <div className="rounded-3xl border border-dashed border-white/10 bg-white/5 p-4 text-sm text-slate-400">目前还没有与这场比赛相关的招募信息。</div>}
+            </div>
+          </article>
+
+          <article className={`rounded-[28px] border p-6 shadow-glow backdrop-blur ${theme.panelBorder} ${theme.panelBackground}`}>
+            <div className={`text-xs uppercase tracking-[0.24em] ${theme.accentText}`}>话题延展</div>
+            <h2 className="mt-2 text-3xl font-semibold text-white">顺着同一话题继续往下看</h2>
+            <div className="mt-6 space-y-3">
+              {match.topicContentPages.length ? match.topicContentPages.slice(0, 3).map((page) => (
+                <Link key={page.slug} href={`/content/${page.slug}`} className="block rounded-3xl border border-white/10 bg-white/5 p-4 transition hover:border-white/20">
+                  <div className="text-xs uppercase tracking-[0.22em] text-slate-500">{pageTypeLabels[page.pageType] ?? page.pageType}</div>
+                  <div className="mt-2 text-lg font-semibold text-white">{page.title}</div>
+                  <p className="mt-2 text-sm leading-7 text-slate-400">{page.excerpt ?? "点开继续看这条话题线上的延展内容。"}</p>
+                </Link>
+              )) : <div className="rounded-3xl border border-dashed border-white/10 bg-white/5 p-4 text-sm text-slate-400">这条话题线目前还没有更多延展内容。</div>}
+            </div>
+          </article>
+        </section>
+      ) : null}
 
       <section className="mt-6 grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
         <article className={`rounded-[28px] border p-6 shadow-glow backdrop-blur ${theme.panelBorder} ${theme.panelBackground}`}>
@@ -427,9 +470,9 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ sl
                   {highlight.playerName ? <div className="text-sm font-semibold text-slate-200">{highlight.playerName}</div> : null}
                 </div>
                 <h3 className="mt-3 text-xl font-semibold text-white">{highlight.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-400">{highlight.description ?? "高光解说正在补充中，精彩瞬间先收在这里。"}</p>
+                <p className="mt-3 text-sm leading-7 text-slate-400">{highlight.description ?? "这一幕值得记住，等你回来时也能迅速找到它。"}</p>
               </article>
-            )) : <div className="rounded-[24px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">这场比赛还没有录入高光节点。</div>}
+            )) : <div className="rounded-[24px] border border-dashed border-white/10 bg-white/5 p-6 text-sm text-slate-400">这场比赛暂时还没有收录高光片段。</div>}
           </div>
         </article>
 
@@ -437,6 +480,11 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ sl
           <div className={`text-xs uppercase tracking-[0.24em] ${theme.accentText}`}>继续浏览</div>
           <h2 className="mt-2 text-3xl font-semibold text-white">顺着比赛继续往下走</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
+            <Link href="/community" className="rounded-[24px] border border-white/10 bg-white/5 p-5 transition hover:border-white/20">
+              <div className="text-xs uppercase tracking-[0.22em] text-slate-500">社区页</div>
+              <div className="mt-2 text-xl font-semibold text-white">赛后讨论与社区入口</div>
+              <p className="mt-3 text-sm leading-7 text-slate-400">看公告、热区和招募，不让比赛详情页成为浏览终点。</p>
+            </Link>
             {match.homeTeamId ? (
               <Link href={teamPath(match.homeTeamId)} className="rounded-[24px] border border-white/10 bg-white/5 p-5 transition hover:border-white/20">
                 <div className="text-xs uppercase tracking-[0.22em] text-slate-500">主队</div>
@@ -455,14 +503,14 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ sl
               <Link href={`/content/${relatedPages[0].slug}`} className="rounded-[24px] border border-white/10 bg-white/5 p-5 transition hover:border-white/20">
                 <div className="text-xs uppercase tracking-[0.22em] text-slate-500">内容页</div>
                 <div className="mt-2 text-xl font-semibold text-white">{relatedPages[0].title}</div>
-                <p className="mt-3 text-sm leading-7 text-slate-400">继续看海报、快报或战报，把这场比赛补完整。</p>
+                <p className="mt-3 text-sm leading-7 text-slate-400">继续看海报、快报或战报，把这场比赛的故事补完整。</p>
               </Link>
             ) : null}
             {championPage ? (
               <Link href={`/content/${championPage.slug}`} className="rounded-[24px] border border-white/10 bg-white/5 p-5 transition hover:border-white/20">
                 <div className="text-xs uppercase tracking-[0.22em] text-slate-500">冠军页</div>
                 <div className="mt-2 text-xl font-semibold text-white">{championPage.title}</div>
-                <p className="mt-3 text-sm leading-7 text-slate-400">比赛结束后，这里就是最该回看的庆祝页。</p>
+                <p className="mt-3 text-sm leading-7 text-slate-400">比赛结束后，最值得回看的庆祝内容会在这里展开。</p>
               </Link>
             ) : null}
           </div>

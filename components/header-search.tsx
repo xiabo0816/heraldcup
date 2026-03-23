@@ -3,21 +3,40 @@
 import Link from "next/link";
 import { useDeferredValue, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
-import { FileText, Search, Shield, Swords, User, X } from "lucide-react";
+import { Bell, CalendarDays, FileText, Hash, Search, Shield, Swords, User, Users, X } from "lucide-react";
 import type { SiteSearchItem } from "@/lib/queries";
 
 const typeLabels: Record<SiteSearchItem["type"], string> = {
   player: "选手",
   team: "战队",
   match: "比赛",
-  content: "内容"
+  content: "内容",
+  announcement: "公告",
+  topic: "话题",
+  recruitment: "招募",
+  event: "活动"
 };
 
 const typeIcons: Record<SiteSearchItem["type"], typeof User> = {
   player: User,
   team: Shield,
   match: Swords,
-  content: FileText
+  content: FileText,
+  announcement: Bell,
+  topic: Hash,
+  recruitment: Users,
+  event: CalendarDays
+};
+
+const typeBadgeClassNames: Record<SiteSearchItem["type"], string> = {
+  player: "border-cyan-300/20 bg-cyan-300/10 text-cyan-100",
+  team: "border-cyan-300/20 bg-cyan-300/10 text-cyan-100",
+  match: "border-amber-300/20 bg-amber-300/10 text-amber-100",
+  content: "border-cyan-300/20 bg-cyan-300/10 text-cyan-100",
+  announcement: "border-emerald-300/20 bg-emerald-300/10 text-emerald-100",
+  topic: "border-rose-300/20 bg-rose-300/10 text-rose-100",
+  recruitment: "border-sky-300/20 bg-sky-300/10 text-sky-100",
+  event: "border-amber-300/20 bg-amber-300/10 text-amber-100"
 };
 
 function normalizeText(value: string) {
@@ -70,11 +89,10 @@ export function HeaderSearch({ items }: { items: SiteSearchItem[] }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-slate-300 transition hover:border-cyan-300/40 hover:bg-white/[0.04] hover:text-white"
+        aria-label="打开站内搜索"
+        className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-300 transition hover:border-cyan-300/40 hover:bg-white/[0.04] hover:text-white"
       >
         <Search className="h-4 w-4" />
-        <span className="hidden md:inline">搜索选手、战队、比赛</span>
-        <span className="hidden rounded-md border border-white/10 px-2 py-0.5 text-[11px] uppercase tracking-[0.18em] text-slate-500 md:inline">⌘K</span>
       </button>
 
       {open ? (
@@ -89,7 +107,7 @@ export function HeaderSearch({ items }: { items: SiteSearchItem[] }) {
                 ref={inputRef}
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="搜索选手、战队、比赛、战报"
+                placeholder="搜索选手、战队、比赛、公告、话题、招募"
                 className="flex-1 bg-transparent text-sm text-white outline-none placeholder:text-slate-500"
               />
               <button
@@ -108,6 +126,10 @@ export function HeaderSearch({ items }: { items: SiteSearchItem[] }) {
                 <span className="rounded-full border border-white/10 px-2 py-1">战队</span>
                 <span className="rounded-full border border-white/10 px-2 py-1">比赛</span>
                 <span className="rounded-full border border-white/10 px-2 py-1">内容</span>
+                <span className="rounded-full border border-white/10 px-2 py-1">公告</span>
+                <span className="rounded-full border border-white/10 px-2 py-1">话题</span>
+                <span className="rounded-full border border-white/10 px-2 py-1">招募</span>
+                <span className="rounded-full border border-white/10 px-2 py-1">活动</span>
               </div>
 
               <div className="space-y-2 pb-4">
@@ -129,7 +151,7 @@ export function HeaderSearch({ items }: { items: SiteSearchItem[] }) {
                           <div className="truncate text-sm font-semibold text-white">{item.title}</div>
                           <span className={clsx(
                             "rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.18em]",
-                            item.type === "match" ? "border-amber-300/20 bg-amber-300/10 text-amber-100" : "border-cyan-300/20 bg-cyan-300/10 text-cyan-100"
+                            typeBadgeClassNames[item.type]
                           )}>
                             {typeLabels[item.type]}
                           </span>
@@ -140,7 +162,7 @@ export function HeaderSearch({ items }: { items: SiteSearchItem[] }) {
                   );
                 }) : (
                   <div className="rounded-[20px] border border-dashed border-white/10 bg-white/5 px-4 py-5 text-sm text-slate-400">
-                    没有匹配结果，换个队名、选手名或比赛标题试试。
+                    没有匹配结果，换个队名、选手名、比赛标题或社区话题试试。
                   </div>
                 )}
               </div>

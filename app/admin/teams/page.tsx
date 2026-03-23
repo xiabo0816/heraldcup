@@ -18,7 +18,7 @@ export default async function AdminTeamsPage() {
               <div className="text-xs uppercase tracking-[0.28em] text-accent-cyan">Admin Resource</div>
               <h1 className="mt-2 text-3xl font-semibold text-white">队伍管理</h1>
               <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">
-                这里展示的是当前队伍池。slogan 会作为前台海报与焦点比赛文案的一部分参与渲染。
+                在这里维护当前队伍资料。口号、介绍和队徽会直接影响前台海报与焦点比赛展示。
               </p>
             </div>
             <Link href="/admin" className="rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-slate-100">

@@ -17,9 +17,14 @@ export async function createPlayerAction(_: PlayerFormState, formData: FormData)
     slug: formData.get("slug"),
     steamId: formData.get("steamId"),
     primaryRole: formData.get("primaryRole"),
+    preferredRolesText: formData.get("preferredRolesText"),
     heroPoolText: formData.get("heroPoolText"),
+    ladderScore: formData.get("ladderScore"),
+    gameYears: formData.get("gameYears"),
+    playStylesText: formData.get("playStylesText"),
     highlightMatchIdsText: formData.get("highlightMatchIdsText"),
     bio: formData.get("bio"),
+    gameUnderstanding: formData.get("gameUnderstanding"),
     active: formData.get("active")
   });
 
@@ -37,9 +42,14 @@ export async function createPlayerAction(_: PlayerFormState, formData: FormData)
         slug: payload.data.slug,
         steamId: payload.data.steamId || null,
         primaryRole: payload.data.primaryRole || null,
+        preferredRoles: payload.data.preferredRolesText,
         heroPool: payload.data.heroPoolText,
+        ladderScore: payload.data.ladderScore ?? null,
+        gameYears: payload.data.gameYears ?? null,
+        playStyles: payload.data.playStylesText,
         highlightMatchIds: payload.data.highlightMatchIdsText,
         bio: payload.data.bio || null,
+        gameUnderstanding: payload.data.gameUnderstanding || null,
         active: payload.data.active
       }
     });
@@ -72,9 +82,14 @@ export async function updatePlayerAction(formData: FormData) {
     slug: formData.get("slug"),
     steamId: formData.get("steamId"),
     primaryRole: formData.get("primaryRole"),
+    preferredRolesText: formData.get("preferredRolesText"),
     heroPoolText: formData.get("heroPoolText"),
+    ladderScore: formData.get("ladderScore"),
+    gameYears: formData.get("gameYears"),
+    playStylesText: formData.get("playStylesText"),
     highlightMatchIdsText: formData.get("highlightMatchIdsText"),
     bio: formData.get("bio"),
+    gameUnderstanding: formData.get("gameUnderstanding"),
     active: formData.get("active")
   });
 
@@ -89,9 +104,14 @@ export async function updatePlayerAction(formData: FormData) {
       slug: payload.data.slug,
       steamId: payload.data.steamId || null,
       primaryRole: payload.data.primaryRole || null,
+      preferredRoles: payload.data.preferredRolesText,
       heroPool: payload.data.heroPoolText,
+      ladderScore: payload.data.ladderScore ?? null,
+      gameYears: payload.data.gameYears ?? null,
+      playStyles: payload.data.playStylesText,
       highlightMatchIds: payload.data.highlightMatchIdsText,
       bio: payload.data.bio || null,
+      gameUnderstanding: payload.data.gameUnderstanding || null,
       active: payload.data.active
     }
   });

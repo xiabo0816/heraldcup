@@ -8,10 +8,12 @@ const matchStatuses = ["DRAFT", "SCHEDULED", "LIVE", "FINISHED", "ARCHIVED"] as 
 
 export function AdminMatchForm({
   seasons,
-  teams
+  teams,
+  topics
 }: {
   seasons: Array<{ id: string; title: string }>;
   teams: Array<{ id: string; name: string }>;
+  topics: Array<{ id: string; title: string }>;
 }) {
   const [state, formAction, pending] = useActionState(createMatchAction, initialMatchFormState);
 
@@ -19,7 +21,7 @@ export function AdminMatchForm({
     <form action={formAction} className="rounded-[28px] border border-white/10 bg-panel/80 p-6 shadow-glow backdrop-blur">
       <div className="text-xs uppercase tracking-[0.28em] text-accent-cyan">Create Match</div>
       <h2 className="mt-2 text-2xl font-semibold text-white">新增比赛</h2>
-      <p className="mt-3 text-sm leading-7 text-slate-400">比赛 slug 会直接被选手高光比赛 ID 和后续内容页复用。</p>
+      <p className="mt-3 text-sm leading-7 text-slate-400">比赛 slug 会被选手代表作、内容页和话题内容反复引用，建议一次命名清楚。</p>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <label className="grid gap-2 text-sm text-slate-300">
@@ -81,6 +83,17 @@ export function AdminMatchForm({
         <label className="grid gap-2 text-sm text-slate-300">
           <span>客队比分</span>
           <input name="scoreAway" type="number" min="0" className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" />
+        </label>
+        <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
+          <span>关联话题</span>
+          <select name="topicId" className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none">
+            <option value="">暂不关联话题</option>
+            {topics.map((topic) => (
+              <option key={topic.id} value={topic.id}>
+                {topic.title}
+              </option>
+            ))}
+          </select>
         </label>
         <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
           <span>所属赛季</span>
