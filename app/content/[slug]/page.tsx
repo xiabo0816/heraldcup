@@ -178,7 +178,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                   ))}
                   {page.relatedTopicPages.slice(0, 2).map((item) => (
                     <Link key={item.id} href={`/content/${item.slug}`} className="rounded-[20px] border border-white/10 bg-slate-950/35 p-4 transition hover:border-white/20">
-                      <div className="text-xs uppercase tracking-[0.18em] text-slate-500">{pageTypeLabels[item.pageType] ?? item.pageType}</div>
+                      <div className="text-xs uppercase tracking-[0.18em] text-slate-500">{pageTypeLabels[item.pageType ?? "custom"] ?? item.pageType ?? "内容页"}</div>
                       <div className="mt-2 text-lg font-semibold text-white">{item.title}</div>
                     </Link>
                   ))}

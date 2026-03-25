@@ -1,5 +1,11 @@
-import { PrismaClient, MatchStatus, TournamentKind } from "@prisma/client";
+import { MatchStatus, PrismaClient, TournamentKind } from "@prisma/client";
 import { historicalTournamentData } from "./historical-data";
+import {
+  ensureSeasonTeams,
+  inferBestOf,
+  inferHeadToHeadResults,
+  upsertStructuredMatch
+} from "./match-structure";
 
 const prisma = new PrismaClient();
 
@@ -28,6 +34,15 @@ async function main() {
     });
 
     for (const seasonData of item.seasons) {
+      const existingSeason = await prisma.tournamentSeason.findUnique({
+        where: { slug: seasonData.slug },
+        select: { id: true }
+      });
+
+      if (existingSeason) {
+        continue;
+      }
+
       const season = await prisma.tournamentSeason.upsert({
         where: { slug: seasonData.slug },
         update: {
@@ -55,48 +70,66 @@ async function main() {
           where: { slug: teamData.slug },
           update: {
             name: teamData.name,
-            slogan: teamData.slogan,
-            seasonId: season.id
+            slogan: teamData.slogan
           },
           create: {
             name: teamData.name,
             slug: teamData.slug,
-            slogan: teamData.slogan,
-            seasonId: season.id
+            slogan: teamData.slogan
           }
         });
 
         teamIdBySlug.set(teamData.slug, team.id);
       }
 
+      const seasonTeamIds = await ensureSeasonTeams(
+        prisma,
+        season.id,
+        [...teamIdBySlug.values()].map((teamId) => ({ id: teamId }))
+      );
+
       for (const matchData of seasonData.matches) {
-        await prisma.match.upsert({
-          where: { slug: matchData.slug },
-          update: {
-            title: matchData.title,
-            format: matchData.format,
-            status: toMatchStatus(matchData.status),
-            participantTeamNames: [matchData.homeTeamSlug, matchData.awayTeamSlug],
-            homeTeamId: teamIdBySlug.get(matchData.homeTeamSlug),
-            awayTeamId: teamIdBySlug.get(matchData.awayTeamSlug),
-            scoreHome: matchData.scoreHome,
-            scoreAway: matchData.scoreAway,
-            summary: matchData.summary,
-            seasonId: season.id
-          },
-          create: {
-            title: matchData.title,
-            slug: matchData.slug,
-            format: matchData.format,
-            status: toMatchStatus(matchData.status),
-            participantTeamNames: [matchData.homeTeamSlug, matchData.awayTeamSlug],
-            homeTeamId: teamIdBySlug.get(matchData.homeTeamSlug),
-            awayTeamId: teamIdBySlug.get(matchData.awayTeamSlug),
-            scoreHome: matchData.scoreHome,
-            scoreAway: matchData.scoreAway,
-            summary: matchData.summary,
-            seasonId: season.id
-          }
+        const homeTeamId = teamIdBySlug.get(matchData.homeTeamSlug);
+        const awayTeamId = teamIdBySlug.get(matchData.awayTeamSlug);
+
+        if (!homeTeamId || !awayTeamId) {
+          continue;
+        }
+
+        const result = inferHeadToHeadResults(matchData.scoreHome, matchData.scoreAway);
+        const winnerTeamId = result.winnerIndex === 0 ? homeTeamId : result.winnerIndex === 1 ? awayTeamId : null;
+
+        await upsertStructuredMatch(prisma, {
+          title: matchData.title,
+          slug: matchData.slug,
+          format: matchData.format,
+          bestOf: inferBestOf(matchData.format),
+          status: toMatchStatus(matchData.status),
+          summary: matchData.summary,
+          seasonId: season.id,
+          winnerTeamId,
+          participants: [
+            {
+              teamId: homeTeamId,
+              seasonTeamId: seasonTeamIds.get(homeTeamId) ?? null,
+              slotNumber: 1,
+              sideLabel: "A",
+              score: matchData.scoreHome,
+              rank: result.winnerIndex === null ? null : result.winnerIndex === 0 ? 1 : 2,
+              result: result.first,
+              isWinner: result.winnerIndex === 0
+            },
+            {
+              teamId: awayTeamId,
+              seasonTeamId: seasonTeamIds.get(awayTeamId) ?? null,
+              slotNumber: 2,
+              sideLabel: "B",
+              score: matchData.scoreAway,
+              rank: result.winnerIndex === null ? null : result.winnerIndex === 1 ? 1 : 2,
+              result: result.second,
+              isWinner: result.winnerIndex === 1
+            }
+          ]
         });
       }
     }

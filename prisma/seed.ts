@@ -1,4 +1,10 @@
-import { PrismaClient, TournamentKind, MatchStatus } from "@prisma/client";
+import { MatchParticipantResult, MatchStageType, MatchStatus, PrismaClient, TournamentKind } from "@prisma/client";
+import {
+  ensureSeasonTeams,
+  inferBestOf,
+  upsertMatchStage,
+  upsertStructuredMatch
+} from "./match-structure";
 
 const prisma = new PrismaClient();
 
@@ -60,7 +66,6 @@ async function main() {
     where: { slug: "patient" },
     update: {},
     create: {
-      seasonId: season.id,
       name: "患者",
       slug: "patient",
       slogan: "绝活儿守高地",
@@ -74,7 +79,6 @@ async function main() {
     where: { slug: "no-overtime" },
     update: {},
     create: {
-      seasonId: season.id,
       name: "今晚不加班",
       slug: "no-overtime",
       slogan: "兄弟们再冲一次",
@@ -100,6 +104,8 @@ async function main() {
       isCurrent: true
     }
   });
+
+  const seasonTeamIds = await ensureSeasonTeams(prisma, season.id, [teamA, teamB]);
 
   await prisma.teamMember.upsert({
     where: {
@@ -168,22 +174,42 @@ async function main() {
     })
   ]);
 
-  const match = await prisma.match.upsert({
-    where: { slug: "pioneer-cup-s11-final" },
-    update: {
-      topicId: tonightFocusTopic.id
-    },
-    create: {
-      seasonId: season.id,
-      topicId: tonightFocusTopic.id,
-      title: "第十一届先锋杯总决赛",
-      slug: "pioneer-cup-s11-final",
-      format: "BO3",
-      status: MatchStatus.SCHEDULED,
-      homeTeamId: teamA.id,
-      awayTeamId: teamB.id,
-      summary: "从旧海报迁移而来的默认总决赛数据。"
-    }
+  const finalStage = await upsertMatchStage(prisma, {
+    seasonId: season.id,
+    name: "总决赛",
+    slug: "final",
+    stageType: MatchStageType.FINAL,
+    sortOrder: 10,
+    bestOf: 3,
+    advanceRule: "两支队伍直接进行 BO3"
+  });
+
+  const match = await upsertStructuredMatch(prisma, {
+    seasonId: season.id,
+    stageId: finalStage.id,
+    topicId: tonightFocusTopic.id,
+    title: "第十一届先锋杯总决赛",
+    slug: "pioneer-cup-s11-final",
+    format: "BO3",
+    bestOf: inferBestOf("BO3"),
+    status: MatchStatus.SCHEDULED,
+    summary: "从旧海报迁移而来的默认总决赛数据。",
+    participants: [
+      {
+        teamId: teamA.id,
+        seasonTeamId: seasonTeamIds.get(teamA.id) ?? null,
+        slotNumber: 1,
+        sideLabel: "A",
+        result: MatchParticipantResult.PENDING
+      },
+      {
+        teamId: teamB.id,
+        seasonTeamId: seasonTeamIds.get(teamB.id) ?? null,
+        slotNumber: 2,
+        sideLabel: "B",
+        result: MatchParticipantResult.PENDING
+      }
+    ]
   });
 
   await prisma.contentPage.upsert({

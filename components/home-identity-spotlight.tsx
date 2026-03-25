@@ -29,6 +29,8 @@ type SpotlightMatch = {
   title: string;
   status: string;
   scheduledAt: Date | string | null;
+  participantTeamNames: string[];
+  participantTeamIds: string[];
   homeTeamName: string;
   homeTeamId: string | null;
   homeTeamSlug: string | null;
@@ -58,6 +60,11 @@ function sortMatchesByUpcoming(matches: SpotlightMatch[]) {
   });
 }
 
+function formatMatchLabel(match: SpotlightMatch) {
+  const names = match.participantTeamNames.length ? match.participantTeamNames : [match.homeTeamName, match.awayTeamName].filter(Boolean);
+  return names.length <= 2 ? names.join(" vs ") : names.join(" / ");
+}
+
 export function HomeIdentitySpotlight({
   players,
   teams,
@@ -77,7 +84,7 @@ export function HomeIdentitySpotlight({
   const currentPlayer = binding ? players.find((player) => player.id === binding.playerId || player.slug === binding.playerSlug) ?? null : null;
   const currentTeam = currentPlayer?.teamId ? teams.find((team) => team.id === currentPlayer.teamId) ?? null : null;
   const myMatches = currentPlayer?.teamId
-    ? sortMatchesByUpcoming(matches.filter((match) => match.homeTeamId === currentPlayer.teamId || match.awayTeamId === currentPlayer.teamId)).slice(0, 2)
+    ? sortMatchesByUpcoming(matches.filter((match) => match.participantTeamIds.includes(currentPlayer.teamId!))).slice(0, 2)
     : [];
   const nextMyMatch = myMatches.find((match) => match.status !== "FINISHED" && match.status !== "CANCELLED") ?? myMatches[0] ?? null;
 
@@ -140,7 +147,7 @@ export function HomeIdentitySpotlight({
               {nextMyMatch.status}
             </div>
           </div>
-          <div className="mt-2 text-sm text-slate-300">{nextMyMatch.homeTeamName} vs {nextMyMatch.awayTeamName}</div>
+          <div className="mt-2 text-sm text-slate-300">{formatMatchLabel(nextMyMatch)}</div>
           <div className="mt-1 text-sm text-slate-400">{formatScheduledAt(nextMyMatch.scheduledAt)}</div>
         </Link>
       ) : null}
@@ -181,7 +188,7 @@ export function HomeIdentitySpotlight({
                   <div className="text-sm font-semibold text-white">{match.title}</div>
                   <div className="text-xs uppercase tracking-[0.18em] text-amber-200">{match.status}</div>
                 </div>
-                <div className="mt-2 text-sm text-slate-300">{match.homeTeamName} vs {match.awayTeamName}</div>
+                <div className="mt-2 text-sm text-slate-300">{formatMatchLabel(match)}</div>
                 <div className="mt-1 text-sm text-slate-400">{formatScheduledAt(match.scheduledAt)}</div>
               </Link>
             ))}

@@ -64,7 +64,7 @@ export default async function TeamDetailPage({ params }: { params: Promise<{ id:
             <div className="text-xs uppercase tracking-[0.24em] text-amber-200">队伍画像</div>
             <div className="mt-4 space-y-4 text-sm leading-7 text-slate-300">
               <p>赛事：{team.tournamentName ?? "社区赛事"}</p>
-              <p>所属赛季：{team.seasonTitle ?? "未绑定赛季"}</p>
+              <p>最近参赛赛季：{team.seasonTitle ?? "暂未关联赛季"}</p>
               <p>口号：{team.slogan ?? "尚未设置队伍口号"}</p>
               <p>教练：{team.coach ?? "未设置"}</p>
               <p>队长：{team.captain ?? "未设置"}</p>

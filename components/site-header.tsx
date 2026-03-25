@@ -17,6 +17,8 @@ const links = [
   { href: "/heroes", label: "英雄", icon: Sparkles }
 ];
 
+const EMPTY_LINES: string[] = [];
+
 function isActivePath(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -58,7 +60,9 @@ export function SiteHeader({ searchItems }: { searchItems: SiteSearchItem[] }) {
   }, []);
 
   useEffect(() => {
-    if (!binding?.steamId) {
+    const steamId = binding?.steamId ?? null;
+
+    if (!steamId) {
       setTopHero(null);
       return;
     }
@@ -67,7 +71,7 @@ export function SiteHeader({ searchItems }: { searchItems: SiteSearchItem[] }) {
 
     async function loadTopHero() {
       try {
-        const response = await fetch(`/api/my/opendota?steamId=${encodeURIComponent(binding.steamId ?? "")}`, {
+        const response = await fetch(`/api/my/opendota?steamId=${encodeURIComponent(String(steamId))}`, {
           cache: "no-store",
           signal: controller.signal
         });
@@ -79,7 +83,7 @@ export function SiteHeader({ searchItems }: { searchItems: SiteSearchItem[] }) {
 
         const payload = await response.json() as HeaderTopHeroResponse;
         setTopHero(payload.topHeroes?.[0] ?? null);
-      } catch (error) {
+      } catch {
         if (controller.signal.aborted) {
           return;
         }
@@ -100,17 +104,20 @@ export function SiteHeader({ searchItems }: { searchItems: SiteSearchItem[] }) {
     }
 
     const controller = new AbortController();
+    const heroId = String(topHero.heroId);
+    const heroName = topHero.heroName;
+    const heroGames = String(topHero.games);
 
     async function loadHeroLines() {
       try {
-        const response = await fetch(`/api/heroes/voice-lines?heroId=${encodeURIComponent(String(topHero.heroId))}&heroName=${encodeURIComponent(topHero.heroName)}&games=${encodeURIComponent(String(topHero.games))}`, {
+        const response = await fetch(`/api/heroes/voice-lines?heroId=${encodeURIComponent(heroId)}&heroName=${encodeURIComponent(heroName)}&games=${encodeURIComponent(heroGames)}`, {
           cache: "no-store",
           signal: controller.signal
         });
 
         const payload = await response.json() as HeroVoiceLinesResponse;
         setHeroLines(payload.headerLines ?? []);
-      } catch (error) {
+      } catch {
         if (controller.signal.aborted) {
           return;
         }
@@ -122,9 +129,9 @@ export function SiteHeader({ searchItems }: { searchItems: SiteSearchItem[] }) {
     void loadHeroLines();
 
     return () => controller.abort();
-  }, [pathname, topHero?.heroId]);
+  }, [pathname, topHero?.games, topHero?.heroId, topHero?.heroName]);
 
-  const heroHeaderLines = pathname === "/" ? heroLines : [];
+  const heroHeaderLines = pathname === "/" ? heroLines : EMPTY_LINES;
 
   useEffect(() => {
     setActiveLineIndex(0);
@@ -144,8 +151,8 @@ export function SiteHeader({ searchItems }: { searchItems: SiteSearchItem[] }) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-ink/80 backdrop-blur-2xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
-        <Link href="/" className="flex min-w-0 items-center gap-3">
+      <div className="mx-auto flex max-w-7xl items-center gap-4 px-6 py-4 md:grid md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
+        <Link href="/" className="flex min-w-0 items-center gap-3 md:justify-self-start">
           <div className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-[18px] border border-white/10 bg-[linear-gradient(135deg,rgba(56,189,248,0.95),rgba(16,185,129,0.88))] text-base font-bold text-slate-950 shadow-glow">
             今
             <span className="absolute bottom-1 right-1 h-1.5 w-1.5 rounded-full bg-white/80" />
@@ -160,7 +167,7 @@ export function SiteHeader({ searchItems }: { searchItems: SiteSearchItem[] }) {
           </div>
         </Link>
 
-        <nav className="hidden items-center gap-2 text-sm text-slate-300 md:flex">
+        <nav className="hidden items-center justify-center gap-2 text-sm text-slate-300 md:flex md:justify-self-center">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -178,7 +185,7 @@ export function SiteHeader({ searchItems }: { searchItems: SiteSearchItem[] }) {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 md:justify-self-end">
           <HeaderSearch items={searchItems} />
           {binding ? (
             <Link

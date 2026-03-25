@@ -42,6 +42,8 @@ type DashboardMatch = {
   scheduledAt: Date | string | null;
   scoreHome: number | null;
   scoreAway: number | null;
+  participantTeamNames: string[];
+  participantTeamIds: string[];
   homeTeamName: string;
   homeTeamId: string | null;
   homeTeamSlug: string | null;
@@ -84,6 +86,11 @@ function sortMatchesByPriority(matches: DashboardMatch[]) {
   });
 }
 
+function formatMatchLabel(match: DashboardMatch) {
+  const names = match.participantTeamNames.length ? match.participantTeamNames : [match.homeTeamName, match.awayTeamName].filter(Boolean);
+  return names.length <= 2 ? names.join(" vs ") : names.join(" / ");
+}
+
 export function MyDashboard({
   players,
   teams,
@@ -106,7 +113,7 @@ export function MyDashboard({
   const relatedMatches = currentPlayer
     ? sortMatchesByPriority(matches.filter((match) => {
         const relatedToCurrentTeam = currentPlayer.teamId
-          ? match.homeTeamId === currentPlayer.teamId || match.awayTeamId === currentPlayer.teamId
+          ? match.participantTeamIds.includes(currentPlayer.teamId)
           : false;
 
         return relatedToCurrentTeam || currentPlayerHighlightMatchIds.has(match.slug);
@@ -115,7 +122,7 @@ export function MyDashboard({
   const previewPlayer = players.find((player) => player.teamId) ?? players[0] ?? null;
   const previewTeam = previewPlayer?.teamId ? teams.find((team) => team.id === previewPlayer.teamId) ?? null : null;
   const previewMatches = previewPlayer?.teamId
-    ? sortMatchesByPriority(matches.filter((match) => match.homeTeamId === previewPlayer.teamId || match.awayTeamId === previewPlayer.teamId)).slice(0, 2)
+    ? sortMatchesByPriority(matches.filter((match) => match.participantTeamIds.includes(previewPlayer.teamId!))).slice(0, 2)
     : [];
 
   if (!currentPlayer) {
@@ -182,7 +189,7 @@ export function MyDashboard({
                     <div className="text-sm font-semibold text-white">{match.title}</div>
                     <div className="text-xs uppercase tracking-[0.16em] text-cyan-200">{match.status}</div>
                   </div>
-                  <div className="mt-2 text-sm text-slate-300">{match.homeTeamName} vs {match.awayTeamName}</div>
+                  <div className="mt-2 text-sm text-slate-300">{formatMatchLabel(match)}</div>
                   <div className="mt-1 text-sm text-slate-400">{formatDateLabel(match.scheduledAt)}</div>
                 </div>
               ))}
@@ -289,7 +296,7 @@ export function MyDashboard({
                   <div className="text-sm font-semibold text-white">{match.title}</div>
                   <div className="text-xs uppercase tracking-[0.18em] text-accent-gold">{match.status}</div>
                 </div>
-                <div className="mt-2 text-sm text-slate-300">{match.homeTeamName} vs {match.awayTeamName}</div>
+                <div className="mt-2 text-sm text-slate-300">{formatMatchLabel(match)}</div>
                 <div className="mt-1 text-sm text-slate-400">{formatDateLabel(match.scheduledAt)}</div>
                 {(match.scoreHome !== null || match.scoreAway !== null) ? (
                   <div className="mt-2 text-sm text-slate-300">比分 {match.scoreHome ?? "-"} : {match.scoreAway ?? "-"}</div>

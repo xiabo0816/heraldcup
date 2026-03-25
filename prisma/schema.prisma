@@ -27,6 +27,32 @@ enum MatchStatus {
   ARCHIVED
 }
 
+enum MatchType {
+  HEAD_TO_HEAD
+  FREE_FOR_ALL
+  BRACKET
+  CUSTOM
+}
+
+enum MatchStageType {
+  GROUP
+  BRACKET
+  SWISS
+  LEAGUE
+  FINAL
+  SHOWMATCH
+  CUSTOM
+}
+
+enum MatchParticipantResult {
+  PENDING
+  WIN
+  LOSS
+  DRAW
+  ADVANCED
+  ELIMINATED
+}
+
 enum BindingStatus {
   PENDING
   ACTIVE
@@ -35,69 +61,70 @@ enum BindingStatus {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  name         String
-  email        String?  @unique
-  role         UserRole @default(PLAYER)
-  playerId     String?  @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  player       Player?  @relation(fields: [playerId], references: [id])
+  id        String   @id @default(cuid())
+  name      String
+  email     String?  @unique
+  role      UserRole @default(PLAYER)
+  playerId  String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  player    Player?  @relation(fields: [playerId], references: [id])
 }
 
 model Tournament {
-  id          String           @id @default(cuid())
+  id          String             @id @default(cuid())
   name        String
-  slug        String           @unique
+  slug        String             @unique
   kind        TournamentKind
   description String?
   seasons     TournamentSeason[]
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
 }
 
 model TournamentSeason {
-  id             String    @id @default(cuid())
-  tournamentId   String
-  title          String
-  slug           String    @unique
-  seasonNumber   Int
-  startDate      DateTime?
-  endDate        DateTime?
-  statusLabel    String?
-  themeColor     String?
-  summary        String?
-  featured       Boolean   @default(false)
-  tournament     Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  teams          Team[]
-  matches        Match[]
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id           String       @id @default(cuid())
+  tournamentId String
+  title        String
+  slug         String       @unique
+  seasonNumber Int
+  startDate    DateTime?
+  endDate      DateTime?
+  statusLabel  String?
+  themeColor   String?
+  summary      String?
+  featured     Boolean      @default(false)
+  tournament   Tournament   @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  participants SeasonTeam[]
+  stages       MatchStage[]
+  matches      Match[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 }
 
 model Team {
-  id            String       @id @default(cuid())
-  seasonId      String?
-  name          String
-  slug          String       @unique
-  shortName     String?
-  slogan        String?
-  logoUrl       String?
-  honorPoints   Int          @default(0)
-  coach         String?
-  captain       String?
-  captainPlayerId String?
-  championshipCount Int      @default(0)
-  active        Boolean      @default(true)
-  summary       String?
-  season        TournamentSeason? @relation(fields: [seasonId], references: [id], onDelete: SetNull)
-  captainPlayer Player?      @relation("TeamCaptain", fields: [captainPlayerId], references: [id], onDelete: SetNull)
-  members       TeamMember[]
-  homeMatches   Match[]      @relation("HomeTeam")
-  awayMatches   Match[]      @relation("AwayTeam")
-  championMatches Match[]    @relation("ChampionTeam")
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  id                String                 @id @default(cuid())
+  name              String
+  slug              String                 @unique
+  shortName         String?
+  slogan            String?
+  logoUrl           String?
+  honorPoints       Int                    @default(0)
+  coach             String?
+  captain           String?
+  captainPlayerId   String?
+  championshipCount Int                    @default(0)
+  active            Boolean                @default(true)
+  summary           String?
+  captainPlayer     Player?                @relation("TeamCaptain", fields: [captainPlayerId], references: [id], onDelete: SetNull)
+  members           TeamMember[]
+  seasonEntries     SeasonTeam[]
+  winnerMatches     Match[]                @relation("WinnerTeam")
+  gameWinnerMatches MatchGame[]            @relation("GameWinnerTeam")
+  matchParticipants MatchParticipant[]
+  gameParticipants  MatchGameParticipant[]
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
 }
 
 model Hero {
@@ -116,32 +143,32 @@ model Hero {
 }
 
 model Player {
-  id              String          @id @default(cuid())
-  displayName     String
-  slug            String          @unique
-  steamId         String?         @unique
-  avatarUrl       String?
-  primaryRole     String?
-  preferredRoles  String[]        @default([])
-  heroPool        String[]
-  ladderScore     Int?
-  gameYears       Int?
-  playStyles      String[]        @default([])
+  id                String           @id @default(cuid())
+  displayName       String
+  slug              String           @unique
+  steamId           String?          @unique
+  avatarUrl         String?
+  primaryRole       String?
+  preferredRoles    String[]         @default([])
+  heroPool          String[]
+  ladderScore       Int?
+  gameYears         Int?
+  playStyles        String[]         @default([])
   highlightMatchIds String[]
-  championshipCount Int           @default(0)
-  bio             String?
+  championshipCount Int              @default(0)
+  bio               String?
   gameUnderstanding String?
-  active          Boolean         @default(true)
-  users           User[]
-  captainOfTeams  Team[]          @relation("TeamCaptain")
-  teamMemberships TeamMember[]
-  bindings        PlayerBinding[]
-  reports         PlayerReport[]
-  authoredReviews PlayerReview[]  @relation("PlayerReviewAuthor")
-  receivedReviews PlayerReview[]  @relation("PlayerReviewTarget")
-  highlights      MatchHighlight[]
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  active            Boolean          @default(true)
+  users             User[]
+  captainOfTeams    Team[]           @relation("TeamCaptain")
+  teamMemberships   TeamMember[]
+  bindings          PlayerBinding[]
+  reports           PlayerReport[]
+  authoredReviews   PlayerReview[]   @relation("PlayerReviewAuthor")
+  receivedReviews   PlayerReview[]   @relation("PlayerReviewTarget")
+  highlights        MatchHighlight[]
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 }
 
 model PlayerReview {
@@ -159,46 +186,155 @@ model PlayerReview {
 }
 
 model TeamMember {
-  id          String   @id @default(cuid())
-  teamId      String
-  playerId    String
-  inGameRole  String?
-  joinedAt    DateTime?
-  leftAt      DateTime?
-  isCurrent   Boolean  @default(true)
-  team        Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  player      Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  id         String    @id @default(cuid())
+  teamId     String
+  playerId   String
+  inGameRole String?
+  joinedAt   DateTime?
+  leftAt     DateTime?
+  isCurrent  Boolean   @default(true)
+  team       Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  player     Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
 
   @@unique([teamId, playerId, isCurrent])
 }
 
 model Match {
-  id               String         @id @default(cuid())
-  seasonId         String?
-  topicId          String?
-  title            String
-  slug             String         @unique
-  externalMatchId  String?
-  scheduledAt      DateTime?
-  format           String?
-  status           MatchStatus    @default(DRAFT)
-  scoreHome        Int?
-  scoreAway        Int?
-  streamUrl        String?
-  summary          String?
-  participantTeamNames String[]
-  homeTeamId       String?
-  awayTeamId       String?
-  championTeamId   String?
-  season           TournamentSeason? @relation(fields: [seasonId], references: [id], onDelete: SetNull)
-  topic            CommunityTopic? @relation(fields: [topicId], references: [id], onDelete: SetNull)
-  homeTeam         Team?          @relation("HomeTeam", fields: [homeTeamId], references: [id], onDelete: SetNull)
-  awayTeam         Team?          @relation("AwayTeam", fields: [awayTeamId], references: [id], onDelete: SetNull)
-  championTeam     Team?          @relation("ChampionTeam", fields: [championTeamId], references: [id], onDelete: SetNull)
-  highlights       MatchHighlight[]
-  contentPages     ContentPage[]
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
+  id              String             @id @default(cuid())
+  seasonId        String?
+  stageId         String?
+  topicId         String?
+  title           String
+  slug            String             @unique
+  externalMatchId String?
+  scheduledAt     DateTime?
+  startedAt       DateTime?
+  endedAt         DateTime?
+  format          String?
+  bestOf          Int?
+  roundNumber     Int?
+  sequenceNumber  Int?
+  matchType       MatchType          @default(HEAD_TO_HEAD)
+  status          MatchStatus        @default(DRAFT)
+  streamUrl       String?
+  summary         String?
+  winnerTeamId    String?
+  season          TournamentSeason?  @relation(fields: [seasonId], references: [id], onDelete: SetNull)
+  stage           MatchStage?        @relation(fields: [stageId], references: [id], onDelete: SetNull)
+  topic           CommunityTopic?    @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  winnerTeam      Team?              @relation("WinnerTeam", fields: [winnerTeamId], references: [id], onDelete: SetNull)
+  participants    MatchParticipant[]
+  games           MatchGame[]
+  highlights      MatchHighlight[]
+  contentPages    ContentPage[]
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+}
+
+model SeasonTeam {
+  id            String             @id @default(cuid())
+  seasonId      String
+  teamId        String
+  seedNumber    Int?
+  groupName     String?
+  checkInStatus String?
+  finalRank     Int?
+  points        Int?
+  wins          Int?
+  losses        Int?
+  draws         Int?
+  eliminatedAt  DateTime?
+  note          String?
+  season        TournamentSeason   @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  team          Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  matches       MatchParticipant[]
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  @@unique([seasonId, teamId])
+}
+
+model MatchStage {
+  id          String           @id @default(cuid())
+  seasonId    String
+  name        String
+  slug        String
+  stageType   MatchStageType   @default(CUSTOM)
+  sortOrder   Int              @default(0)
+  bestOf      Int?
+  advanceRule String?
+  season      TournamentSeason @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  matches     Match[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([seasonId, slug])
+}
+
+model MatchParticipant {
+  id               String                 @id @default(cuid())
+  matchId          String
+  seasonTeamId     String?
+  teamId           String
+  slotNumber       Int
+  sideLabel        String?
+  score            Int?
+  rank             Int?
+  result           MatchParticipantResult @default(PENDING)
+  pointsAwarded    Int?
+  isWinner         Boolean                @default(false)
+  isAdvanced       Boolean                @default(false)
+  isEliminated     Boolean                @default(false)
+  note             String?
+  match            Match                  @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  seasonTeam       SeasonTeam?            @relation(fields: [seasonTeamId], references: [id], onDelete: SetNull)
+  team             Team                   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  gameParticipants MatchGameParticipant[]
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+
+  @@unique([matchId, slotNumber])
+  @@unique([matchId, teamId])
+}
+
+model MatchGame {
+  id             String                 @id @default(cuid())
+  matchId        String
+  gameNumber     Int
+  externalGameId String?
+  startedAt      DateTime?
+  endedAt        DateTime?
+  status         MatchStatus            @default(DRAFT)
+  winnerTeamId   String?
+  summary        String?
+  match          Match                  @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  winnerTeam     Team?                  @relation("GameWinnerTeam", fields: [winnerTeamId], references: [id], onDelete: SetNull)
+  participants   MatchGameParticipant[]
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+
+  @@unique([matchId, gameNumber])
+}
+
+model MatchGameParticipant {
+  id            String                 @id @default(cuid())
+  gameId        String
+  participantId String?
+  teamId        String
+  slotNumber    Int
+  sideLabel     String?
+  score         Int?
+  rank          Int?
+  result        MatchParticipantResult @default(PENDING)
+  note          String?
+  game          MatchGame              @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  participant   MatchParticipant?      @relation(fields: [participantId], references: [id], onDelete: SetNull)
+  team          Team                   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+
+  @@unique([gameId, slotNumber])
+  @@unique([gameId, teamId])
 }
 
 model MatchHighlight {
@@ -208,118 +344,118 @@ model MatchHighlight {
   title       String
   description String?
   highlightAt String?
-  match       Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
-  player      Player?   @relation(fields: [playerId], references: [id], onDelete: SetNull)
-  createdAt   DateTime  @default(now())
+  match       Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  player      Player?  @relation(fields: [playerId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
 }
 
 model PlayerBinding {
-  id             String         @id @default(cuid())
-  playerId       String
-  steamId        String
-  openDotaId     Int?
-  status         BindingStatus  @default(PENDING)
-  lastBoundAt    DateTime?
-  lastError      String?
-  player         Player         @relation(fields: [playerId], references: [id], onDelete: Cascade)
-  reports        PlayerReport[]
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  id          String         @id @default(cuid())
+  playerId    String
+  steamId     String
+  openDotaId  Int?
+  status      BindingStatus  @default(PENDING)
+  lastBoundAt DateTime?
+  lastError   String?
+  player      Player         @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  reports     PlayerReport[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
 
   @@unique([playerId, steamId])
 }
 
 model PlayerReport {
-  id                String          @id @default(cuid())
-  playerId          String
-  bindingId         String?
-  steamId           String
-  reportVersion     Int             @default(1)
-  summary           Json
-  topHeroes         Json
-  recentMatches     Json
-  rawPayload        Json
-  generatedAt       DateTime        @default(now())
-  syncedAt          DateTime?
-  player            Player          @relation(fields: [playerId], references: [id], onDelete: Cascade)
-  binding           PlayerBinding?  @relation(fields: [bindingId], references: [id], onDelete: SetNull)
+  id            String         @id @default(cuid())
+  playerId      String
+  bindingId     String?
+  steamId       String
+  reportVersion Int            @default(1)
+  summary       Json
+  topHeroes     Json
+  recentMatches Json
+  rawPayload    Json
+  generatedAt   DateTime       @default(now())
+  syncedAt      DateTime?
+  player        Player         @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  binding       PlayerBinding? @relation(fields: [bindingId], references: [id], onDelete: SetNull)
 }
 
 model ContentPage {
-  id            String    @id @default(cuid())
-  matchId       String?
-  topicId       String?
-  title         String
-  slug          String    @unique
-  pageType      String
-  excerpt       String?
-  body          Json
-  publishedAt   DateTime?
-  featured      Boolean   @default(false)
-  match         Match?    @relation(fields: [matchId], references: [id], onDelete: SetNull)
-  topic         CommunityTopic? @relation(fields: [topicId], references: [id], onDelete: SetNull)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-}
-
-model Announcement {
-  id          String   @id @default(cuid())
+  id          String          @id @default(cuid())
+  matchId     String?
+  topicId     String?
   title       String
-  slug        String   @unique
+  slug        String          @unique
+  pageType    String
   excerpt     String?
   body        Json
   publishedAt DateTime?
-  featured    Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  featured    Boolean         @default(false)
+  match       Match?          @relation(fields: [matchId], references: [id], onDelete: SetNull)
+  topic       CommunityTopic? @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model Announcement {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  excerpt     String?
+  body        Json
+  publishedAt DateTime?
+  featured    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model CommunityTopic {
-  id           String   @id @default(cuid())
-  title        String
-  slug         String   @unique
-  description  String?
-  activityNote String?
-  featured     Boolean  @default(false)
-  matches      Match[]
-  contentPages ContentPage[]
-  events       CommunityEvent[]
+  id               String            @id @default(cuid())
+  title            String
+  slug             String            @unique
+  description      String?
+  activityNote     String?
+  featured         Boolean           @default(false)
+  matches          Match[]
+  contentPages     ContentPage[]
+  events           CommunityEvent[]
   recruitmentPosts RecruitmentPost[]
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 }
 
 model CommunityEvent {
-  id        String   @id @default(cuid())
+  id        String          @id @default(cuid())
   topicId   String?
   title     String
-  slug      String   @unique
+  slug      String          @unique
   summary   String?
   body      Json
   startsAt  DateTime?
   endsAt    DateTime?
   location  String?
-  status    String   @default("UPCOMING")
+  status    String          @default("UPCOMING")
   ctaLabel  String?
   ctaHref   String?
-  featured  Boolean  @default(false)
+  featured  Boolean         @default(false)
   topic     CommunityTopic? @relation(fields: [topicId], references: [id], onDelete: SetNull)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 }
 
 model RecruitmentPost {
-  id          String   @id @default(cuid())
+  id          String          @id @default(cuid())
   topicId     String?
   title       String
-  slug        String   @unique
+  slug        String          @unique
   teamName    String
   contact     String?
   neededRoles String[]
-  status      String   @default("OPEN")
+  status      String          @default("OPEN")
   excerpt     String?
-  featured    Boolean  @default(false)
+  featured    Boolean         @default(false)
   topic       CommunityTopic? @relation(fields: [topicId], references: [id], onDelete: SetNull)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 }

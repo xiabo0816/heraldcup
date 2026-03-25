@@ -13,6 +13,7 @@
     "prisma:seed:historical": "tsx prisma/seed-historical.ts",
     "prisma:seed:heroes": "tsx prisma/seed-heroes.ts",
     "prisma:seed:community": "tsx prisma/seed-community-archive.ts",
+    "prisma:seed:templates": "tsx prisma/seed-match-template-showcase.ts",
     "prisma:repair:slugs": "tsx prisma/repair-community-slugs.ts"
   },
   "dependencies": {

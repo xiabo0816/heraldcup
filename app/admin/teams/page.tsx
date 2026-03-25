@@ -10,7 +10,7 @@ export default async function AdminTeamsPage() {
   return (
     <Shell>
       <section className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
-        <AdminTeamForm seasons={data.seasons} />
+        <AdminTeamForm />
 
         <section className="rounded-[28px] border border-white/10 bg-panel/80 p-6 shadow-glow backdrop-blur">
           <div className="flex flex-wrap items-start justify-between gap-4">
@@ -28,7 +28,7 @@ export default async function AdminTeamsPage() {
 
           <div className="mt-6 space-y-4">
             {data.teams.map((team) => (
-              <AdminTeamRow key={team.id} team={team} seasons={data.seasons} />
+              <AdminTeamRow key={team.id} team={team} />
             ))}
           </div>
         </section>

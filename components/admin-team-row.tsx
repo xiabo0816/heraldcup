@@ -2,8 +2,7 @@ import { deleteTeamAction, updateTeamAction } from "@/app/admin/teams/actions";
 import { AdminFormSubmit } from "@/components/admin-form-submit";
 
 export function AdminTeamRow({
-  team,
-  seasons
+  team
 }: {
   team: {
     id: string;
@@ -15,22 +14,18 @@ export function AdminTeamRow({
     coach: string | null;
     captain: string | null;
     summary: string | null;
-    seasonId: string;
-    seasonTitle: string;
+    latestSeasonTitle: string;
+    seasonCount: number;
     memberCount: number;
   };
-  seasons: Array<{
-    id: string;
-    title: string;
-  }>;
 }) {
   return (
     <article className="rounded-3xl border border-white/10 bg-white/5 p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <div className="text-xs uppercase tracking-[0.24em] text-accent-gold">{team.seasonTitle}</div>
+          <div className="text-xs uppercase tracking-[0.24em] text-accent-gold">{team.latestSeasonTitle}</div>
           <h2 className="mt-2 text-2xl font-semibold text-white">{team.name}</h2>
-          <p className="mt-2 text-sm leading-7 text-slate-300">当前现役成员：{team.memberCount} 人</p>
+          <p className="mt-2 text-sm leading-7 text-slate-300">当前现役成员：{team.memberCount} 人 · 已关联 {team.seasonCount} 个赛季</p>
         </div>
         <form action={deleteTeamAction}>
           <input type="hidden" name="id" value={team.id} />
@@ -106,21 +101,6 @@ export function AdminTeamRow({
             rows={4}
             className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none"
           />
-        </label>
-        <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
-          <span>所属赛季</span>
-          <select
-            name="seasonId"
-            defaultValue={team.seasonId}
-            className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none"
-          >
-            <option value="">暂不绑定赛季</option>
-            {seasons.map((season) => (
-              <option key={season.id} value={season.id}>
-                {season.title}
-              </option>
-            ))}
-          </select>
         </label>
         <div className="md:col-span-2 flex justify-end">
           <AdminFormSubmit idleLabel="保存修改" pendingLabel="保存中..." />

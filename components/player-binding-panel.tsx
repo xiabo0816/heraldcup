@@ -207,7 +207,7 @@ export function PlayerBindingPanel({ players }: { players: PlayerOption[] }) {
             <div className="text-xs uppercase tracking-[0.22em] text-slate-500">当前选手池</div>
             <div className="mt-2 text-xl font-semibold text-white">所有选手按分段自动分池</div>
           </div>
-          <div className="rounded-full border border-white/10 bg-slate-950/45 px-4 py-2 text-sm text-slate-300">分段规则：0-2999 先锋 / 3000-5999 传奇 / 6000+ 冠绝</div>
+          <div className="rounded-full border border-white/10 bg-slate-950/45 px-4 py-2 text-sm text-slate-300">分段规则：0-2999 先锋 / 3000-5999 传奇 / 6000+ 冠绝，未填分数默认冠绝</div>
         </div>
 
         <div className="mt-5 grid gap-4 xl:grid-cols-3">

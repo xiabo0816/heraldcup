@@ -3,16 +3,8 @@ import { HeroChip } from "@/components/hero-chip";
 import { HomeIdentitySpotlight } from "@/components/home-identity-spotlight";
 import { Shell } from "@/components/shell";
 import { TeamMark } from "@/components/team-mark";
-import { getAnnouncements, getCommunityTopics, getContentPages, getMatches, getPlayers, getRecruitmentPosts, getTeams } from "@/lib/queries";
+import { getCommunityTopics, getMatches, getPlayers, getRecruitmentPosts, getTeams } from "@/lib/queries";
 import { playerPath, teamPath } from "@/lib/routes";
-
-const pageTypeLabels: Record<string, string> = {
-  poster: "海报",
-  champion: "冠军",
-  news: "快报",
-  recap: "战报",
-  custom: "自定义"
-};
 
 const matchStatusLabels: Record<string, string> = {
   SCHEDULED: "即将开打",
@@ -31,17 +23,6 @@ function formatDateLabel(value: Date | string | null) {
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit"
-  });
-}
-
-function formatPublishedLabel(value: Date | string | null) {
-  if (!value) {
-    return "刚刚更新";
-  }
-
-  return new Date(value).toLocaleDateString("zh-CN", {
-    month: "numeric",
-    day: "numeric"
   });
 }
 
@@ -85,13 +66,28 @@ function sortByScheduledDesc<T extends { scheduledAt: Date | string | null }>(it
   });
 }
 
+function formatParticipantLabel(match: {
+  participantTeamNames?: string[];
+  homeTeamName: string;
+  awayTeamName: string;
+}) {
+  const names = match.participantTeamNames?.filter(Boolean) ?? [];
+  if (names.length >= 3) {
+    return names.join(" / ");
+  }
+
+  if (names.length === 2) {
+    return `${names[0]} vs ${names[1]}`;
+  }
+
+  return `${match.homeTeamName} vs ${match.awayTeamName}`;
+}
+
 export default async function HomePage() {
-  const [contentPages, matches, teams, players, announcements, topics, recruitmentPosts] = await Promise.all([
-    getContentPages(),
+  const [matches, teams, players, topics, recruitmentPosts] = await Promise.all([
     getMatches(),
     getTeams(),
     getPlayers(),
-    getAnnouncements(),
     getCommunityTopics(),
     getRecruitmentPosts()
   ]);
@@ -99,7 +95,6 @@ export default async function HomePage() {
   const upcomingMatches = sortByScheduledAsc(matches.filter((match) => match.status !== "FINISHED" && match.status !== "CANCELLED")).slice(0, 5);
   const ongoingMatches = sortByScheduledAsc(matches.filter((match) => match.status === "ONGOING")).slice(0, 3);
   const recentResults = sortByScheduledDesc(matches.filter((match) => match.status === "FINISHED")).slice(0, 4);
-  const latestStories = contentPages.slice(0, 4);
   const topTeams = [...teams]
     .sort((left, right) => right.honorScore - left.honorScore || right.championshipCount - left.championshipCount)
     .slice(0, 5);
@@ -109,8 +104,6 @@ export default async function HomePage() {
 
   const featuredResult = recentResults[0] ?? null;
   const nextMatch = ongoingMatches[0] ?? upcomingMatches[0] ?? null;
-  const latestStory = latestStories[0] ?? null;
-  const featuredAnnouncement = announcements[0] ?? null;
   const featuredTopic = topics[0] ?? null;
   const featuredRecruitment = recruitmentPosts[0] ?? null;
 
@@ -167,11 +160,11 @@ export default async function HomePage() {
 
               <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-slate-300">
                 <span className="rounded-full border border-white/10 bg-slate-950/70 px-4 py-2">
-                  {nextMatch?.homeTeamName ?? featuredResult?.homeTeamName ?? "主队待定"}
-                </span>
-                <span className="text-slate-500">vs</span>
-                <span className="rounded-full border border-white/10 bg-slate-950/70 px-4 py-2">
-                  {nextMatch?.awayTeamName ?? featuredResult?.awayTeamName ?? "客队待定"}
+                  {nextMatch
+                    ? formatParticipantLabel(nextMatch)
+                    : featuredResult
+                      ? formatParticipantLabel(featuredResult)
+                      : "对阵待定"}
                 </span>
                 {(nextMatch?.topicSlug || featuredResult?.topicSlug) ? (
                   <Link
@@ -215,9 +208,8 @@ export default async function HomePage() {
                   <Link key={match.slug} href={`/matches/${match.slug}`} className="brand-card p-4 transition hover:border-cyan-300/30 hover:bg-white/8">
                     <div className="text-[11px] uppercase tracking-[0.22em] text-slate-500">{index === 0 ? "刚结束" : "最近结果"}</div>
                     <div className="mt-3 text-lg font-semibold text-white">{match.title}</div>
-                    <div className="mt-2 text-sm text-slate-300">
-                      {match.homeTeamName} {match.scoreHome ?? "-"} : {match.scoreAway ?? "-"} {match.awayTeamName}
-                    </div>
+                    <div className="mt-2 text-sm text-slate-300">{formatParticipantLabel(match)}</div>
+                    <div className="mt-1 text-sm text-slate-400">比分 {match.scoreHome ?? "-"} : {match.scoreAway ?? "-"}</div>
                     <div className="mt-2 text-sm text-slate-500">{formatDateLabel(match.scheduledAt)}</div>
                   </Link>
                 ))}
@@ -260,17 +252,9 @@ export default async function HomePage() {
                       </h3>
 
                       <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-slate-300">
-                        {match.homeTeamId ? (
-                          <Link href={teamPath(match.homeTeamId)} className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1.5 transition hover:border-cyan-300/30 hover:text-white">
-                            {match.homeTeamName}
-                          </Link>
-                        ) : <span>{match.homeTeamName}</span>}
-                        <span className="text-slate-500">vs</span>
-                        {match.awayTeamId ? (
-                          <Link href={teamPath(match.awayTeamId)} className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1.5 transition hover:border-amber-300/30 hover:text-white">
-                            {match.awayTeamName}
-                          </Link>
-                        ) : <span>{match.awayTeamName}</span>}
+                        <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1.5">
+                          {formatParticipantLabel(match)}
+                        </span>
                         {match.topicSlug ? (
                           <Link href={`/community/topics/${match.topicSlug}`} className="rounded-full border border-rose-300/20 bg-rose-300/10 px-3 py-1.5 text-xs text-rose-100 transition hover:border-rose-200/40 hover:text-white">
                             #{match.topicTitle}

@@ -35,12 +35,12 @@ export default async function PlayersPage() {
               <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
                 <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">冠绝池人数</div>
                 <div className="mt-3 text-3xl font-semibold text-white">{groupedPlayers.find((group) => group.key === "GUANJUE")?.players.length ?? 0}</div>
-                <p className="mt-2 text-sm text-slate-400">位选手当前在 6000+ 分段。</p>
+                <p className="mt-2 text-sm text-slate-400">位选手当前在 6000+ 或暂未填写天梯分。</p>
               </article>
               <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
                 <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">分池规则</div>
                 <div className="mt-3 text-lg font-semibold text-white">先锋 / 传奇 / 冠绝</div>
-                <p className="mt-2 text-sm text-slate-400">0-2999 / 3000-5999 / 6000+ 自动归池。</p>
+                <p className="mt-2 text-sm text-slate-400">0-2999 / 3000-5999 / 6000+，未填分数默认冠绝。</p>
               </article>
             </div>
           </div>
@@ -115,7 +115,7 @@ export default async function PlayersPage() {
               <div>
                 <div className="text-xs uppercase tracking-[0.28em] text-accent-cyan">{group.label}</div>
                 <h2 className="mt-2 text-3xl font-semibold text-white">{group.description} 分段选手池</h2>
-                <p className="mt-3 text-sm leading-7 text-slate-400">当前这组会自动承接对应分段的选手，认领后补充或刷新 SteamID，同步到的分数也会进入这里。</p>
+                <p className="mt-3 text-sm leading-7 text-slate-400">当前这组会自动承接对应分段的选手；如果暂时没有天梯分，也会先归到冠绝池，后续补分后再自动回到对应分段。</p>
               </div>
               <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200">{group.players.length} 位选手</div>
             </div>

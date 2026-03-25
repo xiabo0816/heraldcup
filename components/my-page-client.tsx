@@ -56,6 +56,8 @@ type MyPageMatch = {
   scheduledAt: Date | string | null;
   scoreHome: number | null;
   scoreAway: number | null;
+  participantTeamNames: string[];
+  participantTeamIds: string[];
   homeTeamName: string;
   homeTeamId: string | null;
   homeTeamSlug: string | null;
@@ -111,6 +113,11 @@ function sortMatchesByPriority(matches: MyPageMatch[]) {
   });
 }
 
+function formatMatchLabel(match: MyPageMatch) {
+  const names = match.participantTeamNames.length ? match.participantTeamNames : [match.homeTeamName, match.awayTeamName].filter(Boolean);
+  return names.length <= 2 ? names.join(" vs ") : names.join(" / ");
+}
+
 export function MyPageClient({
   players,
   teams,
@@ -136,7 +143,7 @@ export function MyPageClient({
   const relatedMatches = currentPlayer
     ? sortMatchesByPriority(matches.filter((match) => {
         const relatedToCurrentTeam = currentPlayer.teamId
-          ? match.homeTeamId === currentPlayer.teamId || match.awayTeamId === currentPlayer.teamId
+          ? match.participantTeamIds.includes(currentPlayer.teamId)
           : false;
 
         return relatedToCurrentTeam || currentPlayerHighlightMatchIds.has(match.slug);
@@ -149,7 +156,7 @@ export function MyPageClient({
     ? teams.find((team) => team.id === featuredPreviewPlayer.teamId) ?? null
     : null;
   const featuredPreviewMatches = featuredPreviewPlayer?.teamId
-    ? sortMatchesByPriority(matches.filter((match) => match.homeTeamId === featuredPreviewPlayer.teamId || match.awayTeamId === featuredPreviewPlayer.teamId)).slice(0, 2)
+    ? sortMatchesByPriority(matches.filter((match) => match.participantTeamIds.includes(featuredPreviewPlayer.teamId!))).slice(0, 2)
     : [];
   const visibleCurrentPlayerReviews = currentPlayer ? reviews.filter((review) => review.targetPlayerId === currentPlayer.id && review.showOnProfile) : [];
   const effectiveSteamId = binding?.steamId ?? currentPlayer?.steamId ?? null;
@@ -262,7 +269,7 @@ export function MyPageClient({
                     <Link key={match.id} href={`/matches/${match.slug}`} className="flex items-center justify-between gap-4 rounded-[22px] border border-white/10 bg-slate-950/55 px-4 py-3 transition hover:border-emerald-300/35">
                       <div className="min-w-0">
                         <div className="truncate text-sm font-semibold text-white">{match.title}</div>
-                        <div className="mt-1 text-sm text-slate-400">{match.homeTeamName} vs {match.awayTeamName}</div>
+                        <div className="mt-1 text-sm text-slate-400">{formatMatchLabel(match)}</div>
                       </div>
                       <div className="text-right text-xs uppercase tracking-[0.18em] text-emerald-200">
                         <div>{match.status}</div>

@@ -15,8 +15,7 @@ export async function createTeamAction(_: TeamFormState, formData: FormData): Pr
     honorPoints: formData.get("honorPoints"),
     coach: formData.get("coach"),
     captain: formData.get("captain"),
-    summary: formData.get("summary"),
-    seasonId: formData.get("seasonId")
+    summary: formData.get("summary")
   });
 
   if (!payload.success) {
@@ -36,8 +35,7 @@ export async function createTeamAction(_: TeamFormState, formData: FormData): Pr
         honorPoints: payload.data.honorPoints,
         coach: payload.data.coach || null,
         captain: payload.data.captain || null,
-        summary: payload.data.summary || null,
-        seasonId: payload.data.seasonId || null
+        summary: payload.data.summary || null
       }
     });
 
@@ -80,8 +78,7 @@ export async function updateTeamAction(formData: FormData) {
     honorPoints: formData.get("honorPoints"),
     coach: formData.get("coach"),
     captain: formData.get("captain"),
-    summary: formData.get("summary"),
-    seasonId: formData.get("seasonId")
+    summary: formData.get("summary")
   });
 
   if (!payload.success) {
@@ -98,8 +95,7 @@ export async function updateTeamAction(formData: FormData) {
       honorPoints: payload.data.honorPoints,
       coach: payload.data.coach || null,
       captain: payload.data.captain || null,
-      summary: payload.data.summary || null,
-      seasonId: payload.data.seasonId || null
+      summary: payload.data.summary || null
     }
   });
 

@@ -4,14 +4,7 @@ import { useActionState } from "react";
 import { createTeamAction } from "@/app/admin/teams/actions";
 import { initialTeamFormState } from "@/app/admin/teams/form-state";
 
-export function AdminTeamForm({
-  seasons
-}: {
-  seasons: Array<{
-    id: string;
-    title: string;
-  }>;
-}) {
+export function AdminTeamForm() {
   const [state, formAction, pending] = useActionState(createTeamAction, initialTeamFormState);
 
   return (
@@ -52,17 +45,6 @@ export function AdminTeamForm({
         <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
           <span>战队介绍</span>
           <textarea name="summary" rows={4} className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" placeholder="这支固定队的风格、荣誉和来历。" />
-        </label>
-        <label className="grid gap-2 text-sm text-slate-300 md:col-span-2">
-          <span>所属赛季</span>
-          <select name="seasonId" className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none">
-            <option value="">暂不绑定赛季</option>
-            {seasons.map((season) => (
-              <option key={season.id} value={season.id}>
-                {season.title}
-              </option>
-            ))}
-          </select>
         </label>
       </div>
 
