@@ -4,22 +4,27 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { CalendarDays, Shield, Sparkles, Sword } from "lucide-react";
-import { ClaimPlayerDialog } from "@/components/claim-player-dialog";
+import { Bell, CalendarDays, CircleUserRound, Home, Shield, Sparkles, Sword, Users } from "lucide-react";
 import { HeaderSearch } from "@/components/header-search";
-import { readLocalPlayerBinding, subscribeToLocalPlayerBinding, type LocalPlayerBinding } from "@/lib/local-binding";
+import type { IdentitySnapshot } from "@/lib/identity";
 import type { SiteSearchItem } from "@/lib/queries";
 
 const links = [
-  { href: "/matches", label: "赛程", icon: CalendarDays },
-  { href: "/teams", label: "战队", icon: Shield },
+  { href: "/", label: "首页", icon: Home },
+  { href: "/matches", label: "比赛", icon: CalendarDays },
   { href: "/players", label: "选手", icon: Sword },
+  { href: "/teams", label: "战队", icon: Shield },
+  { href: "/community", label: "社区", icon: Users },
   { href: "/heroes", label: "英雄", icon: Sparkles }
 ];
 
 const EMPTY_LINES: string[] = [];
 
 function isActivePath(pathname: string, href: string) {
+  if (href === "/") {
+    return pathname === "/";
+  }
+
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
@@ -40,27 +45,20 @@ type HeroVoiceLinesResponse = {
   message?: string;
 };
 
-export function SiteHeader({ searchItems }: { searchItems: SiteSearchItem[] }) {
+export function SiteHeader({
+  searchItems,
+  identity
+}: {
+  searchItems: SiteSearchItem[];
+  identity: IdentitySnapshot;
+}) {
   const pathname = usePathname();
-  const [binding, setBinding] = useState<LocalPlayerBinding | null>(null);
   const [topHero, setTopHero] = useState<HeaderTopHero | null>(null);
   const [heroLines, setHeroLines] = useState<string[]>([]);
   const [activeLineIndex, setActiveLineIndex] = useState(0);
-  const claimPlayers = searchItems
-    .filter((item) => item.type === "player")
-    .map((item) => ({
-      id: item.id.replace(/^player:/, ""),
-      displayName: item.title,
-      subtitle: item.subtitle
-    }));
 
   useEffect(() => {
-    setBinding(readLocalPlayerBinding());
-    return subscribeToLocalPlayerBinding(setBinding);
-  }, []);
-
-  useEffect(() => {
-    const steamId = binding?.steamId ?? null;
+    const steamId = identity.binding?.steamId ?? null;
 
     if (!steamId) {
       setTopHero(null);
@@ -95,7 +93,7 @@ export function SiteHeader({ searchItems }: { searchItems: SiteSearchItem[] }) {
     void loadTopHero();
 
     return () => controller.abort();
-  }, [binding?.steamId]);
+  }, [identity.binding?.steamId]);
 
   useEffect(() => {
     if (pathname !== "/" || !topHero?.heroId) {
@@ -148,17 +146,22 @@ export function SiteHeader({ searchItems }: { searchItems: SiteSearchItem[] }) {
   }, [heroHeaderLines]);
 
   const headerHint = heroHeaderLines[activeLineIndex] ?? DEFAULT_HOME_HINT;
+  const identityLabel = identity.certifiedPlayer
+    ? `${identity.certifiedPlayer.displayName} 的个人页`
+    : identity.viewer
+      ? "身份中心"
+      : "登录 / 注册";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-ink/80 backdrop-blur-2xl">
-      <div className="mx-auto flex max-w-7xl items-center gap-4 px-6 py-4 md:grid md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-ink/75 backdrop-blur-2xl">
+      <div className="mx-auto flex max-w-[1280px] items-center gap-4 px-4 py-4 sm:px-6 lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:px-8">
         <Link href="/" className="flex min-w-0 items-center gap-3 md:justify-self-start">
           <div className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-[18px] border border-white/10 bg-[linear-gradient(135deg,rgba(56,189,248,0.95),rgba(16,185,129,0.88))] text-base font-bold text-slate-950 shadow-glow">
             今
             <span className="absolute bottom-1 right-1 h-1.5 w-1.5 rounded-full bg-white/80" />
           </div>
           <div className="min-w-0">
-            <div className="text-sm font-semibold tracking-[0.14em] text-slate-100">今晚就来社区</div>
+            <div className="text-sm font-semibold tracking-[0.18em] text-slate-100">今晚就来</div>
             <div className="mt-1 min-h-[1rem] text-xs text-slate-400" aria-live="polite">
               <span key={`${topHero?.heroId ?? "default"}-${activeLineIndex}`} className="header-quote-animate">
                 {headerHint}
@@ -167,7 +170,7 @@ export function SiteHeader({ searchItems }: { searchItems: SiteSearchItem[] }) {
           </div>
         </Link>
 
-        <nav className="hidden items-center justify-center gap-2 text-sm text-slate-300 md:flex md:justify-self-center">
+        <nav className="hidden items-center justify-center gap-2 text-sm text-slate-300 lg:flex lg:justify-self-center">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -185,33 +188,31 @@ export function SiteHeader({ searchItems }: { searchItems: SiteSearchItem[] }) {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3 md:justify-self-end">
+        <div className="flex items-center gap-2 sm:gap-3 lg:justify-self-end">
+          <Link
+            href="/community/announcements"
+            className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-300 transition hover:border-cyan-300/35 hover:text-white xl:inline-flex"
+          >
+            <Bell className="h-3.5 w-3.5" />
+            公告
+          </Link>
           <HeaderSearch items={searchItems} />
-          {binding ? (
-            <Link
-              href="/my"
-              className="hidden rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2.5 text-sm font-semibold text-emerald-100 transition hover:border-emerald-300/60 sm:inline-flex"
-            >
-              {`${binding.playerDisplayName ?? "我的"} · 已认领`}
-            </Link>
-          ) : (
-            <div className="hidden sm:block">
-              <ClaimPlayerDialog
-                players={claimPlayers}
-                triggerLabel="认领"
-                triggerClassName="rounded-xl bg-gradient-to-r from-cyan-300 to-emerald-300 px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:opacity-90"
-                title="选择选手并认领身份"
-                description="顶部入口直接完成认领就够了。选好选手、填入 SteamID，绑定后会立即进入你的个人页。"
-              />
-            </div>
-          )}
+          <Link
+            href="/my"
+            aria-label={identityLabel}
+            title={identityLabel}
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-slate-300 transition hover:border-white/20 hover:text-white"
+          >
+            <CircleUserRound className="h-4 w-4" />
+            <span className="hidden text-sm font-semibold sm:inline">{identity.certifiedPlayer ? "我的" : identity.viewer ? "身份" : "登录"}</span>
+          </Link>
           <Link href="/admin" className="hidden rounded-xl border border-white/10 px-3 py-2.5 text-sm text-slate-400 transition hover:border-white/20 hover:bg-white/[0.04] hover:text-white xl:inline-flex">
             后台
           </Link>
         </div>
       </div>
 
-      <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-6 pb-4 text-sm text-slate-300 md:hidden">
+      <div className="mx-auto flex max-w-[1280px] gap-2 overflow-x-auto px-4 pb-4 text-sm text-slate-300 sm:px-6 lg:hidden lg:px-8">
         {links.map((link) => (
           <Link
             key={link.href}
@@ -227,22 +228,6 @@ export function SiteHeader({ searchItems }: { searchItems: SiteSearchItem[] }) {
             {link.label}
           </Link>
         ))}
-        {binding ? (
-          <Link
-            href="/my"
-            className="whitespace-nowrap rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2.5 font-semibold text-emerald-100 transition hover:border-emerald-300/60"
-          >
-            已认领
-          </Link>
-        ) : (
-          <ClaimPlayerDialog
-            players={claimPlayers}
-            triggerLabel="认领"
-            triggerClassName="whitespace-nowrap rounded-xl bg-gradient-to-r from-cyan-300 to-emerald-300 px-4 py-2.5 font-semibold text-slate-950 transition hover:opacity-90"
-            title="选择选手并认领身份"
-            description="顶部入口直接完成认领就够了。选好选手、填入 SteamID，绑定后会立即进入你的个人页。"
-          />
-        )}
       </div>
     </header>
   );

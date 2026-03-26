@@ -47,7 +47,6 @@ export function PlayerReviewManager({
         <p className="mt-3 text-sm leading-7 text-slate-400">每位选手对同一个人保留一条评价，再次提交会覆盖旧内容，适合留下最有代表性的印象。</p>
 
         <form action={formAction} className="mt-6 grid gap-4">
-          <input type="hidden" name="authorPlayerId" value={currentPlayer.id} />
           <label className="grid gap-2 text-sm text-slate-300">
             <span>评价对象</span>
             <select name="targetPlayerId" className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none">

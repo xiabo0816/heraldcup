@@ -3,6 +3,7 @@
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireCertifiedIdentity } from "@/lib/identity";
 import { playerPath, teamPath } from "@/lib/routes";
 import {
   createCaptainTeamSchema,
@@ -34,7 +35,6 @@ function revalidatePlayerAndTeamViews(paths: string[]) {
 
 export async function createCaptainTeamAction(_: MyActionState, formData: FormData): Promise<MyActionState> {
   const payload = createCaptainTeamSchema.safeParse({
-    captainPlayerId: formData.get("captainPlayerId"),
     name: formData.get("name"),
     slug: formData.get("slug"),
     slogan: formData.get("slogan"),
@@ -48,8 +48,17 @@ export async function createCaptainTeamAction(_: MyActionState, formData: FormDa
     };
   }
 
+  const identity = await requireCertifiedIdentity();
+  const certifiedPlayer = identity.certifiedPlayer;
+
+  if (!certifiedPlayer) {
+    return { status: "error", message: "当前账号还不是已认证选手。" };
+  }
+
+  const captainPlayerId = certifiedPlayer.id;
+
   const captainPlayer = await db.player.findUnique({
-    where: { id: payload.data.captainPlayerId },
+    where: { id: captainPlayerId },
     select: { id: true, displayName: true }
   });
 
@@ -112,8 +121,14 @@ export async function createCaptainTeamAction(_: MyActionState, formData: FormDa
 }
 
 export async function addCaptainTeamMemberAction(formData: FormData) {
+  const identity = await requireCertifiedIdentity();
+  const certifiedPlayer = identity.certifiedPlayer;
+
+  if (!certifiedPlayer) {
+    return;
+  }
+
   const payload = manageCaptainTeamMemberSchema.safeParse({
-    captainPlayerId: formData.get("captainPlayerId"),
     teamId: formData.get("teamId"),
     playerId: formData.get("playerId")
   });
@@ -122,14 +137,14 @@ export async function addCaptainTeamMemberAction(formData: FormData) {
     return;
   }
 
-  if (payload.data.captainPlayerId === payload.data.playerId) {
+  if (certifiedPlayer.id === payload.data.playerId) {
     return;
   }
 
   const team = await db.team.findFirst({
     where: {
       id: payload.data.teamId,
-      captainPlayerId: payload.data.captainPlayerId
+      captainPlayerId: certifiedPlayer.id
     },
     select: {
       id: true,
@@ -182,24 +197,30 @@ export async function addCaptainTeamMemberAction(formData: FormData) {
     });
   }
 
-  revalidatePlayerAndTeamViews([teamPath(payload.data.teamId), playerPath(payload.data.playerId), playerPath(payload.data.captainPlayerId)]);
+  revalidatePlayerAndTeamViews([teamPath(payload.data.teamId), playerPath(payload.data.playerId), playerPath(certifiedPlayer.id)]);
 }
 
 export async function removeCaptainTeamMemberAction(formData: FormData) {
+  const identity = await requireCertifiedIdentity();
+  const certifiedPlayer = identity.certifiedPlayer;
+
+  if (!certifiedPlayer) {
+    return;
+  }
+
   const payload = manageCaptainTeamMemberSchema.safeParse({
-    captainPlayerId: formData.get("captainPlayerId"),
     teamId: formData.get("teamId"),
     playerId: formData.get("playerId")
   });
 
-  if (!payload.success || payload.data.captainPlayerId === payload.data.playerId) {
+  if (!payload.success || certifiedPlayer.id === payload.data.playerId) {
     return;
   }
 
   const team = await db.team.findFirst({
     where: {
       id: payload.data.teamId,
-      captainPlayerId: payload.data.captainPlayerId
+      captainPlayerId: certifiedPlayer.id
     },
     select: { id: true }
   });
@@ -229,12 +250,18 @@ export async function removeCaptainTeamMemberAction(formData: FormData) {
     }
   });
 
-  revalidatePlayerAndTeamViews([teamPath(payload.data.teamId), playerPath(payload.data.playerId), playerPath(payload.data.captainPlayerId)]);
+  revalidatePlayerAndTeamViews([teamPath(payload.data.teamId), playerPath(payload.data.playerId), playerPath(certifiedPlayer.id)]);
 }
 
 export async function createPlayerReviewAction(_: MyActionState, formData: FormData): Promise<MyActionState> {
+  const identity = await requireCertifiedIdentity();
+  const certifiedPlayer = identity.certifiedPlayer;
+
+  if (!certifiedPlayer) {
+    return { status: "error", message: "当前账号还不是已认证选手。" };
+  }
+
   const payload = createPlayerReviewSchema.safeParse({
-    authorPlayerId: formData.get("authorPlayerId"),
     targetPlayerId: formData.get("targetPlayerId"),
     content: formData.get("content")
   });
@@ -246,12 +273,12 @@ export async function createPlayerReviewAction(_: MyActionState, formData: FormD
     };
   }
 
-  if (payload.data.authorPlayerId === payload.data.targetPlayerId) {
+  if (certifiedPlayer.id === payload.data.targetPlayerId) {
     return { status: "error", message: "不能评价自己。" };
   }
 
   const [author, target] = await Promise.all([
-    db.player.findUnique({ where: { id: payload.data.authorPlayerId }, select: { id: true, displayName: true } }),
+    db.player.findUnique({ where: { id: certifiedPlayer.id }, select: { id: true, displayName: true } }),
     db.player.findUnique({ where: { id: payload.data.targetPlayerId }, select: { id: true, displayName: true } })
   ]);
 
@@ -285,6 +312,13 @@ export async function createPlayerReviewAction(_: MyActionState, formData: FormD
 }
 
 export async function togglePlayerReviewVisibilityAction(formData: FormData) {
+  const identity = await requireCertifiedIdentity();
+  const certifiedPlayer = identity.certifiedPlayer;
+
+  if (!certifiedPlayer) {
+    return;
+  }
+
   const payload = togglePlayerReviewVisibilitySchema.safeParse({
     reviewId: formData.get("reviewId"),
     targetPlayerId: formData.get("targetPlayerId"),
@@ -298,7 +332,7 @@ export async function togglePlayerReviewVisibilityAction(formData: FormData) {
   const review = await db.playerReview.findFirst({
     where: {
       id: payload.data.reviewId,
-      targetPlayerId: payload.data.targetPlayerId
+      targetPlayerId: certifiedPlayer.id
     },
     select: { id: true }
   });
@@ -314,5 +348,5 @@ export async function togglePlayerReviewVisibilityAction(formData: FormData) {
     }
   });
 
-  revalidatePlayerAndTeamViews([playerPath(payload.data.targetPlayerId)]);
+  revalidatePlayerAndTeamViews([playerPath(certifiedPlayer.id)]);
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageHero } from "@/components/page-hero";
 import { Shell } from "@/components/shell";
 import { getAnnouncements, getCommunityEvents, getCommunityTopics, getContentPages, getRecruitmentPosts } from "@/lib/queries";
 
@@ -30,26 +31,48 @@ export default async function CommunityActivitiesPage() {
   const hotTopics = topics.slice(0, 3);
   const activeRecruitments = recruitments.slice(0, 3);
   const recentStories = contentPages.slice(0, 3);
+  const activeEventCount = events.filter((event) => event.status !== "ARCHIVED" && event.status !== "ENDED").length;
 
   return (
     <Shell>
-      <section className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.16),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))] p-8 shadow-glow md:p-10">
-        <div className="text-xs uppercase tracking-[0.3em] text-amber-200">Activities</div>
-        <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white md:text-5xl">投稿、活动和观赛企划都在这里集合。</h1>
-        <p className="mt-5 max-w-3xl text-sm leading-8 text-slate-300 md:text-base">
-          无论你想参加社区活动、关注观赛夜，还是看看近期有哪些专题内容，这一页都会把当周最值得参与的安排整理给你。
-        </p>
+      <PageHero
+        eyebrow="Activities"
+        badge="活动、投稿、观赛企划"
+        title="投稿、活动和观赛企划都在这里集合。"
+        description="无论你想参加社区活动、关注观赛夜，还是看看近期有哪些专题内容，这一页都会把当周最值得参与的安排整理给你。活动页负责把公告、活动、招募和内容一起组织成一个可参与的入口。"
+        actions={[
+          { href: featuredAnnouncement ? `/community/announcements/${featuredAnnouncement.slug}` : "/community/announcements", label: "查看活动公告", variant: "solid" },
+          { href: "/community", label: "回到社区首页", variant: "outline" }
+        ]}
+        stats={[
+          { label: "活动总数", value: events.length, description: "当前站内可浏览的社区活动与企划总量。" },
+          { label: "活跃活动", value: activeEventCount, description: "当前仍在推进或可参与的活动数量。" },
+          { label: "活动主线", value: hotTopics.length, description: "当前活动相关的重点话题数量。" }
+        ]}
+        className="bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.16),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))]"
+        aside={[
+          <article key="activity-announcement" className="rounded-[28px] border border-cyan-300/20 bg-cyan-300/10 p-5">
+            <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100">本周提醒</div>
+            <div className="mt-3 text-xl font-semibold text-white">{featuredAnnouncement?.title ?? "本周活动与赛程提醒会集中发布在这里"}</div>
+            <p className="mt-3 text-sm leading-7 text-slate-300">{featuredAnnouncement?.excerpt ?? "想知道本周活动节奏、参与方式和赛程变更，先看这条提醒就够了。"}</p>
+          </article>,
+          <div key="activity-guide" className="rounded-[28px] border border-white/10 bg-white/5 p-5">
+            <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">推荐逛法</div>
+            <p className="mt-3 text-sm leading-7 text-slate-400">先看活动公告，再看活动日历和相关招募，最后顺着专题内容继续追当周热度。</p>
+          </div>
+        ]}
+      />
 
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
+      <section className="mt-6 grid gap-4 md:grid-cols-3">
           {activityGroups.map((group) => (
             <article key={group.title} className="rounded-[24px] border border-white/10 bg-slate-950/55 p-5">
               <div className="text-xl font-semibold text-white">{group.title}</div>
               <p className="mt-3 text-sm leading-7 text-slate-400">{group.description}</p>
             </article>
           ))}
-        </div>
+      </section>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-[1.02fr_0.98fr]">
+      <section className="mt-6 grid gap-4 lg:grid-cols-[1.02fr_0.98fr]">
           <article className="rounded-[24px] border border-cyan-300/20 bg-cyan-300/10 p-5">
             <div className="text-xs uppercase tracking-[0.22em] text-cyan-100">本周提醒</div>
             <div className="mt-3 text-2xl font-semibold text-white">{featuredAnnouncement?.title ?? "本周活动与赛程提醒会集中发布在这里"}</div>
@@ -75,9 +98,9 @@ export default async function CommunityActivitiesPage() {
               )) : <div className="text-sm leading-7 text-slate-300">本周热门话题稍后更新。</div>}
             </div>
           </article>
-        </div>
+      </section>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
+      <section className="mt-6 grid gap-4 md:grid-cols-2">
           <article className="rounded-[24px] border border-amber-400/20 bg-amber-400/10 p-5">
             <div className="text-xs uppercase tracking-[0.22em] text-amber-100">参与方式</div>
             <p className="mt-3 text-sm leading-7 text-amber-50/80">当前活动会通过内容页、社区页和专题内容持续更新，想参与的话，先沿着本页给出的活动线索继续看下去。</p>
@@ -86,9 +109,9 @@ export default async function CommunityActivitiesPage() {
             <div className="text-xs uppercase tracking-[0.22em] text-cyan-100">推荐逛法</div>
             <p className="mt-3 text-sm leading-7 text-cyan-50/80">先看活动公告，再看活动日历和相关招募，最后顺着专题内容继续追当周热度。</p>
           </article>
-        </div>
+      </section>
 
-        <section className="mt-8 grid gap-6 xl:grid-cols-[0.98fr_1.02fr]">
+      <section className="mt-6 grid gap-6 xl:grid-cols-[0.98fr_1.02fr]">
           <article className="rounded-[24px] border border-white/10 bg-slate-950/55 p-5 xl:col-span-2">
             <div className="text-xs uppercase tracking-[0.22em] text-emerald-100">活动日历</div>
             <div className="mt-4 grid gap-4 md:grid-cols-3">
@@ -143,7 +166,6 @@ export default async function CommunityActivitiesPage() {
             去看资讯流
           </Link>
         </div>
-      </section>
     </Shell>
   );
 }

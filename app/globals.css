@@ -7,7 +7,12 @@
   --brand-cyan: 79 209 197;
   --brand-emerald: 16 185 129;
   --brand-amber: 245 197 81;
+  --brand-rose: 244 114 182;
+  --brand-violet: 167 139 250;
   --brand-ink: 8 16 29;
+  --brand-panel: 15 23 41;
+  --font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-display: "STHeiti", "PingFang SC", "Hiragino Sans GB", sans-serif;
 }
 
 * {
@@ -23,18 +28,24 @@ body {
   margin: 0;
   min-height: 100vh;
   background-color: rgb(var(--brand-ink));
-  background-image:
-    radial-gradient(circle at top left, rgba(var(--brand-emerald), 0.12), transparent 28%),
-    radial-gradient(circle at top right, rgba(var(--brand-cyan), 0.1), transparent 26%),
-    radial-gradient(circle at bottom center, rgba(var(--brand-amber), 0.08), transparent 30%);
-  background-repeat: no-repeat;
+  background-image: linear-gradient(180deg, rgba(2, 6, 23, 0.98), rgba(8, 16, 29, 1));
   color: #e2e8f0;
-  font-family: "PingFang SC", "Segoe UI", "Hiragino Sans GB", sans-serif;
+  font-family: var(--font-sans);
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
 }
 
 ::selection {
@@ -59,13 +70,49 @@ a {
   will-change: opacity, transform;
 }
 
+@keyframes section-fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.site-frame {
+  position: relative;
+  min-height: 100vh;
+  overflow: clip;
+}
+
+.site-background {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    radial-gradient(circle at 0% 0%, rgba(var(--brand-emerald), 0.18), transparent 24%),
+    radial-gradient(circle at 100% 0%, rgba(var(--brand-cyan), 0.14), transparent 26%),
+    radial-gradient(circle at 50% 100%, rgba(var(--brand-amber), 0.1), transparent 34%),
+    linear-gradient(180deg, rgba(2, 6, 23, 0.2), rgba(2, 6, 23, 0.8));
+}
+
+.site-content {
+  position: relative;
+  z-index: 1;
+}
+
 @layer components {
   .brand-shell {
     @apply rounded-[32px] border border-white/10 bg-panel/80 shadow-glow backdrop-blur;
+    animation: section-fade-up 500ms ease-out;
   }
 
   .brand-card {
-    @apply rounded-[24px] border border-white/10 bg-white/5;
+    @apply rounded-[24px] border border-white/10 bg-white/5 transition duration-200;
   }
 
   .brand-chip {
@@ -78,5 +125,27 @@ a {
 
   .section-heading {
     @apply mt-2 text-3xl font-semibold text-white;
+  }
+
+  .page-hero {
+    @apply relative overflow-hidden rounded-[36px] border border-white/10 p-8 shadow-glow md:p-10;
+  }
+
+  .page-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at top left, rgba(var(--brand-cyan), 0.12), transparent 24%),
+      radial-gradient(circle at bottom right, rgba(var(--brand-amber), 0.1), transparent 28%);
+    pointer-events: none;
+  }
+
+  .hero-grid {
+    @apply relative grid gap-6 xl:grid-cols-[1.08fr_0.92fr] xl:items-start;
+  }
+
+  .stat-tile {
+    @apply rounded-[24px] border border-white/10 bg-slate-950/60 p-4;
   }
 }

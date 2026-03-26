@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageHero } from "@/components/page-hero";
 import { Shell } from "@/components/shell";
 import { getAnnouncements, getCommunityTopics, getContentPages, getMatches, getPlayers, getRecruitmentPosts, getTeams } from "@/lib/queries";
 import { playerPath, teamPath } from "@/lib/routes";
@@ -41,6 +42,7 @@ export default async function CommunityPage() {
   const featuredAnnouncement = announcements[0] ?? null;
   const featuredTopic = topics[0] ?? null;
   const featuredRecruitments = recruitments.slice(0, 3);
+  const totalTopicLinks = topics.reduce((total, topic) => total + topic.matchCount + topic.contentCount + topic.recruitmentCount, 0);
   const boardLinks = [
     {
       title: featuredAnnouncement?.title ?? "置顶公告",
@@ -61,63 +63,47 @@ export default async function CommunityPage() {
 
   return (
     <Shell>
-      <section className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(244,114,182,0.16),transparent_24%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.14),transparent_22%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))] p-8 shadow-glow md:p-10">
-        <div className="relative grid gap-6 xl:grid-cols-[1.04fr_0.96fr] xl:items-start">
-          <div>
-            <div className="text-xs uppercase tracking-[0.3em] text-rose-200">Community Hub</div>
-            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white md:text-5xl">比赛之外，也要有社区正在发生。</h1>
-            <p className="mt-5 max-w-3xl text-sm leading-8 text-slate-300 md:text-base">
-              公告、战报、赛后讨论、招募组队和热门人物都会在这里汇合。看完比赛别急着离开，社区里的热度和故事会继续往下走。
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              {topics.map((topic) => (
-                <Link key={topic.id} href={`/community/topics/${topic.slug}`} className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:border-rose-300/35 hover:text-white">
-                  #{topic.title}
+      <PageHero
+        eyebrow="Community Hub"
+        badge="公告、话题、活动、招募"
+        title="比赛之外，也要有社区正在发生。"
+        description="公告、战报、赛后讨论、招募组队和热门人物都会在这里汇合。社区首页现在不只做信息堆叠，而是把主线、热点和继续浏览的回路明确摆出来。"
+        actions={[
+          { href: "/community/topics", label: "打开话题主线", variant: "solid" },
+          { href: "/community/recruitments", label: "查看招募", variant: "outline" }
+        ]}
+        stats={[
+          { label: "社区公告", value: announcements.length, description: "规则更新、赛程提醒和活动通知都会落在这里。" },
+          { label: "活跃话题", value: topics.length, description: "当前已经建立并持续承接内容的社区主线数量。" },
+          { label: "主线连接数", value: totalTopicLinks, description: "比赛、内容和招募与话题之间已建立的聚合关系。" }
+        ]}
+        className="bg-[radial-gradient(circle_at_top_left,rgba(244,114,182,0.16),transparent_24%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.14),transparent_22%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))]"
+        aside={[
+          <article key="community-board" className="rounded-[32px] border border-rose-400/25 bg-[linear-gradient(180deg,rgba(15,23,42,0.95),rgba(136,19,55,0.22))] p-6">
+            <div className="text-xs uppercase tracking-[0.24em] text-rose-200">今晚热区</div>
+            <h2 className="mt-3 text-3xl font-semibold text-white">先看公告和热点，再决定往哪逛。</h2>
+            <div className="mt-5 space-y-3">
+              {boardLinks.map((item) => (
+                <Link key={item.title} href={item.href} className="block rounded-[24px] border border-white/10 bg-slate-950/55 px-4 py-4 transition hover:border-cyan-300/35">
+                  <div className="text-sm font-semibold text-white">{item.title}</div>
+                  <div className="mt-2 text-sm text-slate-400">{item.description}</div>
                 </Link>
               ))}
             </div>
-
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
-              {boardLinks.map((item) => (
-                <Link key={item.title} href={item.href} className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4 transition hover:border-cyan-300/30 hover:bg-white/8">
-                  <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">社区入口</div>
-                  <div className="mt-3 text-xl font-semibold text-white">{item.title}</div>
-                  <p className="mt-2 text-sm leading-7 text-slate-400">{item.description}</p>
+          </article>,
+          <div key="topic-strip" className="rounded-[28px] border border-white/10 bg-white/5 p-5">
+            <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">话题主线</div>
+            <div className="mt-4 space-y-3">
+              {topics.slice(0, 4).map((topic) => (
+                <Link key={topic.id} href={`/community/topics/${topic.slug}`} className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 transition hover:border-rose-300/30 hover:text-white">
+                  <span className="text-sm font-semibold text-white">#{topic.title}</span>
+                  <span className="text-xs uppercase tracking-[0.18em] text-slate-400">{topic.matchCount + topic.contentCount + topic.recruitmentCount} 条连接</span>
                 </Link>
               ))}
             </div>
           </div>
-
-          <article className="rounded-[32px] border border-rose-400/25 bg-[linear-gradient(180deg,rgba(15,23,42,0.95),rgba(136,19,55,0.22))] p-6">
-            <div className="text-xs uppercase tracking-[0.24em] text-rose-200">今晚热区</div>
-            <h2 className="mt-3 text-3xl font-semibold text-white">先看公告和热点，再决定往哪逛。</h2>
-
-            <div className="mt-5 space-y-3">
-              {featuredAnnouncement ? (
-                <Link href={`/community/announcements/${featuredAnnouncement.slug}`} className="block rounded-[24px] border border-cyan-300/20 bg-cyan-300/10 px-4 py-4 transition hover:border-cyan-300/35">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="text-sm font-semibold text-white">{featuredAnnouncement.title}</div>
-                    <div className="text-xs uppercase tracking-[0.18em] text-cyan-100">公告</div>
-                  </div>
-                  <div className="mt-2 text-sm text-slate-300">{featuredAnnouncement.excerpt ?? "最新公告会优先放在这里，方便你第一时间掌握今晚的重要消息。"}</div>
-                </Link>
-              ) : null}
-              {topics.length ? topics.slice(0, 2).map((topic) => (
-                <Link key={topic.id} href={`/community/topics/${topic.slug}`} className="block rounded-[24px] border border-white/10 bg-slate-950/55 px-4 py-4 transition hover:border-rose-300/35">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="text-sm font-semibold text-white">#{topic.title}</div>
-                    <div className="text-xs uppercase tracking-[0.18em] text-slate-500">{topic.activityNote ?? "话题"}</div>
-                  </div>
-                  <div className="mt-2 text-sm text-slate-400">{topic.description ?? "围绕同一条主线的比赛、内容和讨论会集中汇到这个话题里。"}</div>
-                </Link>
-              )) : (
-                <div className="rounded-[24px] border border-dashed border-white/10 bg-white/5 px-4 py-5 text-sm text-slate-400">今晚的社区动态稍后更新，先去公告区看看最新安排。</div>
-              )}
-            </div>
-          </article>
-        </div>
-      </section>
+        ]}
+      />
 
       <section className="mt-6 grid gap-6 xl:grid-cols-[1.02fr_0.98fr]">
         <article className="brand-shell p-6">
@@ -291,6 +277,36 @@ export default async function CommunityPage() {
             ))}
           </div>
         </article>
+      </section>
+
+      <section className="mt-6 brand-shell p-6">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <div className="section-kicker text-rose-200">话题主线</div>
+            <h2 className="section-heading">先找主线，再看这条线下面有哪些资源</h2>
+          </div>
+          <Link href="/community/topics" className="rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:border-rose-300/40 hover:text-white">
+            全部话题
+          </Link>
+        </div>
+
+        <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {topics.slice(0, 6).map((topic) => (
+            <Link key={topic.id} href={`/community/topics/${topic.slug}`} className="brand-card p-5 transition hover:border-rose-300/30 hover:bg-white/8">
+              <div className="flex items-center justify-between gap-3">
+                <div className="text-xs uppercase tracking-[0.22em] text-rose-200">话题主线</div>
+                <div className="text-xs uppercase tracking-[0.18em] text-slate-500">{topic.activityNote ?? "话题"}</div>
+              </div>
+              <div className="mt-3 text-xl font-semibold text-white">#{topic.title}</div>
+              <p className="mt-3 text-sm leading-7 text-slate-400">{topic.description ?? "围绕同一条主线的比赛、内容和招募会集中到这里。"}</p>
+              <div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-300">
+                <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1.5">比赛 {topic.matchCount}</span>
+                <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1.5">内容 {topic.contentCount}</span>
+                <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1.5">招募 {topic.recruitmentCount}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
       </section>
     </Shell>
   );

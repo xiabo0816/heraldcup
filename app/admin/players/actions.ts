@@ -9,6 +9,7 @@ import { createPlayerSchema, deletePlayerSchema, updatePlayerSchema } from "@/li
 function revalidatePlayerViews() {
   revalidatePath("/admin/players");
   revalidatePath("/players");
+  revalidatePath("/");
 }
 
 export async function createPlayerAction(_: PlayerFormState, formData: FormData): Promise<PlayerFormState> {
@@ -25,7 +26,8 @@ export async function createPlayerAction(_: PlayerFormState, formData: FormData)
     highlightMatchIdsText: formData.get("highlightMatchIdsText"),
     bio: formData.get("bio"),
     gameUnderstanding: formData.get("gameUnderstanding"),
-    active: formData.get("active")
+    active: formData.get("active"),
+    featured: formData.get("featured")
   });
 
   if (!payload.success) {
@@ -50,7 +52,8 @@ export async function createPlayerAction(_: PlayerFormState, formData: FormData)
         highlightMatchIds: payload.data.highlightMatchIdsText,
         bio: payload.data.bio || null,
         gameUnderstanding: payload.data.gameUnderstanding || null,
-        active: payload.data.active
+        active: payload.data.active,
+        featured: payload.data.featured
       }
     });
 
@@ -90,7 +93,8 @@ export async function updatePlayerAction(formData: FormData) {
     highlightMatchIdsText: formData.get("highlightMatchIdsText"),
     bio: formData.get("bio"),
     gameUnderstanding: formData.get("gameUnderstanding"),
-    active: formData.get("active")
+    active: formData.get("active"),
+    featured: formData.get("featured")
   });
 
   if (!payload.success) {
@@ -112,7 +116,8 @@ export async function updatePlayerAction(formData: FormData) {
       highlightMatchIds: payload.data.highlightMatchIdsText,
       bio: payload.data.bio || null,
       gameUnderstanding: payload.data.gameUnderstanding || null,
-      active: payload.data.active
+      active: payload.data.active,
+      featured: payload.data.featured
     }
   });
 

@@ -9,7 +9,7 @@ export default async function MatchesPage() {
   return (
     <Shell>
       <section className="space-y-6">
-        <MatchesPageBanner />
+        <MatchesPageBanner seasonGraphs={seasonGraphs} />
         <MatchesPageSections seasonGraphs={seasonGraphs} />
       </section>
     </Shell>

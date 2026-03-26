@@ -66,6 +66,10 @@ export function AdminPlayerForm() {
           <input type="checkbox" name="active" defaultChecked className="h-4 w-4 rounded border-white/10 bg-ink" />
           <span>仍在活跃名单中</span>
         </label>
+        <label className="flex items-center gap-3 text-sm text-slate-300 md:col-span-2">
+          <input type="checkbox" name="featured" className="h-4 w-4 rounded border-white/10 bg-ink" />
+          <span>标记为热门选手</span>
+        </label>
       </div>
 
       <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm leading-7 text-slate-300">{state.message}</div>

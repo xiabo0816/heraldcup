@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageHero } from "@/components/page-hero";
 import { Shell } from "@/components/shell";
 import { getAnnouncements } from "@/lib/queries";
 
@@ -15,16 +16,38 @@ function formatDateLabel(value: Date | string | null) {
 
 export default async function CommunityAnnouncementsPage() {
   const announcements = await getAnnouncements();
+  const featuredAnnouncement = announcements[0] ?? null;
+  const featuredCount = announcements.filter((announcement) => announcement.featured).length;
 
   return (
     <Shell>
-      <section className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.16),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))] p-8 shadow-glow md:p-10">
-        <div className="text-xs uppercase tracking-[0.3em] text-cyan-200">Announcements</div>
-        <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white md:text-5xl">社区公告与置顶更新</h1>
-        <p className="mt-5 max-w-3xl text-sm leading-8 text-slate-300 md:text-base">
-          赛程调整、活动提醒、规则更新和置顶消息都会集中发布在这里。想最快掌握今晚的重要变化，先看公告就够了。
-        </p>
-      </section>
+      <PageHero
+        eyebrow="Announcements"
+        badge="规则、通知、赛程提醒"
+        title="社区公告与置顶更新"
+        description="赛程调整、活动提醒、规则更新和置顶消息都会集中发布在这里。公告页不只是倒序列表，也承担社区广播站的角色。"
+        actions={[
+          { href: "/community/rules", label: "查看社区规则", variant: "solid" },
+          { href: "/community/activities", label: "本周活动", variant: "outline" }
+        ]}
+        stats={[
+          { label: "公告总数", value: announcements.length, description: "当前站内已发布的公告与通知。" },
+          { label: "重点公告", value: featuredCount, description: "会优先在首页、社区页和页脚承接的公告数量。" },
+          { label: "最新更新", value: featuredAnnouncement?.publishedAt ? formatDateLabel(featuredAnnouncement.publishedAt) : "待发布", description: "当前排在最前面的公告发布时间。" }
+        ]}
+        className="bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.16),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))]"
+        aside={featuredAnnouncement ? [
+          <Link key={featuredAnnouncement.id} href={`/community/announcements/${featuredAnnouncement.slug}`} className="block rounded-[28px] border border-cyan-300/20 bg-cyan-300/10 p-5 transition hover:border-cyan-300/35">
+            <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100">当前置顶</div>
+            <div className="mt-3 text-xl font-semibold text-white">{featuredAnnouncement.title}</div>
+            <p className="mt-3 text-sm leading-7 text-slate-300">{featuredAnnouncement.excerpt ?? "点开这条公告，查看完整安排和详细说明。"}</p>
+          </Link>,
+          <div key="announcement-hint" className="rounded-[28px] border border-white/10 bg-white/5 p-5">
+            <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">浏览建议</div>
+            <p className="mt-3 text-sm leading-7 text-slate-400">先看置顶公告，再看最近两三条更新，最后回到活动页或社区首页继续顺着当周节奏往下逛。</p>
+          </div>
+        ] : null}
+      />
 
       <section className="mt-6 grid gap-4">
         {announcements.length ? announcements.map((announcement) => (

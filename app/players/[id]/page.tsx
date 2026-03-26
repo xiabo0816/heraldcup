@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { DetailHero } from "@/components/detail-hero";
 import { HeroChip } from "@/components/hero-chip";
 import { PlayerAvatar } from "@/components/player-avatar";
 import { PlayerClaimAction } from "@/components/player-claim-action";
 import { Shell } from "@/components/shell";
+import { getCurrentIdentitySnapshot } from "@/lib/identity";
 import { getPlayerDetailById } from "@/lib/queries";
 import { teamPath } from "@/lib/routes";
 
@@ -15,7 +17,7 @@ const matchStatusLabels: Record<string, string> = {
 
 export default async function PlayerDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const player = await getPlayerDetailById(id);
+  const [player, identity] = await Promise.all([getPlayerDetailById(id), getCurrentIdentitySnapshot()]);
 
   if (!player) {
     notFound();
@@ -23,64 +25,50 @@ export default async function PlayerDetailPage({ params }: { params: Promise<{ i
 
   return (
     <Shell>
-      <section className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.16),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.12),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))] p-8 shadow-glow md:p-10">
-        <div className="grid gap-6 xl:grid-cols-[1.02fr_0.98fr] xl:items-start">
-          <div>
-            <div className="flex items-start gap-4">
-              <PlayerAvatar src={player.avatarUrl} alt={player.displayName} size="lg" className="h-20 w-20 rounded-[28px]" />
-              <div className="min-w-0 flex-1">
-                <div className="text-xs uppercase tracking-[0.3em] text-cyan-200">Player Detail</div>
-                <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white md:text-5xl">{player.displayName}</h1>
-                <p className="mt-3 text-sm leading-8 text-slate-300 md:text-base">{player.bio ?? "先从位置、英雄池和代表作认识这位选手，再顺着比赛与队伍了解他的赛场轨迹。"}</p>
-              </div>
-            </div>
-
-            <div className="mt-8 grid gap-4 md:grid-cols-4">
-              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">位置</div>
-                <div className="mt-3 text-lg font-semibold text-white">{player.primaryRole ?? "社区选手"}</div>
-              </article>
-              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">天梯分</div>
-                <div className="mt-3 text-3xl font-semibold text-white">{player.ladderScore ?? "待补充"}</div>
-              </article>
-              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">游戏年数</div>
-                <div className="mt-3 text-3xl font-semibold text-white">{player.gameYears ?? "待补充"}</div>
-              </article>
-              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">冠军次数</div>
-                <div className="mt-3 text-3xl font-semibold text-white">{player.championshipCount}</div>
-              </article>
-              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">高光比赛</div>
-                <div className="mt-3 text-3xl font-semibold text-white">{player.highlightMatches.length}</div>
-              </article>
+      <DetailHero
+        eyebrow="Player Detail"
+        badge={<span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-cyan-100">选手档案</span>}
+        title={(
+          <div className="flex items-start gap-4">
+            <PlayerAvatar src={player.avatarUrl} alt={player.displayName} size="lg" className="h-20 w-20 rounded-[28px]" />
+            <div className="min-w-0 flex-1">
+              <div>{player.displayName}</div>
+              <div className="mt-3 text-lg font-medium text-cyan-100">{player.primaryRole ?? "社区选手"}</div>
             </div>
           </div>
-
+        )}
+        description={player.bio ?? "先从位置、英雄池和代表作认识这位选手，再顺着比赛与队伍了解他的赛场轨迹。"}
+        chips={(
+          <>
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300">所属战队：{player.teamId ? <Link href={teamPath(player.teamId)} className="transition hover:text-cyan-100">{player.teamName}</Link> : player.teamName}</span>
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300">SteamID：{player.steamId ?? "未绑定"}</span>
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300">擅长位置：{player.preferredRoles.length ? player.preferredRoles.join(" / ") : (player.primaryRole ?? "待补充")}</span>
+          </>
+        )}
+        actions={[
+          { href: player.teamId ? teamPath(player.teamId) : "/teams", label: "查看所属战队", variant: "solid" },
+          { href: "/players", label: "返回选手墙", variant: "outline" }
+        ]}
+        stats={[
+          { label: "位置", value: player.primaryRole ?? "社区选手" },
+          { label: "天梯分", value: player.ladderScore ?? "待补充" },
+          { label: "游戏年数", value: player.gameYears ?? "待补充" },
+          { label: "冠军次数", value: player.championshipCount },
+          { label: "高光比赛", value: player.highlightMatches.length }
+        ]}
+        aside={(
           <article className="rounded-[32px] border border-white/10 bg-white/5 p-6">
             <div className="text-xs uppercase tracking-[0.24em] text-cyan-200">认领身份</div>
             <div className="mt-4 flex flex-wrap gap-3">
-              <PlayerClaimAction playerId={player.id} playerName={player.displayName} />
-            </div>
-            <div className="mt-5 space-y-4 text-sm leading-7 text-slate-300">
-              <p>
-                所属战队：
-                {player.teamId ? (
-                  <Link href={teamPath(player.teamId)} className="transition hover:text-cyan-100">{player.teamName}</Link>
-                ) : player.teamName}
-              </p>
-              <p>SteamID：{player.steamId ?? "未绑定"}</p>
-              <p>擅长位置：{player.preferredRoles.length ? player.preferredRoles.join(" / ") : (player.primaryRole ?? "待补充")}</p>
+              <PlayerClaimAction identity={identity} playerId={player.id} playerName={player.displayName} />
             </div>
             <div className="mt-6 rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
               <div className="text-[11px] uppercase tracking-[0.22em] text-slate-500">浏览建议</div>
               <p className="mt-3 text-sm leading-7 text-slate-300">先看英雄池，再翻代表作，最后顺着战队主页继续了解他的比赛经历。</p>
             </div>
           </article>
-        </div>
-      </section>
+        )}
+      />
 
       <section className="mt-6 grid gap-6 xl:grid-cols-[0.96fr_1.04fr]">
         <article className="rounded-[32px] border border-white/10 bg-panel/80 p-6 shadow-glow backdrop-blur">

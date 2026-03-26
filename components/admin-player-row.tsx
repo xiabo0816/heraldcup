@@ -19,6 +19,7 @@ export function AdminPlayerRow({
     bio: string | null;
     gameUnderstanding: string | null;
     active: boolean;
+    featured: boolean;
     teamName: string;
   };
 }) {
@@ -89,6 +90,10 @@ export function AdminPlayerRow({
         <label className="flex items-center gap-3 text-sm text-slate-300 md:col-span-2">
           <input type="checkbox" name="active" defaultChecked={player.active} className="h-4 w-4 rounded border-white/10 bg-ink" />
           <span>当前活跃</span>
+        </label>
+        <label className="flex items-center gap-3 text-sm text-slate-300 md:col-span-2">
+          <input type="checkbox" name="featured" defaultChecked={player.featured} className="h-4 w-4 rounded border-white/10 bg-ink" />
+          <span>标记为热门选手</span>
         </label>
         <div className="md:col-span-2 flex justify-end">
           <AdminFormSubmit idleLabel="保存修改" pendingLabel="保存中..." />

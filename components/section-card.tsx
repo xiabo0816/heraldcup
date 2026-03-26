@@ -7,7 +7,7 @@ export function SectionCard({
   children,
   className
 }: {
-  title: string;
+  title?: string;
   eyebrow?: string;
   children: ReactNode;
   className?: string;
@@ -20,8 +20,8 @@ export function SectionCard({
       )}
     >
       {eyebrow ? <div className="text-xs uppercase tracking-[0.28em] text-accent-cyan">{eyebrow}</div> : null}
-      <h2 className="mt-2 text-2xl font-semibold text-white">{title}</h2>
-      <div className="mt-5">{children}</div>
+      {title ? <h2 className="mt-2 text-2xl font-semibold text-white">{title}</h2> : null}
+      <div className={title || eyebrow ? "mt-5" : undefined}>{children}</div>
     </section>
   );
 }

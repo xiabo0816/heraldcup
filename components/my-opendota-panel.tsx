@@ -185,7 +185,7 @@ export function MyOpenDotaPanel({
             <div className="text-xs uppercase tracking-[0.28em] text-amber-200">OpenDota Match Feed</div>
             <h2 className="mt-2 text-3xl font-semibold text-white">补上 SteamID 后，这里会直接显示你的 Dota 战绩</h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">
-              给当前已认领身份补上 SteamID 后，这里会自动拉取 OpenDota 的近期比赛、常用英雄、KDA 和胜率，不用再单独进入报告页。
+              给当前账号补上 SteamID 后，这里会自动拉取 OpenDota 的近期比赛、常用英雄、KDA 和胜率，不用再单独进入报告页。
             </p>
           </div>
         </div>

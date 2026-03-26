@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { DetailHero } from "@/components/detail-hero";
 import { Shell } from "@/components/shell";
 import { getCommunityEventBySlug } from "@/lib/queries";
 
@@ -26,25 +27,34 @@ export default async function CommunityEventDetailPage({ params }: { params: Pro
 
   return (
     <Shell>
-      <section className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.16),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))] p-8 shadow-glow md:p-10">
-        <div className="inline-flex rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-xs uppercase tracking-[0.24em] text-emerald-100">{event.status}</div>
-        <h1 className="mt-5 text-4xl font-semibold tracking-tight text-white md:text-5xl">{event.title}</h1>
-        <p className="mt-4 max-w-3xl text-sm leading-8 text-slate-300 md:text-base">{event.summary ?? "这是一场面向社区成员的活动，继续往下看就能了解完整安排。"}</p>
-        <div className="mt-6 flex flex-wrap gap-3 text-sm text-slate-300">
-          <span>开始：{formatDateLabel(event.startsAt)}</span>
-          {event.endsAt ? <span>结束：{formatDateLabel(event.endsAt)}</span> : null}
-          {event.location ? <span>地点：{event.location}</span> : null}
-        </div>
-      </section>
+      <DetailHero
+        eyebrow="Activity Detail"
+        badge={<span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-xs uppercase tracking-[0.24em] text-emerald-100">{event.status}</span>}
+        title={event.title}
+        description={event.summary ?? "这是一场面向社区成员的活动，继续往下看就能了解完整安排。"}
+        chips={(
+          <>
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300">开始：{formatDateLabel(event.startsAt)}</span>
+            {event.endsAt ? <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300">结束：{formatDateLabel(event.endsAt)}</span> : null}
+            {event.location ? <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300">地点：{event.location}</span> : null}
+          </>
+        )}
+        actions={[
+          ...(event.ctaHref ? [{ href: event.ctaHref, label: event.ctaLabel ?? "参与活动", variant: "solid" as const }] : []),
+          { href: "/community/activities", label: "返回活动页", variant: "outline" }
+        ]}
+        stats={[
+          { label: "开始时间", value: formatDateLabel(event.startsAt) },
+          { label: "结束时间", value: event.endsAt ? formatDateLabel(event.endsAt) : "未设置" },
+          { label: "关联主线", value: event.topic?.title ? `#${event.topic.title}` : "未关联" }
+        ]}
+        className="bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.16),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))]"
+      />
 
       <section className="mt-6 grid gap-6 xl:grid-cols-[0.96fr_1.04fr]">
         <article className="brand-shell p-6">
           <div className="section-kicker">活动说明</div>
           <article className="mt-4 rounded-[24px] border border-white/10 bg-white/5 p-5 whitespace-pre-wrap text-sm leading-8 text-slate-300">{event.bodyText}</article>
-          <div className="mt-6 flex flex-wrap gap-3">
-            {event.ctaHref ? <Link href={event.ctaHref} className="rounded-full bg-gradient-to-r from-emerald-300 to-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:opacity-90">{event.ctaLabel ?? "参与活动"}</Link> : null}
-            <Link href="/community/activities" className="rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:border-emerald-300/40 hover:text-white">返回活动页</Link>
-          </div>
         </article>
 
         <article className="brand-shell p-6">

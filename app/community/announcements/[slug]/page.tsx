@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { DetailHero } from "@/components/detail-hero";
 import { Shell } from "@/components/shell";
 import { getAnnouncementBySlug } from "@/lib/queries";
 
@@ -26,14 +27,22 @@ export default async function CommunityAnnouncementDetailPage({ params }: { para
 
   return (
     <Shell>
-      <section className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.16),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))] p-8 shadow-glow md:p-10">
-        <div className="inline-flex rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-xs uppercase tracking-[0.24em] text-cyan-100">
-          {announcement.featured ? "重点公告" : "公告"}
-        </div>
-        <h1 className="mt-5 text-4xl font-semibold tracking-tight text-white md:text-5xl">{announcement.title}</h1>
-        <p className="mt-4 max-w-3xl text-sm leading-8 text-slate-300 md:text-base">{announcement.excerpt ?? "这条公告没有单独摘要。"}</p>
-        <div className="mt-6 text-sm text-slate-400">发布时间：{formatDateLabel(announcement.publishedAt)}</div>
-      </section>
+      <DetailHero
+        eyebrow="Announcement Detail"
+        badge={<span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-xs uppercase tracking-[0.24em] text-cyan-100">{announcement.featured ? "重点公告" : "公告"}</span>}
+        title={announcement.title}
+        description={announcement.excerpt ?? "这条公告没有单独摘要。"}
+        chips={<span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300">发布时间：{formatDateLabel(announcement.publishedAt)}</span>}
+        actions={[
+          { href: "/community/announcements", label: "返回公告列表", variant: "solid" },
+          { href: "/community", label: "回到社区首页", variant: "outline" }
+        ]}
+        stats={[
+          { label: "公告级别", value: announcement.featured ? "重点" : "普通" },
+          { label: "发布时间", value: formatDateLabel(announcement.publishedAt) }
+        ]}
+        className="bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.16),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))]"
+      />
 
       <section className="mt-6 brand-shell p-6">
         <article className="rounded-[28px] border border-white/10 bg-white/5 p-6 whitespace-pre-wrap text-sm leading-8 text-slate-300">

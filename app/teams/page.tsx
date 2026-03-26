@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageHero } from "@/components/page-hero";
 import { Shell } from "@/components/shell";
 import { TeamMark } from "@/components/team-mark";
 import { getTeams } from "@/lib/queries";
@@ -8,53 +9,40 @@ export default async function TeamsPage() {
   const teams = await getTeams();
   const leaderboard = [...teams].sort((left, right) => right.honorScore - left.honorScore || right.championshipCount - left.championshipCount);
   const topTeams = leaderboard.slice(0, 3);
+  const totalMembers = teams.reduce((total, team) => total + team.memberCount, 0);
 
   return (
     <Shell>
-      <section className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.16),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.12),transparent_26%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))] p-8 shadow-glow md:p-10">
-        <div className="relative grid gap-6 xl:grid-cols-[1fr_1fr] xl:items-start">
-          <div>
-            <div className="text-xs uppercase tracking-[0.3em] text-amber-200">Team Board</div>
-            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white md:text-5xl">先看谁排在前面，再看阵容和来路。</h1>
-            <p className="mt-5 max-w-3xl text-sm leading-8 text-slate-300 md:text-base">战队页现在先给榜单，再给每支队伍的阵容、战绩和简介。你不用先点详情页，扫一眼就知道谁在社区里更有份量。</p>
-
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
-              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">战队总数</div>
-                <div className="mt-3 text-3xl font-semibold text-white">{teams.length}</div>
-                <p className="mt-2 text-sm text-slate-400">支固定队已经进入社区档案。</p>
-              </article>
-              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">榜首积分</div>
-                <div className="mt-3 text-3xl font-semibold text-white">{leaderboard[0]?.honorScore ?? 0}</div>
-                <p className="mt-2 text-sm text-slate-400">目前排在社区积分榜最前面。</p>
-              </article>
-              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">冠军线</div>
-                <div className="mt-3 text-lg font-semibold text-white">{leaderboard[0]?.name ?? "待更新"}</div>
-                <p className="mt-2 text-sm text-slate-400">目前最像门面的队伍。</p>
-              </article>
+      <PageHero
+        eyebrow="Team Board"
+        badge="战队荣誉与阵容"
+        title="先看谁排在前面，再看阵容和来路。"
+        description="战队页优先展示荣誉榜、积分与阵容墙，不让用户先点进详情才知道这支队伍值不值得看。冠军线、成员规模和当前排名会先在页首立起来。"
+        actions={[
+          { href: "/matches", label: "去看比赛", variant: "solid" },
+          { href: "/community/recruitments", label: "查看招募", variant: "outline" }
+        ]}
+        stats={[
+          { label: "战队总数", value: teams.length, description: "支固定队已经进入社区档案。" },
+          { label: "榜首积分", value: leaderboard[0]?.honorScore ?? 0, description: "当前排在社区积分榜最前面的分数。" },
+          { label: "现役成员", value: totalMembers, description: "所有已录入战队当前阵容的人数总和。" }
+        ]}
+        className="bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.16),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.12),transparent_26%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))]"
+        aside={topTeams.map((team, index) => (
+          <article key={team.id} className="rounded-[28px] border border-white/10 bg-white/5 p-5">
+            <div className="flex items-start justify-between gap-3">
+              <TeamMark name={team.name} logoUrl={team.logoUrl} size="sm" />
+              <div className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1 text-xs font-semibold text-amber-100">#{index + 1}</div>
             </div>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            {topTeams.map((team, index) => (
-              <article key={team.id} className="rounded-[28px] border border-white/10 bg-white/5 p-5">
-                <div className="flex items-start justify-between gap-3">
-                  <TeamMark name={team.name} logoUrl={team.logoUrl} size="sm" />
-                  <div className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1 text-xs font-semibold text-amber-100">#{index + 1}</div>
-                </div>
-                <div className="mt-4 text-xs uppercase tracking-[0.24em] text-amber-300">荣誉席</div>
-                <h2 className="mt-2 text-xl font-semibold text-white">
-                  <Link href={teamPath(team.id)} className="transition hover:text-accent-gold">{team.name}</Link>
-                </h2>
-                <p className="mt-2 text-sm font-medium text-amber-100/90">{team.slogan ?? "口号待补充"}</p>
-                <p className="mt-2 text-sm text-slate-400">社区积分 {team.honorScore} · {team.championshipCount} 冠</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+            <div className="mt-4 text-xs uppercase tracking-[0.24em] text-amber-300">荣誉席</div>
+            <h2 className="mt-2 text-xl font-semibold text-white">
+              <Link href={teamPath(team.id)} className="transition hover:text-accent-gold">{team.name}</Link>
+            </h2>
+            <p className="mt-2 text-sm font-medium text-amber-100/90">{team.slogan ?? "口号待补充"}</p>
+            <p className="mt-2 text-sm text-slate-400">社区积分 {team.honorScore} · {team.championshipCount} 冠 · {team.memberCount} 人阵容</p>
+          </article>
+        ))}
+      />
 
       <section className="mt-6 grid gap-6 xl:grid-cols-[0.92fr_1.08fr]">
         <article className="rounded-[32px] border border-white/10 bg-panel/80 p-6 shadow-glow backdrop-blur">
@@ -107,7 +95,10 @@ export default async function TeamsPage() {
                     </div>
 
                     <p className="mt-4 text-sm leading-7 text-slate-400">{team.summary ?? "先看看这支队伍的当前阵容和战绩，很快就能摸清他们的风格。"}</p>
-                    <div className="mt-4 text-xs uppercase tracking-[0.18em] text-slate-500">成员数 {team.memberCount}</div>
+                    <div className="mt-4 flex flex-wrap gap-2 text-xs uppercase tracking-[0.18em] text-slate-500">
+                      <span>成员数 {team.memberCount}</span>
+                      {team.captain ? <span>队长 {team.captain}</span> : null}
+                    </div>
                   </div>
 
                   <div className="p-6">

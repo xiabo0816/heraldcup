@@ -1,4 +1,5 @@
 import { MatchParticipantResult, MatchStageType, MatchStatus, PrismaClient, TournamentKind } from "@prisma/client";
+import { hashPassword, normalizeEmail } from "../lib/auth";
 import {
   ensureSeasonTeams,
   inferBestOf,
@@ -7,8 +8,27 @@ import {
 } from "./match-structure";
 
 const prisma = new PrismaClient();
+const DEFAULT_ADMIN_EMAIL = "admin@heraldcup.local";
+const DEFAULT_ADMIN_PASSWORD = "HeraldCupAdmin123";
 
 async function main() {
+  const adminPasswordHash = await hashPassword(DEFAULT_ADMIN_PASSWORD);
+
+  await prisma.user.upsert({
+    where: { email: normalizeEmail(DEFAULT_ADMIN_EMAIL) },
+    update: {
+      name: "Herald Admin",
+      role: "ADMIN",
+      passwordHash: adminPasswordHash
+    },
+    create: {
+      name: "Herald Admin",
+      email: normalizeEmail(DEFAULT_ADMIN_EMAIL),
+      role: "ADMIN",
+      passwordHash: adminPasswordHash
+    }
+  });
+
   const tournament = await prisma.tournament.upsert({
     where: { slug: "pioneer-cup" },
     update: {},
@@ -42,6 +62,7 @@ async function main() {
       create: {
         displayName: "cook",
         slug: "cook",
+        featured: true,
         primaryRole: "Carry",
         heroPool: ["Juggernaut", "Slark", "Phantom Assassin"],
         highlightMatchIds: ["pioneer-cup-s11-final"],
@@ -54,6 +75,7 @@ async function main() {
       create: {
         displayName: "koi",
         slug: "koi",
+        featured: true,
         primaryRole: "Support",
         heroPool: ["Rubick", "Lion", "Disruptor"],
         highlightMatchIds: ["pioneer-cup-s11-final"],

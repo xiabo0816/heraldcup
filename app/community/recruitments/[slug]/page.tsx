@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { DetailHero } from "@/components/detail-hero";
 import { Shell } from "@/components/shell";
 import { getRecruitmentPostBySlug } from "@/lib/queries";
 
@@ -13,12 +14,23 @@ export default async function CommunityRecruitmentDetailPage({ params }: { param
 
   return (
     <Shell>
-      <section className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.16),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))] p-8 shadow-glow md:p-10">
-        <div className="inline-flex rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-xs uppercase tracking-[0.24em] text-amber-100">{post.status}</div>
-        <h1 className="mt-5 text-4xl font-semibold tracking-tight text-white md:text-5xl">{post.title}</h1>
-        <p className="mt-4 max-w-3xl text-sm leading-8 text-slate-300 md:text-base">{post.excerpt ?? "这是一条面向社区成员的招募信息，继续往下看就能了解位置需求和联系方式。"}</p>
-        <div className="mt-6 text-sm text-slate-400">队伍：{post.teamName}</div>
-      </section>
+      <DetailHero
+        eyebrow="Recruitment Detail"
+        badge={<span className="rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-xs uppercase tracking-[0.24em] text-amber-100">{post.status}</span>}
+        title={post.title}
+        description={post.excerpt ?? "这是一条面向社区成员的招募信息，继续往下看就能了解位置需求和联系方式。"}
+        chips={<span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300">队伍：{post.teamName}</span>}
+        actions={[
+          { href: "/community/recruitments", label: "返回招募列表", variant: "solid" },
+          { href: "/community", label: "回到社区首页", variant: "outline" }
+        ]}
+        stats={[
+          { label: "需求位置", value: post.neededRoles.length },
+          { label: "相关比赛", value: post.relatedMatches.length },
+          { label: "相关内容", value: post.relatedContentPages.length }
+        ]}
+        className="bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.16),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))]"
+      />
 
       <section className="mt-6 grid gap-6 xl:grid-cols-[0.96fr_1.04fr]">
         <article className="brand-shell p-6">

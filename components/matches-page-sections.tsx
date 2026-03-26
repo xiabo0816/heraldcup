@@ -52,11 +52,25 @@ export function MatchesPageSections({ seasonGraphs }: MatchesPageSectionsProps) 
 
   return (
     <section className="space-y-6">
-      <div className="rounded-[32px] border border-white/10 bg-slate-950/35 p-6 backdrop-blur-sm">
+      <div className="brand-shell p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <div className="text-xs uppercase tracking-[0.28em] text-slate-500">Season Graphs</div>
-            <h2 className="mt-3 text-3xl font-semibold text-white md:text-4xl">我们全部的赛程图</h2>
+            <h2 className="mt-3 text-3xl font-semibold text-white md:text-4xl">当前赛季与历史图谱</h2>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-400">
+              先按赛事体系筛，再搜索届次或赛季名。这里优先承担完整赛季浏览，不把用户一上来就扔进单场比赛里。
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 md:w-[320px]">
+            <div className="stat-tile">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">赛季数</div>
+              <div className="mt-2 text-2xl font-semibold text-white">{seasonGraphs.length}</div>
+            </div>
+            <div className="stat-tile">
+              <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">当前结果</div>
+              <div className="mt-2 text-2xl font-semibold text-white">{visibleGraphs.length}</div>
+            </div>
           </div>
         </div>
 

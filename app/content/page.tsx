@@ -1,6 +1,6 @@
 import Link from "next/link";
+import { PageHero } from "@/components/page-hero";
 import { Shell } from "@/components/shell";
-import { SectionCard } from "@/components/section-card";
 import { getContentPages } from "@/lib/queries";
 import { teamPath } from "@/lib/routes";
 
@@ -94,10 +94,60 @@ export default async function ContentListPage({
   const recapPages = filteredPages.filter((page) => page.pageType === "recap" || page.pageType === "champion");
   const archivePages = filteredPages.filter((page) => page.pageType === "poster");
   const featuredPage = filteredPages[0] ?? pages[0] ?? null;
+  const topicBreakdown = Array.from(
+    pages
+      .filter((page) => page.topicSlug && page.topicTitle)
+      .reduce((map, page) => {
+        const key = page.topicSlug ?? "";
+        const current = map.get(key) ?? { slug: page.topicSlug ?? "", title: page.topicTitle ?? "", count: 0 };
+        current.count += 1;
+        map.set(key, current);
+        return map;
+      }, new Map<string, { slug: string; title: string; count: number }>())
+      .values()
+  )
+    .sort((left, right) => right.count - left.count)
+    .slice(0, 4);
 
   return (
     <Shell>
-      <SectionCard title="社区资讯" eyebrow="资讯">
+      <PageHero
+        eyebrow="Content Flow"
+        badge="战报、快报、海报与冠军页"
+        title="内容不只做归档，也要继续带人回到比赛和社区。"
+        description="内容页现在按官方资讯、赛事战报和归档海报分层，同时把话题、比赛和战队关系直接挂在卡片上。看内容时不会断开和比赛、社区主线的连接。"
+        actions={[
+          { href: "/matches", label: "先看比赛", variant: "solid" },
+          { href: "/community", label: "社区主线", variant: "outline" }
+        ]}
+        stats={[
+          { label: "全部内容", value: pages.length, description: "当前站内已整理好的内容总量。" },
+          { label: "官方资讯", value: officialPages.length, description: "公告、快报和自定义更新会优先汇在这一层。" },
+          { label: "赛事回流", value: recapPages.length, description: "赛后复盘、冠军内容和战报组成回流主干。" }
+        ]}
+        className="bg-[radial-gradient(circle_at_top_left,rgba(245,197,81,0.16),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.14),transparent_22%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))]"
+        aside={featuredPage ? [
+          <Link key={featuredPage.slug} href={`/content/${featuredPage.slug}`} className="block rounded-[28px] border border-cyan-300/20 bg-cyan-300/10 p-5 transition hover:border-cyan-300/35">
+            <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100">当前头条</div>
+            <div className="mt-3 text-xl font-semibold text-white">{featuredPage.title}</div>
+            <p className="mt-3 text-sm leading-7 text-slate-300">{featuredPage.excerpt ?? "点进这条头条，继续看完整正文与相关延展。"}</p>
+            {featuredPage.topicSlug ? <div className="mt-3 text-xs uppercase tracking-[0.18em] text-cyan-100">所属话题 #{featuredPage.topicTitle}</div> : null}
+          </Link>,
+          <div key="topic-breakdown" className="rounded-[28px] border border-white/10 bg-white/5 p-5">
+            <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">内容主线</div>
+            <div className="mt-4 space-y-3">
+              {topicBreakdown.length ? topicBreakdown.map((topic) => (
+                <Link key={topic.slug} href={`/community/topics/${topic.slug}`} className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 transition hover:border-rose-300/30 hover:text-white">
+                  <span className="text-sm font-semibold text-white">#{topic.title}</span>
+                  <span className="text-xs uppercase tracking-[0.18em] text-slate-400">{topic.count} 条</span>
+                </Link>
+              )) : <div className="text-sm text-slate-400">内容与话题的连接还在补充中。</div>}
+            </div>
+          </div>
+        ] : null}
+      />
+
+      <section className="mt-6 brand-shell p-6">
         <div className="mb-6 grid gap-4 rounded-[28px] border border-white/10 bg-white/5 p-5 lg:grid-cols-[1.08fr_0.92fr]">
           <div>
             <div className="text-xs uppercase tracking-[0.26em] text-accent-gold">浏览</div>
@@ -105,14 +155,6 @@ export default async function ContentListPage({
             <p className="mt-3 text-sm leading-7 text-slate-400">
               官方更新、赛后内容和历史海报已经分层整理。无论你想追最新动态还是回看经典内容，都能更快找到对应区域。
             </p>
-            {featuredPage ? (
-              <Link href={`/content/${featuredPage.slug}`} className="mt-5 block rounded-[24px] border border-accent-cyan/20 bg-accent-cyan/10 p-4 transition hover:border-accent-cyan/35">
-                <div className="text-xs uppercase tracking-[0.22em] text-accent-cyan">当前头条</div>
-                <div className="mt-2 text-lg font-semibold text-white">{featuredPage.title}</div>
-                <div className="mt-2 text-sm text-slate-300">{featuredPage.excerpt ?? "点进这条头条，继续看完整正文与相关延展。"}</div>
-                {featuredPage.topicSlug ? <div className="mt-3 text-xs uppercase tracking-[0.18em] text-cyan-100">所属话题 #{featuredPage.topicTitle}</div> : null}
-              </Link>
-            ) : null}
           </div>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
             {Object.entries(pageTypeLabels).map(([key, label]) => {
@@ -230,7 +272,8 @@ export default async function ContentListPage({
             )}
           </div>
         </section>
-      </SectionCard>
+
+      </section>
     </Shell>
   );
 }

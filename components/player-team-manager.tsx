@@ -82,7 +82,6 @@ export function PlayerTeamManager({
                     </div>
                     {member.id !== currentPlayer.id ? (
                       <form action={removeCaptainTeamMemberAction}>
-                        <input type="hidden" name="captainPlayerId" value={currentPlayer.id} />
                         <input type="hidden" name="teamId" value={captainTeam.id} />
                         <input type="hidden" name="playerId" value={member.id} />
                         <AdminFormSubmit idleLabel="移出队伍" pendingLabel="处理中..." variant="danger" />
@@ -100,7 +99,6 @@ export function PlayerTeamManager({
 
             {availablePlayers.length ? (
               <form action={addCaptainTeamMemberAction} className="mt-5 grid gap-4">
-                <input type="hidden" name="captainPlayerId" value={currentPlayer.id} />
                 <input type="hidden" name="teamId" value={captainTeam.id} />
                 <label className="grid gap-2 text-sm text-slate-300">
                   <span>可选选手</span>
@@ -155,7 +153,6 @@ export function PlayerTeamManager({
       <p className="mt-3 text-sm leading-7 text-slate-400">建队成功后，你会自动成为队长并加入现役名单，随后就能从当前选手池挑队员。</p>
 
       <form action={formAction} className="mt-6 grid gap-4 md:grid-cols-2">
-        <input type="hidden" name="captainPlayerId" value={currentPlayer.id} />
         <label className="grid gap-2 text-sm text-slate-300">
           <span>队伍名称</span>
           <input name="name" className="rounded-2xl border border-white/10 bg-ink px-4 py-3 text-slate-100 outline-none" placeholder="例如：夜航船" />

@@ -60,15 +60,39 @@ enum BindingStatus {
   UNBOUND
 }
 
+enum ClaimRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String?  @unique
-  role      UserRole @default(PLAYER)
-  playerId  String?  @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  player    Player?  @relation(fields: [playerId], references: [id])
+  id                   String         @id @default(cuid())
+  name                 String
+  email                String?        @unique
+  passwordHash         String?
+  role                 UserRole       @default(PLAYER)
+  playerId             String?        @unique
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  player               Player?        @relation(fields: [playerId], references: [id])
+  authSessions         AuthSession[]
+  steamBinding         PlayerBinding?
+  claimRequests        ClaimRequest[] @relation("ClaimRequestApplicant")
+  reviewedClaimRequests ClaimRequest[] @relation("ClaimRequestReviewer")
+}
+
+model AuthSession {
+  id         String   @id @default(cuid())
+  userId     String
+  tokenHash  String   @unique
+  expiresAt  DateTime
+  lastSeenAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
 }
 
 model Tournament {
@@ -159,14 +183,15 @@ model Player {
   bio               String?
   gameUnderstanding String?
   active            Boolean          @default(true)
+  featured          Boolean          @default(false)
   users             User[]
   captainOfTeams    Team[]           @relation("TeamCaptain")
   teamMemberships   TeamMember[]
-  bindings          PlayerBinding[]
   reports           PlayerReport[]
   authoredReviews   PlayerReview[]   @relation("PlayerReviewAuthor")
   receivedReviews   PlayerReview[]   @relation("PlayerReviewTarget")
   highlights        MatchHighlight[]
+  claimRequests     ClaimRequest[]
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
 }
@@ -351,24 +376,25 @@ model MatchHighlight {
 
 model PlayerBinding {
   id          String         @id @default(cuid())
-  playerId    String
+  userId      String         @unique
   steamId     String
   openDotaId  Int?
   status      BindingStatus  @default(PENDING)
   lastBoundAt DateTime?
   lastError   String?
-  player      Player         @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  claimRequests ClaimRequest[]
   reports     PlayerReport[]
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
 
-  @@unique([playerId, steamId])
+  @@unique([steamId])
 }
 
 model PlayerReport {
   id            String         @id @default(cuid())
-  playerId      String
-  bindingId     String?
+  playerId      String?
+  bindingId     String
   steamId       String
   reportVersion Int            @default(1)
   summary       Json
@@ -377,8 +403,32 @@ model PlayerReport {
   rawPayload    Json
   generatedAt   DateTime       @default(now())
   syncedAt      DateTime?
-  player        Player         @relation(fields: [playerId], references: [id], onDelete: Cascade)
-  binding       PlayerBinding? @relation(fields: [bindingId], references: [id], onDelete: SetNull)
+  player        Player?        @relation(fields: [playerId], references: [id], onDelete: SetNull)
+  binding       PlayerBinding  @relation(fields: [bindingId], references: [id], onDelete: Cascade)
+}
+
+model ClaimRequest {
+  id               String             @id @default(cuid())
+  userId           String
+  playerId         String
+  bindingId        String
+  submittedSteamId String
+  note             String?
+  status           ClaimRequestStatus @default(PENDING)
+  reviewNote       String?
+  submittedAt      DateTime           @default(now())
+  reviewedAt       DateTime?
+  reviewedByUserId String?
+  user             User               @relation("ClaimRequestApplicant", fields: [userId], references: [id], onDelete: Cascade)
+  player           Player             @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  binding          PlayerBinding      @relation(fields: [bindingId], references: [id], onDelete: Cascade)
+  reviewedBy       User?              @relation("ClaimRequestReviewer", fields: [reviewedByUserId], references: [id], onDelete: SetNull)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  @@index([userId, status])
+  @@index([playerId, status])
+  @@index([bindingId])
 }
 
 model ContentPage {

@@ -90,7 +90,8 @@ export function HeaderSearch({ items }: { items: SiteSearchItem[] }) {
         type="button"
         onClick={() => setOpen(true)}
         aria-label="打开站内搜索"
-        className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-300 transition hover:border-cyan-300/40 hover:bg-white/[0.04] hover:text-white"
+        title="搜索"
+        className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-300 transition hover:bg-white/[0.04] hover:text-white"
       >
         <Search className="h-4 w-4" />
       </button>

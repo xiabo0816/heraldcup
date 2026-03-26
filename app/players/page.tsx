@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { HeroChip } from "@/components/hero-chip";
+import { PageHero } from "@/components/page-hero";
 import { PlayerAvatar } from "@/components/player-avatar";
 import { Shell } from "@/components/shell";
 import { groupPlayersByPool } from "@/lib/player-pool";
@@ -10,71 +11,59 @@ export default async function PlayersPage() {
   const players = await getPlayers();
   const champions = players.filter((player) => player.championshipCount > 0).sort((left, right) => right.championshipCount - left.championshipCount).slice(0, 6);
   const roleLeaders = [...players].sort((left, right) => right.heroCards.length - left.heroCards.length || right.championshipCount - left.championshipCount).slice(0, 4);
+  const featuredPlayers = players.filter((player) => player.featured).slice(0, 4);
   const groupedPlayers = groupPlayersByPool(
     [...players].sort(
       (left, right) =>
         (right.ladderScore ?? 0) - (left.ladderScore ?? 0) || left.displayName.localeCompare(right.displayName, "zh-CN")
     )
   );
+  const totalChampionships = players.reduce((total, player) => total + player.championshipCount, 0);
 
   return (
     <Shell>
-      <section className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.16),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.12),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))] p-8 shadow-glow md:p-10">
-        <div className="grid gap-6 xl:grid-cols-[1fr_1fr] xl:items-start">
-          <div>
-            <div className="text-xs uppercase tracking-[0.3em] text-cyan-200">Player Wall</div>
-            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white md:text-5xl">先记住人，再去翻比赛和队伍。</h1>
-            <p className="mt-5 max-w-3xl text-sm leading-8 text-slate-300 md:text-base">选手页现在先给冠军常客和英雄池更厚的人，再把整面选手墙拉开。你能更快看到谁在社区里留下了痕迹。</p>
-
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
-              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">选手总数</div>
-                <div className="mt-3 text-3xl font-semibold text-white">{players.length}</div>
-                <p className="mt-2 text-sm text-slate-400">位选手已经进入社区名册。</p>
-              </article>
-              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">冠绝池人数</div>
-                <div className="mt-3 text-3xl font-semibold text-white">{groupedPlayers.find((group) => group.key === "GUANJUE")?.players.length ?? 0}</div>
-                <p className="mt-2 text-sm text-slate-400">位选手当前在 6000+ 或暂未填写天梯分。</p>
-              </article>
-              <article className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4">
-                <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">分池规则</div>
-                <div className="mt-3 text-lg font-semibold text-white">先锋 / 传奇 / 冠绝</div>
-                <p className="mt-2 text-sm text-slate-400">0-2999 / 3000-5999 / 6000+，未填分数默认冠绝。</p>
-              </article>
+      <PageHero
+        eyebrow="Player Wall"
+        badge="选手人物库"
+        title="先记住人，再去翻比赛和队伍。"
+        description="选手页现在先给冠军常客、重点人物和各分段选手池，再把他们和战队、历史经历、英雄池放在同一层。你不必先点进详情页，已经能先认出这片社区的人物关系。"
+        actions={[
+          { href: "/matches", label: "去看比赛", variant: "solid" },
+          { href: "/teams", label: "先看战队", variant: "outline" }
+        ]}
+        stats={[
+          { label: "选手总数", value: players.length, description: "位选手已经进入社区名册。" },
+          { label: "冠绝池人数", value: groupedPlayers.find((group) => group.key === "GUANJUE")?.players.length ?? 0, description: "位选手在 6000+ 或暂未填写天梯分。" },
+          { label: "社区冠军记录", value: totalChampionships, description: "当前选手资料里累计沉淀下来的冠军次数。" }
+        ]}
+        className="bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.16),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.12),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))]"
+        aside={(featuredPlayers.length ? featuredPlayers : roleLeaders).map((player) => (
+          <article key={player.id} className="rounded-[28px] border border-white/10 bg-white/5 p-5">
+            <div className="flex items-center gap-3">
+              <PlayerAvatar src={player.avatarUrl} alt={player.displayName} size="md" />
+              <div>
+                <div className="text-xs uppercase tracking-[0.24em] text-amber-300">{player.featured ? "首页焦点" : "人物主视角"}</div>
+                <h2 className="mt-2 text-xl font-semibold text-white">
+                  <Link href={playerPath(player.id)} className="transition hover:text-accent-cyan">{player.displayName}</Link>
+                </h2>
+              </div>
             </div>
-          </div>
-
-          <div className="grid gap-3 md:grid-cols-2">
-            {roleLeaders.map((player) => (
-              <article key={player.id} className="rounded-[28px] border border-white/10 bg-white/5 p-5">
-                <div className="flex items-center gap-3">
-                  <PlayerAvatar src={player.avatarUrl} alt={player.displayName} size="md" />
-                  <div>
-                    <div className="text-xs uppercase tracking-[0.24em] text-amber-300">焦点选手</div>
-                    <h2 className="mt-2 text-xl font-semibold text-white">
-                      <Link href={playerPath(player.id)} className="transition hover:text-accent-cyan">{player.displayName}</Link>
-                    </h2>
-                  </div>
-                </div>
-                <p className="mt-3 text-sm text-slate-400">{player.primaryRole ?? "社区常驻"} · {player.ladderScore ? `${player.ladderScore} 分` : `${player.championshipCount} 冠`}</p>
-                <div className="mt-3 flex flex-wrap gap-2 text-xs text-cyan-100">
-                  {player.playStyles?.slice(0, 2).map((style) => (
-                    <span key={`${player.id}-${style}`} className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1">
-                      {style}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {player.heroCards.slice(0, 3).map((hero) => (
-                    <HeroChip key={`${player.slug}-${hero.label}`} hero={hero} compact />
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+            <p className="mt-3 text-sm text-slate-400">{player.primaryRole ?? "社区常驻"} · {player.ladderScore ? `${player.ladderScore} 分` : `${player.championshipCount} 冠`}</p>
+            <div className="mt-3 flex flex-wrap gap-2 text-xs text-cyan-100">
+              {player.playStyles?.slice(0, 2).map((style) => (
+                <span key={`${player.id}-${style}`} className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1">
+                  {style}
+                </span>
+              ))}
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {player.heroCards.slice(0, 3).map((hero) => (
+                <HeroChip key={`${player.slug}-${hero.label}`} hero={hero} compact />
+              ))}
+            </div>
+          </article>
+        ))}
+      />
 
       <section className="mt-6 rounded-[32px] border border-white/10 bg-panel/80 p-6 shadow-glow backdrop-blur">
         <div className="flex items-center justify-between gap-4">
@@ -146,6 +135,10 @@ export default async function PlayersPage() {
                   </p>
 
                   <div className="mt-2 text-sm text-slate-500">历史队伍 {player.formerTeams.length} 支</div>
+
+                  {player.gameUnderstanding ? (
+                    <p className="mt-3 text-sm leading-7 text-slate-400 line-clamp-3">{player.gameUnderstanding}</p>
+                  ) : null}
 
                   <div className="mt-3 flex flex-wrap gap-2 text-xs text-amber-100">
                     {player.preferredRoles?.length ? player.preferredRoles.slice(0, 3).map((role) => (

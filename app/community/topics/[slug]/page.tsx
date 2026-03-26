@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { DetailHero } from "@/components/detail-hero";
 import { Shell } from "@/components/shell";
 import { getCommunityTopicBySlug } from "@/lib/queries";
 
@@ -13,11 +14,22 @@ export default async function CommunityTopicDetailPage({ params }: { params: Pro
 
   return (
     <Shell>
-      <section className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(244,114,182,0.16),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))] p-8 shadow-glow md:p-10">
-        <div className="inline-flex rounded-full border border-rose-300/20 bg-rose-300/10 px-4 py-2 text-xs uppercase tracking-[0.24em] text-rose-100">{topic.activityNote ?? "社区话题"}</div>
-        <h1 className="mt-5 text-4xl font-semibold tracking-tight text-white md:text-5xl">#{topic.title}</h1>
-        <p className="mt-4 max-w-3xl text-sm leading-8 text-slate-300 md:text-base">{topic.description ?? "围绕这个话题的比赛、内容和招募都会汇到这里，方便你一口气追完整条线。"}</p>
-      </section>
+      <DetailHero
+        eyebrow="Topic Detail"
+        badge={<span className="rounded-full border border-rose-300/20 bg-rose-300/10 px-4 py-2 text-xs uppercase tracking-[0.24em] text-rose-100">{topic.activityNote ?? "社区话题"}</span>}
+        title={`#${topic.title}`}
+        description={topic.description ?? "围绕这个话题的比赛、内容和招募都会汇到这里，方便你一口气追完整条线。"}
+        actions={[
+          { href: "/community/topics", label: "返回话题列表", variant: "solid" },
+          { href: "/community", label: "回到社区首页", variant: "outline" }
+        ]}
+        stats={[
+          { label: "关联比赛", value: topic.matches.length },
+          { label: "关联内容", value: topic.contentPages.length },
+          { label: "关联招募", value: topic.recruitmentPosts.length }
+        ]}
+        className="bg-[radial-gradient(circle_at_top_left,rgba(244,114,182,0.16),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.95))]"
+      />
 
       <section className="mt-6 grid gap-6 xl:grid-cols-[1.04fr_0.96fr]">
         <article className="brand-shell p-6">

@@ -4,6 +4,11 @@ import { SectionCard } from "@/components/section-card";
 
 const adminEntries = [
   {
+    href: "/admin/claims",
+    title: "认领审核",
+    description: "审核账号的 Steam 绑定与选手认领申请，决定谁能获得正式选手身份。"
+  },
+  {
     href: "/admin/players",
     title: "选手管理",
     description: "录入选手身份信息、擅长英雄、代表比赛和战绩画像。"

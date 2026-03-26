@@ -1,0 +1,2 @@
+ALTER TABLE "Player"
+ADD COLUMN "featured" BOOLEAN NOT NULL DEFAULT false;
