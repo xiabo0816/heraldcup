@@ -53,8 +53,8 @@
 - /teams/[slug]: 队伍详情页，可跳转到现役成员和相关比赛
 - /matches: 比赛池列表页
 - /matches/[slug]: 比赛详情页，可跳转到主客队、相关选手和关联内容
-- /content: 内容库列表页，统一浏览海报、冠军页、快报、战报和自定义内容
-- /content/[slug]: 内容详情页，可跳转到关联比赛和主客队
+- /news: 新闻列表页，统一浏览归档海报、冠军页、快报、战报和专题内容
+- /news/[slug]: 新闻详情页，可跳转到关联比赛、话题和相关对象
 - /my: 身份中心，包含注册、登录、Steam 绑定、申请提交和认证选手能力
 - /my/claims: 当前登录账号的认领申请历史
 - /admin: 后台首页
@@ -70,14 +70,14 @@
 
 ## 内容库筛选参数
 
-内容列表页通过查询参数 type 进行筛选：
+新闻列表页通过查询参数 type 进行筛选：
 
-- /content: 查看全部内容
-- /content?type=poster: 只看海报
-- /content?type=champion: 只看冠军页
-- /content?type=news: 只看快报
-- /content?type=recap: 只看战报
-- /content?type=custom: 只看自定义内容
+- /news: 查看全部内容
+- /news?type=poster: 只看海报
+- /news?type=champion: 只看冠军页
+- /news?type=news: 只看快报
+- /news?type=recap: 只看战报
+- /news?type=custom: 只看专题内容
 
 如果传入不支持的 type 值，页面会自动回退到全部内容。
 
