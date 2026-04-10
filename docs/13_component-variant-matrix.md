@@ -87,9 +87,31 @@
 - 用于同层级内容切换
 - 不把 Tabs 顶部区域重新做成 Hero
 - 范围 Tabs 只允许用于全部 / 先锋杯 / 传奇杯 / 冠绝杯 4 项切换
-- 范围 Tabs 必须由范围舞台带承接当前态，其中“全部”固定使用 neutral
+- 范围 Tabs 必须由频道页二级导航中的页面级范围条承接当前态，其中“全部”固定使用 neutral，且“全部”态不显示 Banner
+- 条件性 Banner 只能挂在页面级范围条下方，不能包进 Tabs，也不能先于范围 Tabs 出现
 - 对象导航与范围 Tabs 不能混成一排，也不能共享同一个当前态样式
+- 范围 Tabs 的整体视觉强度必须低于顶部导航；主次关系靠整条层级控制，不靠缩小文字硬压
 - 首页左侧内容入口侧轨不复用范围 Tabs 语义；它属于 Link / SurfaceCard 组合，不属于顶栏导航或范围切换组件
+
+推荐组合：
+
+- 桌面端默认：Tabs.style=segmented，Tabs.size=md，单项高度 60，容器高度 60，tone 按当前范围切换
+- 桌面端紧凑：Tabs.style=segmented，Tabs.size=md，单项高度 56，适用于正文首块密度较高的频道页
+- 移动端：Tabs.style=segmented，Tabs.size=sm，单项高度 48；若宽度不足允许横向滚动，但不允许换成下拉
+
+状态细化：
+
+- neutral.active：深石板底 + 暖金描边 + text.primary.warm
+- pioneer.active：emerald 到 sky 的强对比底色 + 弱阴影
+- legend.active：violet 到 amber 的强对比底色 + 弱阴影
+- crown.active：rose 到 amber-deep 的强对比底色 + 弱阴影
+- any.inactive：保留各自 tone，但饱和度降低，阴影移除，描边降级为 border.subtle
+
+不推荐组合：
+
+- 不要给整个 Tabs 容器加比顶部导航更重的阴影
+- 不要把 Tabs.size=sm 用在桌面端主频道首屏
+- 不要把 active 和 inactive 只做文字色差，不做底色层级差
 
 ## 8. Accordion
 
