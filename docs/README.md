@@ -159,7 +159,7 @@
 
 比赛、选手、战队页的二级导航不是单独的页内小组件，也不是普通筛选条；它采用与 community 频道一致的胶囊式子导航写法，紧接顶部导航下方，固定承载 4 个范围入口。“全部”态不展示 Banner，只有切到具体杯赛态时才按页面需要在二级导航下方展示对应 Banner。
 
-如果是改导航样式或主题色，不要直接改某个页面的局部视觉，先回到 07_visual-foundations.md 的两层 token 体系：一级导航和正文骨架先使用 N0 N1 N2 N6 N8，二级导航和页面情绪层再通过 A1 A2 A5 A7 或 B C 主题组替换。
+如果是改导航样式或主题色，不要直接改某个页面的局部视觉，先回到 07_visual-foundations.md 的两层 token 体系：一级导航继续使用 N0 N1 N2 N6 N8；/matches、/players、/teams 在切到具体杯赛态后，二级导航以下的频道内容壳层统一切换到对应主题组，只有“全部”态回到中性骨架。
 
 比赛、选手、战队三个页面的首屏层级必须固定读成“顶部导航 -> 胶囊二级导航 -> Banner（仅具体杯赛态，可选） -> 主工作台或主目录”；二级导航固定紧接顶部导航下方，不再做成贴顶整条范围带。
 
@@ -175,7 +175,7 @@
 
 ### 改颜色、字号、间距、表面层级
 
-先看 07_visual-foundations.md；如果涉及按钮、Tabs、Banner 或导航状态，再补看 08_components-and-patterns.md 和 13_component-variant-matrix.md。
+先看 07_visual-foundations.md；如果涉及按钮、Tabs、Banner、频道内容主题壳层或导航状态，再补看 08_components-and-patterns.md、12_wireflow-and-state-spec.md 和 13_component-variant-matrix.md。
 
 ### 改页面布局、区块顺序或响应式结构
 

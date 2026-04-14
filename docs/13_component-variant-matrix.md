@@ -91,6 +91,7 @@
 - 范围 Tabs 只允许用于全部 / 先锋杯 / 传奇杯 / 冠绝杯 4 项切换
 - 范围 Tabs 必须由页面顶部的胶囊二级导航承接当前态，其中“全部”固定使用 neutral，且“全部”态不显示 Banner
 - Banner 只能挂在胶囊二级导航下方，不能包进 Tabs，也不能先于范围 Tabs 出现
+- currentScope 为 pioneer / legend / crown 时，二级导航以下的频道内容壳层统一切换到对应的 theme-a / theme-b / theme-c；currentScope=all 时整段内容壳层统一回退到 neutral
 - 人物推荐、战队推荐、赛程焦点只允许作为这个 Banner 槽位的内容变体存在；同一首屏不允许再出现第二个 Banner 组件实例
 - 对象导航与范围 Tabs 不能混成一排，也不能共享同一个当前态样式
 - 范围 Tabs 的整体视觉强度必须低于顶部导航；主次关系靠整条层级控制，不靠缩小文字硬压
@@ -357,7 +358,7 @@
 
 - scopeTabs 固定为全部 / 先锋杯 / 传奇杯 / 冠绝杯
 - currentScope=all 时固定使用中性色块面，不借任一杯赛主色
-- 先锋杯、传奇杯、冠绝杯只切换当前范围的 tone、文案和统计，不改对象频道骨架
+- 先锋杯、传奇杯、冠绝杯不改对象频道的 layout 骨架，但会统一切换二级导航以下频道内容壳层、分区底、描边、标题和 CTA 的 theme tone
 - objectType 决定下方对象区使用的模式：match=MatchRow/SeasonCard，player=PlayerCard，team=TeamCard
 
 ## 21B. MatchWorkspace Pattern
