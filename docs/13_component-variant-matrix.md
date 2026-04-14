@@ -58,7 +58,7 @@
 规则：
 
 - celebration 只用于赛季结算、冠军宣告、重大活动页
-- channel 页默认使用 neutral 或 brand
+- channel 页默认使用 neutral 或 brand，但仅限唯一 Banner 的内部版式或正文首块的标题区，不得在二级导航后再单独起一层 Hero / PageIntro
 - 阅读页和后台正文区不使用 celebration
 - detail、reading、operation、admin 页面也应保留块面题头，但通过 neutral 或 brand 的克制变化体现，不做统一平条头部
 

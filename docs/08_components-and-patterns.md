@@ -113,6 +113,8 @@
 
 - 页面需要建立对象认知与主 CTA 时
 
+- 在 /matches、/players、/teams 中，若复用 PageIntro，只能作为唯一 Banner 的内部版式或正文首块的一部分，不得在胶囊二级导航后再单独起一个 Hero
+
 何时别用：
 
 - Tab 内容区
