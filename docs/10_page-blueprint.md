@@ -102,7 +102,7 @@
 推荐格式：
 
 ```text
-区块：推荐选手 Banner
+区块：条件性范围 Banner（选手变体）
 生成目标：突出 1 位焦点选手，并给出为什么值得点进去
 形状定义：左宽右高双块拼接，右卡为人物高块
 拼接关系：与上一区块底边连续，与下一区块左边界顺接
@@ -156,31 +156,33 @@ CTA：1 个，使用“查看选手详情”
 - 页面舞台边界：fluid
 - 游客态：3 + 6 + 3 首页首屏 -> 中栏内容主体 -> 杯赛说明 -> 合作支持 -> Footer
 - 登录态：3 + 6 + 3 首页首屏 -> 中栏内容主体 -> 我的比赛或我的战队相关内容 -> 后续区块 -> Footer
-- 首页不参与双轴矩阵；任何 Footer 之前的区块都不能伪装为比赛/选手/战队频道专用的页面级范围条
+- 首页不参与这套二级导航结构；任何 Footer 之前的区块都不能伪装为比赛/选手/战队频道专用的页面级范围条
 
 ### 频道页 Blueprint 基线
 
 - 页面版心：1240
 - 版心内部默认采用 12 栏内容栅格，主副栏优先使用左 8 / 右 4
 - 桌面端默认采用独立滚动关系：左侧 8 栏主区负责页面滚动，右侧 4 栏侧轨固定在视口内作为持续关系锚点
-- 第一期开赛相关频道页必须把双轴矩阵做成可感知结构：顶部对象入口负责对象维，页面级范围条作为二级导航负责范围维
+- 第一期开赛相关频道页必须把“顶部对象入口 + 二级导航”做成可感知结构：顶部对象入口负责对象维，页面级范围条作为二级导航负责范围切换
 - 页面级范围条不能退化成普通标签行；它作为二级导航必须保持简单、直接，核心任务只有范围切换；当前范围的标题、统计或说明放到正文首块或右侧关系卡里同步变化；“全部”态无 Banner，具体杯赛态才允许出现对应 Banner
-- 比赛、选手、战队三个频道之间横向跳转时，Blueprint 默认要求保留当前范围，否则双轴只剩单页局部状态
-- 页面级范围条固定采用紧贴顶部导航的 4 等分简单导航条；Banner 不是范围条本身，而是仅在具体杯赛态出现的附加区块
-- 二级导航的视觉目标是“稳、清楚、次一级”：贴顶、同宽、弱于顶部导航，但又明显强于正文里的普通筛选条或工具条
+- 比赛、选手、战队三个频道之间横向跳转时，Blueprint 默认要求保留当前范围，否则这套二级导航只剩单页局部状态
+- 页面级范围条固定采用 community 风格的胶囊二级导航行；Banner 不是范围条本身，而是仅在具体杯赛态出现的附加区块
+- 二级导航的视觉目标是“稳、清楚、次一级”：位于频道主区顶部、弱于顶部导航，但又明显强于正文里的普通筛选条或工具条
+- 频道页首屏必须做成连续壳层：顶部对象入口、二级导航、条件性 Banner、正文首块共享同一版心、同一纵向中心线和连续边界，不拆成彼此分离的多张头部卡片
+- 一体化实现优先级高于装饰优先级：先保证连续边线、连续顶线、统一圆角与短过渡，再决定是否加入渐变、纹理、徽章或轻插图
 - 非对称 PageIntro / Mosaic 题头
 - 工具条或筛选条块
 - 主列表或 8 + 4 主副栏
 - 回流区
 - Footer
 
-频道页双轴矩阵线框顺序图：
+频道页二级导航线框顺序图：
 
 ```text
 频道页标准骨架
 顶部对象入口
--> 二级导航（页面级范围条，4 个等宽按钮）
 -> [仅 pioneer / legend / crown 出现] 条件性 Scope Banner
+-> 二级导航（页面级范围条，4 个胶囊按钮）
 -> 主工作台或主目录（8 + 4 / 单列工作台）
 -> 回流区
 -> Footer
@@ -194,22 +196,24 @@ CTA：1 个，使用“查看选手详情”
 
 “某杯”态骨架
 顶部对象入口
--> 二级导航（页面级范围条，某杯为当前态）
 -> 对应杯赛 Banner
+-> 二级导航（页面级范围条，某杯为当前态）
 -> 主工作台或主目录
 -> 回流区
 -> Footer
 ```
 
-频道页双轴矩阵实现规则：
+频道页二级导航实现规则：
 
 - 页面级范围条作为二级导航必须保持单层简单结构，不得拆成“信息区一层 + 按钮区一层”
 - “全部”态时，范围条下方直接进入工作台或目录，不能额外插中性色 Banner
-- 具体杯赛态的 Banner 只能有 1 个，且必须紧贴范围条底边，不得再插第二个题头块
+- 具体杯赛态的 Banner 只能有 1 个，且必须作为频道页头部摘要存在，不得再插第二个题头块
 - Banner 消失或出现时，主工作台整体上提或下移，但对象频道骨架不改变
-- 右侧侧栏顶线应与“Banner 存在时的 Banner 底边”或“Banner 不存在时的范围条底边”对齐
+- 右侧侧栏顶线应与主工作台起始顶线对齐；有 Banner 时由 Banner -> 二级导航 -> 主工作台形成短过渡
 - 顶部导航必须是首屏最强导航层；二级导航紧贴其下，但在色面、描边和阴影上都要弱一档
 - 二级导航进入正文前的过渡必须短，不做大段留白；用户应感到是在同一页面体系里下沉一级，而不是开启第二个头图区
+- Banner 与正文首块要像接力，不像断层：主工作台或主目录顶部直接接住 Banner 底边，右栏首卡与左栏主区共用同一条起始顶线
+- 若使用 8 + 4 Banner 变体，Banner 左块与正文左主区、Banner 右块与右栏首卡必须沿同一控制线落下，形成整页一致的几何秩序
 
 ### 阅读页 Blueprint 基线
 
@@ -391,7 +395,7 @@ CTA：1 个，使用“查看选手详情”
 路由：/matches
 页面类型：channel
 页面目标：把比赛页收口为“顶部对象入口 + 页面级范围条 + 条件性杯赛 Banner + 8/4 比赛工作台”的统一入口，让用户只在这里处理赛程、赛季和比赛结果
-首屏层级：顶部导航 -> Range Stage Band（二级导航） -> Scope Banner（仅 pioneer / legend / crown） -> Match Workspace + Match Range Rail
+首屏层级：顶部导航 -> Scope Banner（仅 pioneer / legend / crown，可选） -> Range Stage Band（二级导航） -> Match Workspace + Match Range Rail
 唯一主 CTA：查看当前赛程主线
 次 CTA：查看赛季详情 / 切换范围 / 去选手频道 / 去战队频道
 用户状态：游客；普通用户；已是选手；队长
@@ -402,56 +406,59 @@ CTA：1 个，使用“查看选手详情”
 
 | 区块顺序 | 区块名称 | 目标 | 布局模式 | 形状定义 | 拼接关系 | 主视觉权重 | 组件 | 主动作 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Range Stage Band | 作为比赛频道首屏二级导航，建立“全部 / 先锋杯 / 传奇杯 / 冠绝杯”的范围认知，并完成范围切换 | 12 栏二级导航条 | 4 个等宽彩色按钮组成一条简单导航条 | 顶边贴全宽导航；“全部”态直接接工作台，某杯态可接 Scope Banner | A | Tabs / Badge / SurfaceCard | 切换范围 |
+| 1 | Range Stage Band | 作为比赛频道首屏二级导航，建立“全部 / 先锋杯 / 传奇杯 / 冠绝杯”的范围认知，并完成范围切换 | 主区顶部导航行 | 4 个固定顺序的胶囊按钮组成一行次导航 | 位于频道主区顶部；“全部”态直接接工作台，某杯态上方可接 Scope Banner | A | Tabs / Badge / SurfaceCard | 切换范围 |
 | 2 | Scope Banner | 仅在具体杯赛态承接当前杯赛摘要、焦点赛程或资格说明 | 12 栏轻 Banner | 横向摘要块或轻双块拼接，禁止做成首页 Hero | 顶边贴 Range Stage Band；仅在 pioneer/legend/crown 出现；底边接 Match Workspace | B | SurfaceCard / Badge / Link | 打开当前杯赛内容 |
 | 3 | Match Workspace | 在左 8 栏只浏览当前范围下的赛季、赛程、阶段和结果入口 | 8 栏主工作台 | 整块比赛工作台，顶部为工具条，中段为赛季与赛程对象流，底部为轻回流 | 与右侧 Match Range Rail 共顶线；桌面端左侧滚动、右侧固定 | B | Input / SurfaceCard / MatchRow / SeasonCard / Badge | 打开比赛或赛季详情 |
-| 4 | Match Range Rail | 在右 4 栏说明当前范围、当前身份和跨对象跳转入口 | 4 栏固定侧轨 | 纵向状态卡与范围说明卡堆叠；按游客/用户/选手/队长切换动作，但不在此页直接承载选手/战队目录动作 | 顶边与 Match Workspace 共顶线；底边与工作台最低边共同收口 | B | IdentityPanel / SurfaceCard / Button / Link / Badge | 成为选手 / 建立队伍 / 去当前范围选手池 |
+| 4 | Match Range Rail | 在右 4 栏说明当前杯赛、当前身份和跨对象跳转入口 | 4 栏固定侧轨 | 纵向状态卡与资格卡堆叠；按游客/用户/选手/队长切换动作，但不在此页直接承载选手/战队目录动作 | 顶边与 Match Workspace 共顶线；底边与工作台最低边共同收口 | B | IdentityPanel / SurfaceCard / Button / Link / Badge | 成为选手 / 建立队伍 / 去对应杯赛选手池 |
 | 5 | Workspace Relay | 收束到海报页、历史赛季与跨频道回流 | 12 栏单列轻卡流 | 尾部短块流，收束而不重起舞台 | 从 Match Workspace 与 Match Range Rail 的共同底边顺接 | C | SurfaceCard / Link | 去海报页或其他频道 |
 
 ### 10.2 区块详细规格
 
 区块 1：Range Stage Band
-- 目标：让用户一眼知道当前在看哪个范围，并把页面级范围条做成紧贴顶部导航的简单二级导航条，而不是后台筛选条
-- 布局模式：12 栏二级导航条
+- 目标：让用户一眼知道当前在看哪个范围，并把页面级范围条做成与 community 一致的胶囊二级导航行，而不是后台筛选条
+- 布局模式：主区顶部导航行
 - 栅格占比：12 栏整宽
-- 形状定义：4 个等宽并列的彩色按钮组成一条简单导航条；4 个按钮顺序固定且直接贴合为一整条
-- 拼接关系：顶边贴全宽导航；二级导航底边在“全部”态直接接 Match Workspace，某杯态先接 Scope Banner 再进入 Match Workspace
+- 形状定义：4 个固定顺序的胶囊按钮组成一行次导航；按钮不再等宽拼成整条范围带
+- 拼接关系：位于频道主区顶部；二级导航之后在“全部”态直接接 Match Workspace，某杯态由 Scope Banner 承接头部摘要后进入二级导航与 Match Workspace
 - 注意力权重：A
 - 内容槽位：范围切换 4 个
 - 允许组件：Tabs / Badge / SurfaceCard
 - 允许变体：Tabs.style=segmented；Tabs.size=md；Tabs.tone=neutral|pioneer|legend|crown
-- 禁止项：把范围条做成细筛选器；把“全部”染成任一杯赛颜色；当前态没有大块背景承接
+- 禁止项：把范围条做成细筛选器；把“全部”染成任一杯赛颜色；把按钮重新拼回整条等宽范围带
 - CTA 位置：范围切换块本身承担切换
-- 响应式：xs 允许横向滚动，但必须保留“全部 / 先锋杯 / 传奇杯 / 冠绝杯”四项
-- 尺寸规格：二级导航占满 1240 版心 12 栏；桌面端高度建议 56 到 72；xs 端降为 48 到 56
-- 入口规格：4 个范围按钮等宽平分整条二级导航，桌面端高度 56 到 72；xs 高度 48 到 56；按钮之间无外部间距
-- 外观规格：整条二级导航保持简洁外框，外描边 1px border.default，当前态按钮阴影 0 10 24 rgba(0,0,0,0.18)
+- 响应式：xs 允许换行，但必须保留“全部 / 先锋杯 / 传奇杯 / 冠绝杯”四项
+- 尺寸规格：二级导航共享 1240 版心；桌面端按钮高度建议 36 到 44；xs 端降为 32 到 40
+- 入口规格：4 个范围按钮按文案自适应宽度；按钮之间保留稳定 gap，不做无外部间距拼接
+- 外观规格：不再使用整条二级导航外框；单按钮保留 1px 描边，当前态按钮阴影 0 10 24 rgba(0,0,0,0.18)
 - 颜色规格：全部 #2E3442 -> #4B4439；先锋杯 #236D5C -> #266088；传奇杯 #563880 -> #B08144；冠绝杯 #853454 -> #8A4D2E
 
 比赛页首屏推荐落地方案：
 
 - 顶部导航：高度 68，全宽，深一层背景，承担全站主导航身份
-- 二级导航：高度 60，紧贴顶部导航下边，使用 1240 版心对齐；4 个按钮等宽，每个按钮宽度 310
-- 全部态：整条二级导航使用中性色底盘，只有“全部”按钮为最强对比，其余三个杯赛按钮保留各自低饱和范围色
-- 具体杯赛态：当前杯赛按钮切到最强主题色；其下直接出现高度 112 的 Scope Banner；Banner 与二级导航之间不留超过 8 的缝
+- 二级导航：按钮高度 40，位于频道主区顶部，使用 1240 版心对齐；4 个按钮按内容自适应宽度，用 gap 组织
+- 全部态：二级导航按钮使用中性色底盘，只有“全部”按钮为最强对比，其余三个杯赛按钮保持中性默认态
+- 具体杯赛态：当前杯赛按钮切到最强主题色；Scope Banner 作为头部摘要存在于二级导航之前；Banner 与二级导航之间保持短过渡
 - 正文起始：无 Banner 时，Match Workspace 顶边距二级导航 24；有 Banner 时，Match Workspace 顶边直接接 Banner 底边
 - 右栏：Match Range Rail 顶线必须与正文主工作台齐平，不向上顶到二级导航处抢头部层级
+- 一体化外观：顶部导航、Range Stage Band、Scope Banner、Match Workspace 首行共用 1240 壳层；顶部两层以直边贴合，Banner 到 Workspace 再转入统一外侧圆角
+- 一体化色面：顶部导航保持最深中性色；二级导航为浅一层稳态面；Scope Banner 只在当前杯赛主色上做低一档雾面渐变，不把整块亮度抬到超过 Match Workspace 的主操作区
+- 一体化边界：Banner 底边与 Match Workspace 顶边共用同一条分割逻辑；右侧 Match Range Rail 首卡顶线与 Match Workspace 顶线、Banner 结束线三者必须严格齐平
 
 ```text
 区块：Range Stage Band
 生成目标：让用户一眼知道自己当前在比赛频道里看的是哪一个范围
 范围数量：4 个，固定为全部 / 先锋杯 / 传奇杯 / 冠绝杯
 语气：对象识别优先，不写营销口号
-布局要求：页面级范围条必须是一条紧贴顶部导航的同宽简单二级导航；4 个按钮等宽并列，不悬浮、不分散；它是双轴矩阵纵轴在页面上的可见展开
+布局要求：页面级范围条必须是一行 community 风格的胶囊二级导航；4 个按钮固定顺序、统一骨架，不再等宽并列
 颜色规则：全部=中性色；先锋杯=emerald + sky；传奇杯=violet + amber；冠绝杯=rose + amber-deep
 禁止：不要做成第二条普通 Tabs，不要变成 Hero Banner，不要让四个范围长得完全一样
 ```
 
 范围视觉节奏规则：
 - 二级导航只负责切换范围，不承担复杂说明结构
-- “全部”按钮使用深色中性语义；三个杯赛按钮使用固定杯赛色，四个按钮默认都有颜色
+- “全部”按钮使用深色中性语义；三个杯赛按钮继续使用原二级导航主题色规则，但默认态保持中性骨架
 - 范围切换只替换标题栏标题、副文案、统计和按钮强弱，不改变对象频道骨架
-- 4 个按钮无论当前态如何切换都保持等宽、等高、等圆角；不做当前态单独放大
+- 4 个按钮无论当前态如何切换都保持统一高度、圆角和内边距；不做当前态单独放大
 - 当前态与非当前态的层级差必须同时体现在背景、描边或投影中的至少两项，不允许只靠文字加粗表达
 - 二级导航本身不承载统计块，统计仍放在正文首块或右栏
 - “全部”态不显示任何杯赛 Banner；切换到具体杯赛态时才出现 Scope Banner
@@ -509,13 +516,13 @@ pioneer / legend / crown
 - 任一对象卡优先“去详情页”；跨对象浏览使用右栏中的频道入口，不分散到左侧对象卡
 
 区块 3：Match Range Rail
-- 目标：在右 4 栏解释当前范围、当前身份和可去的下一步，而不是承载第二条比赛内容流
+- 目标：在右 4 栏解释当前杯赛、当前身份和可去的下一步，而不是承载第二条比赛内容流
 - 布局模式：4 栏 sticky 侧轨
 - 栅格占比：lg 4，xs 下沉到主工作台之后
-- 形状定义：范围摘要卡 + 身份卡 + 跨频道入口卡堆叠
+- 形状定义：杯赛状态卡 + 身份卡 + 跨频道入口卡堆叠
 - 拼接关系：与 Match Workspace 共顶线，共同收口
 - 注意力权重：B
-- 内容槽位：范围说明 1 组，用户信息 1 组，选手信息 0-1 组，队伍信息 0-1 组，跨频道入口 1-2 个，动作按钮 1-2 个
+- 内容槽位：杯赛状态 1 组，用户信息 1 组，选手信息 0-1 组，队伍信息 0-1 组，跨频道入口 1-2 个，动作按钮 1-2 个
 - 允许组件：IdentityPanel / SurfaceCard / Button / Link / Badge
 - 允许变体：Button.variant=primary|secondary；Badge.tone=neutral|pioneer|legend|crown
 - 禁止项：右栏重复左侧赛程对象流；在比赛频道中直接暴露邀请入队或训练赛邀请；危险动作无确认链路
@@ -523,10 +530,10 @@ pioneer / legend / crown
 - 响应式：xs 下沉到主工作台后方，仍保持先范围后身份后动作
 
 角色态约束：
-- 游客：显示当前范围说明、登录提示与“去指引”入口
-- 普通用户：显示基本用户信息、当前范围说明与“成为选手”入口
-- 选手：显示基本用户信息、基本选手信息、当前范围资格说明与“建立队伍”入口
-- 队长：显示基本用户信息、基本选手信息、基本队伍信息、当前范围资格说明与“去当前范围战队池”入口
+- 游客：显示当前杯赛浏览说明、登录提示与“去指引”入口
+- 普通用户：显示基本用户信息、当前杯赛浏览说明与“成为选手”入口
+- 选手：显示基本用户信息、基本选手信息、对应杯赛资格说明与“建立队伍”入口
+- 队长：显示基本用户信息、基本选手信息、基本队伍信息、对应杯赛资格说明与“去对应杯赛战队池”入口
 
 区块 4：Workspace Relay
 - 目标：收束到赛季上下文、海报页、历史赛季和跨频道回流
@@ -535,7 +542,7 @@ pioneer / legend / crown
 - 形状定义：尾部短卡流
 - 拼接关系：从 Match Workspace 与 Match Range Rail 的共同底边顺接
 - 注意力权重：C
-- 内容槽位：海报页入口 0-1 个、历史赛季入口 0-2 个、去当前范围选手池入口 0-1 个、去当前范围战队池入口 0-1 个
+- 内容槽位：海报页入口 0-1 个、历史赛季入口 0-2 个、去对应杯赛选手池入口 0-1 个、去对应杯赛战队池入口 0-1 个
 - 允许组件：SurfaceCard / Link / Badge
 - 允许变体：SurfaceCard.tone=muted|default
 - 禁止项：重起第二个主舞台；混入新闻或战报主线
@@ -544,7 +551,7 @@ pioneer / legend / crown
 
 ### 10.3 比赛页注意力路径
 
-- 二级导航 -> 条件性杯赛 Banner（仅某杯态）-> 当前范围赛季与赛程 -> 右侧范围与身份说明 -> 详情页或跨频道回流
+- 二级导航 -> 条件性杯赛 Banner（仅某杯态）-> 当前杯赛赛季与赛程 -> 右侧身份与资格说明 -> 详情页或跨频道回流
 
 ### 10.4 复用与页面特有边界
 
@@ -557,8 +564,8 @@ pioneer / legend / crown
 页面顶栏：全宽导航
 路由：/players
 页面类型：channel
-页面目标：把选手页维持为展示页，并用“对象频道 + 页面级范围条 + 条件性 Banner”明确区分全站选手目录与各杯选手池
-首屏层级：顶部导航 -> Range Stage Band（二级导航） -> Featured Player Banner（仅 pioneer / legend / crown） -> Player Browser Workspace + My Identity Rail
+页面目标：把选手页维持为展示页，并用“对象频道 + 页面级范围条 + 条件性范围 Banner”明确区分全站选手目录与各杯选手池
+首屏层级：顶部导航 -> Conditional Scope Banner（选手变体，仅 pioneer / legend / crown，可选） -> Range Stage Band（二级导航） -> Player Browser Workspace + My Identity Rail
 唯一主 CTA：打开人物页
 次 CTA：切换范围 / 去申请成为选手 / 先看战队
 用户状态：游客；普通用户；已是选手；队长
@@ -568,10 +575,10 @@ pioneer / legend / crown
 
 | 区块顺序 | 区块名称 | 目标 | 布局模式 | 形状定义 | 拼接关系 | 主视觉权重 | 组件 | 主动作 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Range Stage Band | 作为选手频道首屏二级导航，建立“全部 / 先锋杯 / 传奇杯 / 冠绝杯”的范围认知，并完成范围切换 | 12 栏二级导航条 | 4 个等宽按钮组成一条简单导航条 | 顶边贴全宽导航；“全部”态直接接 Player Browser Workspace；某杯态可先接 Featured Player Banner | A | Tabs / Badge / SurfaceCard | 切换范围 |
-| 2 | Featured Player Banner | 仅在具体杯赛态突出当前杯池中的焦点人物 | 12 栏轻 Banner | 横向人物摘要块或轻双块拼接，禁止做成首页 Hero | 顶边贴 Range Stage Band；仅在 pioneer/legend/crown 出现；底边接 Player Browser Workspace | B | SurfaceCard / Badge / Link | 打开人物页 |
-| 3 | Player Browser Workspace | 承接筛选、焦点人物和当前范围内的主卡栅格 | 8 + 4 主副栏 | 左侧主工作台长块，顶部筛选条，底部人物网格 | 顶边贴 Range Stage Band 或 Featured Player Banner 底边；右侧侧轨与 My Identity Rail、Quick Relations 连成连续竖轨 | B | PlayersBrowser / SurfaceCard | 打开人物页 |
-| 4 | My Identity Rail | 在右栏固定保留角色态身份、当前范围资格说明和动作入口 | 4 栏侧轨 | 右侧第一张纵向状态块 | 顶部贴 Range Stage Band 或 Featured Player Banner 底边；底部与 Quick Relations 直接顺延 | B | SurfaceCard / Button / Dialog Trigger | 成为选手 / 建立队伍 / 邀请入队 |
+| 1 | Range Stage Band | 作为选手频道首屏二级导航，建立“全部 / 先锋杯 / 传奇杯 / 冠绝杯”的范围认知，并完成范围切换 | 主区顶部导航行 | 4 个固定顺序的胶囊按钮组成一行次导航 | 位于频道主区顶部；“全部”态直接接 Player Browser Workspace；某杯态上方可先接 Conditional Scope Banner（选手变体） | A | Tabs / Badge / SurfaceCard | 切换范围 |
+| 2 | Conditional Scope Banner（选手变体） | 仅在具体杯赛态突出当前杯池中的焦点人物；它就是选手页唯一 Banner | 12 栏轻 Banner | 横向人物摘要块或轻双块拼接，禁止做成首页 Hero | 顶边贴 Range Stage Band；仅在 pioneer/legend/crown 出现；底边接 Player Browser Workspace | B | SurfaceCard / Badge / Link | 打开人物页 |
+| 3 | Player Browser Workspace | 承接筛选、焦点人物和当前范围内的主卡栅格 | 8 + 4 主副栏 | 左侧主工作台长块，顶部筛选条，底部人物网格 | 顶边贴 Range Stage Band 或 Conditional Scope Banner（选手变体）底边；右侧侧轨与 My Identity Rail、Quick Relations 连成连续竖轨 | B | PlayersBrowser / SurfaceCard | 打开人物页 |
+| 4 | My Identity Rail | 在右栏固定保留角色态身份、对应杯赛资格说明和动作入口 | 4 栏侧轨 | 右侧第一张纵向状态块 | 顶部贴 Range Stage Band 或 Conditional Scope Banner（选手变体）底边；底部与 Quick Relations 直接顺延 | B | SurfaceCard / Button / Dialog Trigger | 成为选手 / 建立队伍 / 邀请入队 |
 | 5 | Quick Relations | 保留高频人物入口与杯池关系摘要 | 4 栏侧轨 | 多张短柱人物关系块组成轻侧流 | 顶边贴 My Identity Rail 底边；底边与 Cross Flow 起始线对齐 | C | SurfaceCard / PlayerAvatar / Badge | 打开人物页 |
 | 6 | Cross Flow | 把用户继续带到战队、比赛或当前范围规则 | 单列轻卡流 | 横向收束轻流块 | 从 Player Browser Workspace 整体底边起接，并与右侧 Quick Relations 最低边共同收口 | C | SurfaceCard / Button | 去战队或比赛 |
 
@@ -581,18 +588,31 @@ pioneer / legend / crown
 - 目标：让用户先明白当前在看“全站选手目录”还是“某杯选手池”
 - 布局模式：12 栏二级导航条
 - 栅格占比：12 栏整宽
-- 形状定义：4 个等宽按钮组成一条简单导航条
-- 拼接关系：顶边贴全宽导航；二级导航底边在“全部”态直接接 Player Browser Workspace；某杯态先接 Featured Player Banner 再进入 Player Browser Workspace
+- 形状定义：4 个固定顺序的胶囊按钮组成一行次导航
+- 拼接关系：位于频道主区顶部；二级导航之后在“全部”态直接接 Player Browser Workspace；某杯态由 Conditional Scope Banner（选手变体）承接头部摘要后进入二级导航与 Player Browser Workspace
 - 注意力权重：A
 - 内容槽位：范围切换 4 个
 - 允许组件：Tabs / Badge / SurfaceCard
 - 允许变体：Tabs.style=segmented；Tabs.tone=neutral|pioneer|legend|crown
 - 禁止项：用小 badge 代替范围条；当前范围不改标题和统计；“全部”态出现 Banner
 - CTA 位置：范围切换块本身承担切换
-- 响应式：xs 允许横向滚动，但必须完整保留四项
+- 响应式：xs 允许换行，但必须完整保留四项
 
-区块 2：Featured Player Banner
-- 目标：仅在具体杯赛态突出当前杯池人物，不让“全部”态凭空长出 Banner
+选手页首屏推荐落地方案：
+
+- 顶部导航：高度 68，全宽，负责对象识别与工具入口，保持频道页首屏最深一级表面
+- 二级导航：按钮高度 40，位于频道主区顶部，4 个按钮按内容自适应宽度；整行作为 1240 版心内的稳定次导航，不悬浮、不分离
+- 全部态：不出现 Banner；Player Browser Workspace 顶边距二级导航 24；My Identity Rail 顶线与 Player Browser Workspace 顶线严格齐平
+- 某杯态：二级导航当前按钮切到当前杯赛最强主题色；Conditional Scope Banner（选手变体）作为头部摘要存在于二级导航之前；Banner 与二级导航之间保持 12 到 20 的短过渡
+- Banner 结构：推荐使用左 8 右 4 的一体化轻拼接。左侧放当前杯池标题、1 行范围说明、1 组轻统计；右侧放 1 张焦点选手卡。整块仍算 1 个 Banner，不拆成两段
+- 一体化边界：顶部导航与二级导航用直边贴合；Banner 外轮廓与下方 Player Browser Workspace 共用同一组外侧圆角；My Identity Rail 首卡顶线与 Banner 结束线、主工作台顶线三者必须齐平
+- 一体化色面：顶部导航保持最深中性色；二级导航为浅一层稳态面；Banner 只在当前杯赛主色上做低一档雾面渐变，焦点人物卡允许比 Banner 背景略亮半级，但不得亮过正文里的主 CTA
+- 焦点人物卡：头像或人物主图只允许 1 个；卡片高度建议 112 到 136；人物名、打法标签、英雄倾向压缩在 2 到 3 层信息内，不再另起第二个人物横幅
+- 正文接力：Player Browser Workspace 顶部筛选条必须像从 Banner 底边自然长出来；避免 Banner 结束后再插一个大标题带，导致首屏断成两段
+- 右栏节奏：My Identity Rail 首卡保留对应杯赛资格与动作入口，但不重复 Banner 的大标题与人物主图；右栏负责资格解释，不与 Banner 争主视觉
+
+区块 2：Conditional Scope Banner（选手变体）
+- 目标：仅在具体杯赛态突出当前杯池人物，不让“全部”态凭空长出 Banner；它占用选手页首屏唯一 Banner 槽位
 - 布局模式：12 栏轻 Banner
 - 栅格占比：12 栏整宽
 - 形状定义：横向人物摘要块或轻双块拼接
@@ -600,7 +620,7 @@ pioneer / legend / crown
 - 内容槽位：焦点人物 1 张、杯池摘要 1 组、CTA 1 个
 - 允许组件：SurfaceCard / Badge / Link
 - 允许变体：SurfaceCard.tone=accent|default
-- 禁止项：“全部”态显示 Banner；Banner 跑到页面级范围条上方；同时突出多个人；做成首页 Hero
+- 禁止项：“全部”态显示 Banner；Banner 跑到页面级范围条上方；同时突出多个人；做成首页 Hero；在正文首块再重复起第二个人物 Banner
 - CTA 位置：卡片底部或标题右侧
 - 响应式：xs 单列轻摘要块
 
@@ -609,7 +629,7 @@ pioneer / legend / crown
 - 布局模式：主栏单列工作台，包含 Filter Bar、Focus Players、Player Grid
 - 栅格占比：lg 8，xs 14
 - 形状定义：一个连续主工作台长块，顶部嵌入筛选条，中段是短横焦点带，底部是规则网格块
-- 拼接关系：顶部贴 Range Stage Band 或 Featured Player Banner 底边；右侧与侧轨留一条固定 gutter；桌面端主工作台负责滚动，右侧侧轨固定
+- 拼接关系：顶部贴 Range Stage Band 或 Conditional Scope Banner（选手变体）底边；右侧与侧轨留一条固定 gutter；桌面端主工作台负责滚动，右侧侧轨固定
 - 注意力权重：B
 - 内容槽位：筛选按钮 4 组、下拉 3 组、搜索 1 个、结果统计 3 项、焦点人物 0-3 张、卡片栅格若干
 - 允许组件：PlayersBrowser / SurfaceCard / Form Field / HeroChip / Badge
@@ -623,24 +643,24 @@ pioneer / legend / crown
 - 先锋杯 / 传奇杯 / 冠绝杯：展示当前杯选手池，标题、计数和空态都必须显式写当前杯名
 
 区块 4：My Identity Rail
-- 目标：在右栏先讲清账号身份，再说明当前范围里的资格状态和下一步动作
+- 目标：在右栏先讲清账号身份，再说明对应杯赛里的资格状态和下一步动作
 - 布局模式：4 栏 sticky 侧轨中的首卡
 - 栅格占比：lg 4，xs 下沉到主工作区之后
 - 形状定义：纵向状态短柱块，顶部做轻包角，底部保持平直
-- 拼接关系：顶边贴 Range Stage Band 或 Featured Player Banner 底边；底边紧接 Quick Relations 第一张卡
+- 拼接关系：顶边贴 Range Stage Band 或 Conditional Scope Banner（选手变体）底边；底边紧接 Quick Relations 第一张卡
 - 注意力权重：B
-- 内容槽位：身份标题、状态说明 2-3 行、账号/选手关系标签 2-4 个、当前范围资格标签 0-2 个、CTA 1-2 个
+- 内容槽位：身份标题、状态说明 2-3 行、账号/选手关系标签 2-4 个、对应杯赛资格标签 0-2 个、CTA 1-2 个
 - 允许组件：SurfaceCard / Button / HeroChip / Badge
 - 允许变体：SurfaceCard.tone=default；Button.primary=md；Button.secondary=md
-- 禁止项：把用户账号直接写成已是选手；无当前范围资格说明；队长邀请入口埋进正文
+- 禁止项：把用户账号直接写成已是选手；无对应杯赛资格说明；队长邀请入口埋进正文
 - CTA 位置：卡片底部
 - 响应式：xs 放到主列表后，仍保持第一张侧栏卡顺序
 
 角色态约束：
 - 游客：只显示浏览说明或登录提示
 - 普通用户：显示基本用户信息与“成为选手”入口
-- 选手：显示基本用户信息、基本选手信息、当前范围资格说明与“建立队伍”入口
-- 队长：显示基本用户信息、基本选手信息、基本队伍信息、当前范围资格说明与“邀请该选手入队”入口
+- 选手：显示基本用户信息、基本选手信息、对应杯赛资格说明与“建立队伍”入口
+- 队长：显示基本用户信息、基本选手信息、基本队伍信息、对应杯赛资格说明与“邀请该选手入队”入口
 
 区块 5：Quick Relations
 - 目标：持续暴露高频人物入口和杯池关系摘要，减少回滚到顶部重新筛选的次数
@@ -651,7 +671,7 @@ pioneer / legend / crown
 - 注意力权重：C
 
 区块 6：Cross Flow
-- 目标：把用户从选手频道继续送去战队、比赛或当前范围规则入口
+- 目标：把用户从选手频道继续送去战队、比赛或对应杯赛规则入口
 - 布局模式：单列轻卡流
 - 栅格占比：12 栏整宽
 - 形状定义：横向收束轻流块，可内含 2 到 3 张短横关系卡
@@ -666,7 +686,7 @@ pioneer / legend / crown
 
 ### 11.3 选手页注意力路径
 
-- 二级导航 -> 条件性人物 Banner（仅某杯态）-> 筛选工作台 -> 主卡栅格 -> 我的身份与资格 -> 跨页回流
+- 二级导航 -> 条件性范围 Banner（选手变体，仅某杯态）-> 筛选工作台 -> 主卡栅格 -> 我的身份与资格 -> 跨页回流
 
 ### 11.4 选手页范围切换顺序图
 
@@ -681,7 +701,7 @@ all
 pioneer / legend / crown
 顶部导航
 -> 页面级范围条（某杯当前态）
--> Featured Player Banner
+-> Conditional Scope Banner（选手变体）
 -> Player Browser Workspace + My Identity Rail
 -> Quick Relations
 -> Cross Flow
@@ -699,7 +719,7 @@ pioneer / legend / crown
 路由：/teams
 页面类型：channel
 页面目标：把战队页维持为“战队对象目录 + 杯赛范围”展示页，让用户清楚区分全站战队目录和各杯战队池
-首屏层级：顶部导航 -> Range Stage Band（二级导航） -> Recommended Team Scope Banner（仅 pioneer / legend / crown） -> Teams Directory + Team Action Rail
+首屏层级：顶部导航 -> Conditional Scope Banner（战队变体，仅 pioneer / legend / crown，可选） -> Range Stage Band（二级导航） -> Teams Directory + Team Action Rail
 唯一主 CTA：查看战队详情
 次 CTA：切换范围 / 建立队伍 / 邀请训练赛
 用户状态：游客；普通用户；已是选手；队长
@@ -709,9 +729,9 @@ pioneer / legend / crown
 
 | 区块顺序 | 区块名称 | 目标 | 布局模式 | 形状定义 | 拼接关系 | 主视觉权重 | 组件 | 主动作 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Range Stage Band | 作为战队频道首屏二级导航，建立“全部 / 先锋杯 / 传奇杯 / 冠绝杯”的范围认知，并完成范围切换 | 12 栏二级导航条 | 4 个等宽按钮组成一条简单导航条 | 顶边贴全宽导航；“全部”态直接接 Teams Directory；某杯态可先接 Recommended Team Scope Banner | A | Tabs / Badge / SurfaceCard | 切换范围 |
-| 2 | Recommended Team Scope Banner | 用推荐战队和频道摘要建立当前范围的战队秩序感，但仍保持 Banner 语义 | PageIntro 8 + 4 | 左侧频道题头宽块，右侧推荐战队高块 | 顶边贴 Range Stage Band；仅在 pioneer / legend / crown 出现；下方 Teams Directory 贴左块底边进入；右高块与 Team Action Rail 共线 | B | PageIntro / SurfaceCard / TeamMark | 打开战队页 |
-| 3 | Teams Directory | 承接当前范围内的完整浏览和筛选目录 | 8 + 4 主副栏 | 左侧目录工作台长块，右侧动作为轻侧轨 | 顶边贴 Recommended Team Scope Banner 底边；“全部”态则直接贴 Range Stage Band 底边；底部与 Cross Flow 共同收口 | B | TeamsDirectory / SurfaceCard / Badge / Button | 浏览战队 |
+| 1 | Range Stage Band | 作为战队频道首屏二级导航，建立“全部 / 先锋杯 / 传奇杯 / 冠绝杯”的范围认知，并完成范围切换 | 主区顶部导航行 | 4 个固定顺序的胶囊按钮组成一行次导航 | 位于频道主区顶部；“全部”态直接接 Teams Directory；某杯态上方可先接 Conditional Scope Banner（战队变体） | A | Tabs / Badge / SurfaceCard | 切换范围 |
+| 2 | Conditional Scope Banner（战队变体） | 用推荐战队和频道摘要建立当前范围的战队秩序感；它就是战队页唯一 Banner | PageIntro 8 + 4 | 左侧频道题头宽块，右侧推荐战队高块 | 顶边贴 Range Stage Band；仅在 pioneer / legend / crown 出现；下方 Teams Directory 贴左块底边进入；右高块与 Team Action Rail 共线 | B | PageIntro / SurfaceCard / TeamMark | 打开战队页 |
+| 3 | Teams Directory | 承接当前范围内的完整浏览和筛选目录 | 8 + 4 主副栏 | 左侧目录工作台长块，右侧动作为轻侧轨 | 顶边贴 Conditional Scope Banner（战队变体）底边；“全部”态则直接贴 Range Stage Band 底边；底部与 Cross Flow 共同收口 | B | TeamsDirectory / SurfaceCard / Badge / Button | 浏览战队 |
 | 4 | Team Action Rail | 把建立队伍、邀请训练赛、范围资格说明稳定放在展示页右栏 | 4 栏侧轨 | 纵向状态、资格和动作卡堆叠 | 顶边接 Range Stage Band 与推荐战队块；底边与 Teams Directory 最低边共同收口 | B | SurfaceCard / Button / Badge / Dialog | 建立队伍 / 邀请训练赛 |
 | 5 | Cross Flow | 把用户继续带到比赛、选手或招募入口 | 单列轻卡流 | 横向收束轻流块 | 从 Teams Directory 与 Team Action Rail 整体底边起接 | C | SurfaceCard / Button | 去比赛或选手 |
 
@@ -721,18 +741,32 @@ pioneer / legend / crown
 - 目标：让用户先理解当前在看“全站战队目录”还是“某杯战队池”
 - 布局模式：12 栏二级导航条
 - 栅格占比：12 栏整宽
-- 形状定义：4 个等宽按钮组成一条简单导航条
-- 拼接关系：顶边贴全宽导航；“全部”态底边直接接 TeamsDirectory；某杯态先接 Recommended Team Scope Banner
+- 形状定义：4 个固定顺序的胶囊按钮组成一行次导航
+- 拼接关系：位于频道主区顶部；“全部”态二级导航之后直接接 TeamsDirectory；某杯态先由 Conditional Scope Banner（战队变体）承接头部摘要
 - 注意力权重：A
 - 内容槽位：范围切换 4 个
 - 允许组件：Tabs / Badge / SurfaceCard
 - 允许变体：Tabs.style=segmented；Tabs.tone=neutral|pioneer|legend|crown
-- 禁止项：用细筛选条代替范围条；当前范围不切换统计与徽章；“全部”态出现推荐战队 Banner
+- 禁止项：用细筛选条代替范围条；当前范围不切换统计与徽章；“全部”态出现条件性范围 Banner
 - CTA 位置：范围切换块本身承担切换
-- 响应式：xs 允许横向滚动，但必须完整保留四项
+- 响应式：xs 允许换行，但必须完整保留四项
 
-区块 2：Recommended Team Scope Banner
-- 目标：只在具体杯赛态用当前范围内的一支代表战队建立秩序感，而不是做泛化庆典横幅；它始终是页面级范围条下方的条件性 Banner，不是另起一层页头
+战队页首屏推荐落地方案：
+
+- 顶部导航：高度 68，全宽，负责频道身份与工具入口；保持首屏最深一级表面，不与战队 Banner 争主位
+- 二级导航：按钮高度 40，位于频道主区顶部；4 个范围按钮按内容自适应宽度排列，整体宽度跟随 1240 版心内容区
+- 全部态：不出现 Banner；Teams Directory 顶边距二级导航 24；Team Action Rail 顶线与 Teams Directory 顶线齐平，直接形成 8 + 4 主副栏入口
+- 某杯态：当前按钮切到当前杯赛最强主题色；Conditional Scope Banner（战队变体）作为头部摘要存在于二级导航之前；Banner 与二级导航之间保持 12 到 20 的短过渡
+- Banner 结构：固定采用左 8 右 4 的一体化 PageIntro。左侧承接当前杯池标题、2 到 3 行战队范围说明和 2 个动作；右侧只保留 1 张推荐战队高卡和 2 到 3 个关键指标
+- 一体化几何：左侧 Banner 块的底边直接顺接 Teams Directory；右侧推荐战队高卡与 Team Action Rail 共用同一右轨与顶线，形成“左侧目录、右侧状态”在首屏阶段就被预告出来的秩序感
+- 一体化边界：顶部导航与二级导航使用直线拼接；Banner 与 Teams Directory 再转入统一外侧圆角；避免 Banner 自己一套圆角、目录再一套圆角，导致首屏像拼贴板
+- 一体化色面：二级导航使用较稳的面层；Banner 用当前杯赛主色的雾面渐变或低噪点纹理做轻强调；推荐战队高卡可以更亮半级，但整体亮度仍须低于目录区的主操作按钮
+- 推荐战队卡：只允许 1 个主推荐对象；队标、战绩、活跃状态、CTA 压缩进单卡，不得再在目录前横向并排 2 到 3 支推荐战队，避免 Banner 变成第二个目录
+- 正文接力：Teams Directory 的筛选条与统计条应从 Banner 左块底边自然延续下来，视觉上像同一大壳层的下一层，而不是 Banner 结束后另起一个新舞台
+- 右栏节奏：Team Action Rail 负责身份、资格、动作与危险操作分层，不复述 Banner 的大标题和说明；右栏只保留当前杯赛标签和必要状态回响
+
+区块 2：Conditional Scope Banner（战队变体）
+- 目标：只在具体杯赛态用当前范围内的一支代表战队建立秩序感，而不是做泛化庆典横幅；它始终是页面级范围条下方的条件性 Banner，不是另起一层页头，并且占用战队页首屏唯一 Banner 槽位
 - 布局模式：PageIntro 左文右侧卡组
 - 栅格占比：lg 8 + 4，xs 单列
 - 形状定义：左侧频道题头宽块，右侧推荐战队纵向高块，右块顶部保留直角收边
@@ -741,7 +775,7 @@ pioneer / legend / crown
 - 内容槽位：标题 1-2 行、说明 2-4 行、CTA 2 个、推荐战队 1 张、频道统计 3 项
 - 允许组件：PageIntro / SurfaceCard / TeamMark / Button
 - 允许变体：PageIntro.tone=brand；SurfaceCard.tone=accent|muted
-- 禁止项：“全部”态显示推荐战队 Banner；把 Banner 挪到页面级范围条上方；旧式整页 Banner；多个推荐战队并排；将招募入口放成主 CTA
+- 禁止项：“全部”态显示条件性范围 Banner；把 Banner 挪到页面级范围条上方；旧式整页 Banner；多个推荐战队并排；将招募入口放成主 CTA；在目录前再叠第二个正文 Banner
 - CTA 位置：PageIntro 动作区
 - 响应式：xs 推荐战队卡先于频道统计卡，统计卡改成纵向堆叠
 
@@ -750,7 +784,7 @@ pioneer / legend / crown
 - 布局模式：目录工作台
 - 栅格占比：lg 8，xs 14
 - 形状定义：整宽目录工作台长块，顶部薄筛选条，中部目录网格，底部可选轻回流带
-- 拼接关系：必须从 Recommended Team Scope Banner 左块底边顺接；若当前为“全部”态则直接从 Range Stage Band 底边顺接，作为页面最大连续块
+- 拼接关系：必须从 Conditional Scope Banner（战队变体）左块底边顺接；若当前为“全部”态则直接从 Range Stage Band 底边顺接，作为页面最大连续块
 - 注意力权重：B
 - 内容槽位：筛选 2-4 组、统计 3 项、战队卡若干、招募入口 0-3 个
 - 允许组件：TeamsDirectory / SurfaceCard / Badge / Button
@@ -768,7 +802,7 @@ pioneer / legend / crown
 - 布局模式：4 栏侧轨
 - 栅格占比：lg 4，xs 下沉到目录之后
 - 形状定义：纵向状态卡 + 资格卡 + 动作卡堆叠
-- 拼接关系：顶边与 Recommended Team Scope Banner 顶线对齐；若当前为“全部”态则顶边贴 Range Stage Band 底边；底边与 Teams Directory 最低边共同收口
+- 拼接关系：顶边与 Conditional Scope Banner（战队变体）顶线对齐；若当前为“全部”态则顶边贴 Range Stage Band 底边；底边与 Teams Directory 最低边共同收口
 - 注意力权重：B
 - 内容槽位：账号信息 1 组，选手信息 0-1 组，队伍信息 0-1 组，当前范围资格标签 0-2 个，动作按钮 1-2 个
 - 允许组件：SurfaceCard / Button / Badge / Dialog
@@ -779,7 +813,7 @@ pioneer / legend / crown
 
 右侧角色态动作约束：
 - 普通用户：看到基本用户信息和“成为选手”说明，不直接显示建队动作
-- 选手：显示基本选手信息、当前范围资格说明和“建立队伍”入口
+- 选手：显示基本选手信息、对应杯赛资格说明和“建立队伍”入口
 - 队长：显示基本用户信息、基本选手信息、基本队伍信息；看其他队伍时显示“邀请训练赛”，仅本人队伍上下文显示“解散队伍”入口
 
 区块 5：Cross Flow
@@ -798,7 +832,7 @@ pioneer / legend / crown
 
 ### 12.3 战队页注意力路径
 
-- 二级导航 -> 条件性推荐战队 Banner（仅某杯态）-> 当前范围目录 -> 队长动作侧栏 -> 跨页回流
+- 二级导航 -> 条件性范围 Banner（战队变体，仅某杯态）-> 当前杯赛目录 -> 队长动作侧栏 -> 跨页回流
 
 ### 12.4 战队页范围切换顺序图
 
@@ -812,7 +846,7 @@ all
 pioneer / legend / crown
 顶部导航
 -> 页面级范围条（某杯当前态）
--> Recommended Team Scope Banner
+-> Conditional Scope Banner（战队变体）
 -> TeamsDirectory + Team Action Rail
 -> Cross Flow
 ```
@@ -820,11 +854,11 @@ pioneer / legend / crown
 ### 12.5 复用与页面特有边界
 
 - 可复用：Range Stage Band、TeamsDirectory
-- 页面特有：Team Action Rail、当前范围推荐战队
+- 页面特有：Team Action Rail、对应杯赛推荐战队
 
 ## 13. 第二期频道页 Blueprint
 
-- 新闻频道 /news 与社区首页 /community 的 Blueprint 实例统一见 15_phase-two-blueprints-and-specs.md。
+- 新闻频道 /news 与社区首页 /community 的 Blueprint 实例统一见 16_phase-two-features.md。
 
 ## 15. 实例 G：规则与指引阅读页 /rules 与 /guide
 
@@ -1223,7 +1257,7 @@ pioneer / legend / crown
 
 ## 21. 第二期详情页与目录页 Blueprint
 
-- 社区详情页家族、英雄目录与 FAQ 的 Blueprint 实例统一见 15_phase-two-blueprints-and-specs.md。
+- 社区详情页家族、英雄目录与 FAQ 的 Blueprint 实例统一见 16_phase-two-features.md。
 
 ## 23. 实例 O：后台列表页、编辑页与审核页家族 /admin/*
 

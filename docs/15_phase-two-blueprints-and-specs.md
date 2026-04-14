@@ -1,5 +1,10 @@
 # 今晚就来社区 / 第二期蓝图与规格
 
+本文件已归档。
+
+- 第二期 Blueprint、Section Spec、Wireflow 与组件模式已统一并入 16_phase-two-features.md
+- 如无兼容性需求，不再从本文件进入第二期设计与实现流程
+
 ## 1. 这份文档解决什么问题
 
 - 承接第二期页面的 Blueprint、Section Spec、Wireflow 与组件变体规则
@@ -8,7 +13,7 @@
 
 使用方式：
 
-- 第二期先读 14_phase-two-extension.md 明确页面职责与范围
+- 第二期先读 16_phase-two-features.md 明确页面职责与范围
 - 再读本文件确定页面蓝图、区块规格、状态流与组件模式
 - 第二期页面统一继承顶部对象入口与顶部工具入口，但不再启用第一期比赛 / 选手 / 战队的页面级范围条与条件性 Banner 结构
 

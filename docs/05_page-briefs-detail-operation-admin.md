@@ -1,6 +1,6 @@
 # 今晚就来社区 / Page Briefs: Detail, Operation, Admin
 
-分期说明：本文件只保留第一期详情页、操作页与后台核心能力 brief；第二期统一见 14_phase-two-extension.md。
+分期说明：本文件只保留第一期详情页、操作页与后台核心能力 brief；第二期统一见 16_phase-two-features.md。
 
 导航前提：详情页、操作页与后台页都继承顶部对象入口与顶部工具入口，但不再复制对象频道的页面级范围条；如果页面来自某个杯赛上下文，只以 badge、标题说明或回流入口表达当前范围。
 
@@ -26,7 +26,7 @@
 - 阶段说明
 - 参赛战队
 
-第二期扩展统一见 14_phase-two-extension.md。
+第二期扩展统一见 16_phase-two-features.md。
 
 ### 禁止项
 
@@ -54,7 +54,7 @@
 - 感谢区
 - 下一季 CTA
 
-第二期扩展统一见 14_phase-two-extension.md。
+第二期扩展统一见 16_phase-two-features.md。
 
 ### 禁止项
 
@@ -81,7 +81,7 @@
 - 已完赛海报入口
 - 与当前用户角色对应的右侧信息区
 
-第二期扩展统一见 14_phase-two-extension.md。
+第二期扩展统一见 16_phase-two-features.md。
 
 ### 禁止项
 
@@ -122,7 +122,7 @@
 - 成为选手机制说明
 - 建立队伍机制说明
 
-第二期扩展统一见 14_phase-two-extension.md。
+第二期扩展统一见 16_phase-two-features.md。
 
 ### 禁止项
 
@@ -154,7 +154,7 @@
 - 队长邀请队员入口
 - 建立队伍机制说明
 
-第二期扩展统一见 14_phase-two-extension.md。
+第二期扩展统一见 16_phase-two-features.md。
 
 ### 禁止项
 
@@ -164,7 +164,7 @@
 
 ## 6. 第二期详情页与第二期后台
 
-- 话题详情、招募详情、活动详情、英雄页与第二期后台模块 brief 统一见 14_phase-two-extension.md。
+- 话题详情、招募详情、活动详情、英雄页与第二期后台模块 brief 统一见 16_phase-two-features.md。
 
 ## 9. 我的主页 /my（第一期主页面）
 
@@ -187,7 +187,7 @@
 - 账户操作
 - 邀请收件箱摘要
 
-第二期扩展统一见 14_phase-two-extension.md。
+第二期扩展统一见 16_phase-two-features.md。
 
 ### 禁止项
 
@@ -263,7 +263,7 @@
 
 ## 12. 第二期英雄页
 
-- 英雄页 brief 统一见 14_phase-two-extension.md。
+- 英雄页 brief 统一见 16_phase-two-features.md。
 
 ## 13. 搜索弹层（第一期核心）
 
@@ -283,7 +283,7 @@
 - 最近搜索或快捷入口
 - 无结果推荐
 
-第二期扩展统一见 14_phase-two-extension.md。
+第二期扩展统一见 16_phase-two-features.md。
 
 ### 禁止项
 
@@ -336,4 +336,4 @@
 - 状态列靠整行染色表达
 - 权限不足时只静默禁用按钮
 
-第二期后台模块扩展统一见 14_phase-two-extension.md。
+第二期后台模块扩展统一见 16_phase-two-features.md。

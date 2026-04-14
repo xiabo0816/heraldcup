@@ -25,6 +25,8 @@
 - 每屏最多一个 primary 主动作簇
 - danger 只用于不可逆或高风险动作
 - loading 态必须保留按钮尺寸，避免布局跳动
+- primary 在主题页默认映射到 theme-main；secondary 映射到 N0 + theme-border + theme-strong；ghost 保持中性骨架，只在 hover 使用 theme-bg-soft
+- disabled 统一回退到 N2 N6，不保留主题高亮
 
 ## 4. SurfaceCard
 
@@ -79,7 +81,7 @@
 | --- | --- |
 | style | underline | segmented |
 | size | sm | md |
-| tone | neutral | pioneer | legend | crown |
+| tone | neutral | theme-a | theme-b | theme-c |
 | state | default | hover | active | disabled |
 
 规则：
@@ -89,29 +91,36 @@
 - 范围 Tabs 只允许用于全部 / 先锋杯 / 传奇杯 / 冠绝杯 4 项切换
 - 范围 Tabs 必须由频道页二级导航中的页面级范围条承接当前态，其中“全部”固定使用 neutral，且“全部”态不显示 Banner
 - 条件性 Banner 只能挂在页面级范围条下方，不能包进 Tabs，也不能先于范围 Tabs 出现
+- 人物推荐、战队推荐、赛程焦点只允许作为条件性 Banner 的内容变体存在；同一首屏不允许再出现第二个 Banner 组件实例
 - 对象导航与范围 Tabs 不能混成一排，也不能共享同一个当前态样式
 - 范围 Tabs 的整体视觉强度必须低于顶部导航；主次关系靠整条层级控制，不靠缩小文字硬压
 - 首页左侧内容入口侧轨不复用范围 Tabs 语义；它属于 Link / SurfaceCard 组合，不属于顶栏导航或范围切换组件
+- theme-a theme-b theme-c 是抽象主题槽位；第一期可以分别映射到当前范围主题，后续也可映射到其他二级子模块主题，但组件写法不跟业务文案耦合
 
 推荐组合：
 
-- 桌面端默认：Tabs.style=segmented，Tabs.size=md，单项高度 60，容器高度 60，tone 按当前范围切换
-- 桌面端紧凑：Tabs.style=segmented，Tabs.size=md，单项高度 56，适用于正文首块密度较高的频道页
-- 移动端：Tabs.style=segmented，Tabs.size=sm，单项高度 48；若宽度不足允许横向滚动，但不允许换成下拉
+- 桌面端默认：Tabs.style=segmented，Tabs.size=md，单项高度 40，容器不再做整条范围带壳层，default 使用 neutral 骨架，active 再切换到当前主题 tone
+- 桌面端紧凑：Tabs.style=segmented，Tabs.size=md，单项高度 36，适用于正文首块密度较高的频道页
+- 移动端：Tabs.style=segmented，Tabs.size=sm，单项高度 32 到 40；若宽度不足优先换行，不允许换成下拉
 
 状态细化：
 
-- neutral.active：深石板底 + 暖金描边 + text.primary.warm
-- pioneer.active：emerald 到 sky 的强对比底色 + 弱阴影
-- legend.active：violet 到 amber 的强对比底色 + 弱阴影
-- crown.active：rose 到 amber-deep 的强对比底色 + 弱阴影
-- any.inactive：保留各自 tone，但饱和度降低，阴影移除，描边降级为 border.subtle
+- neutral.default：N0 背景 + N2 边框 + N6 文字
+- neutral.hover：N1 背景 + N2 边框 + N8 文字
+- theme-a.hover：A1 背景 + A2 边框 + A7 文字
+- theme-b.hover：B1 背景 + B2 边框 + B7 文字
+- theme-c.hover：C1 背景 + C2 边框 + C7 文字
+- theme-a.active：A1 背景 + A2 边框 + A7 文字 + A5 底边线或左色条
+- theme-b.active：B1 背景 + B2 边框 + B7 文字 + B5 底边线或左色条
+- theme-c.active：C1 背景 + C2 边框 + C7 文字 + C5 底边线或左色条
+- disabled：回退中性骨架并降低到 40% 到 56% 可见度，但仍保留文本可读性
 
 不推荐组合：
 
-- 不要给整个 Tabs 容器加比顶部导航更重的阴影
+- 不要给整个 Tabs 容器加比顶部导航更重的阴影或整条背景壳层
 - 不要把 Tabs.size=sm 用在桌面端主频道首屏
 - 不要把 active 和 inactive 只做文字色差，不做底色层级差
+- 不要让全部按钮和具体主题按钮同时大面积使用主色，导致二级导航整条失去主次
 
 ## 8. Accordion
 
@@ -204,7 +213,7 @@
 
 规则：
 
-- 第二期频道页若使用 PageGrid(channel)，具体实例统一见 15_phase-two-blueprints-and-specs.md
+- 第二期频道页若使用 PageGrid(channel)，具体实例统一见 16_phase-two-features.md
 - reading 只用于正文加侧栏目录或关系卡
 - xs 时 channel 和 detail 必须 collapse=stack
 - 全站 PageGrid 都要允许块面错位和边界差异，但 reading 与 admin 只允许克制错位，不允许夸张拼贴
@@ -271,7 +280,7 @@
 
 ### 第二期频道卡模式
 
-- NewsCard 与 Community Entry Card 的变体矩阵统一见 15_phase-two-blueprints-and-specs.md。
+- NewsCard 与 Community Entry Card 的变体矩阵统一见 16_phase-two-features.md。
 
 ## 18. ReadingFlow / Detail Navigation
 
@@ -383,11 +392,7 @@
 
 ## 23. 第二期专用组件模式
 
-- Topic Tabs / Aggregate Groups、Recruitment Status Badge / Contact Card、Activity CTA Card、Hero Directory Card 统一见 15_phase-two-blueprints-and-specs.md。
-
-- featured 只给焦点英雄列表
-- 属性分组中的目录卡默认 size=default
-- 同一矩阵内 media 策略必须一致，不能图像和无图卡高度失控
+- Topic Tabs / Aggregate Groups、Recruitment Status Badge / Contact Card、Activity CTA Card、Hero Directory Card 统一见 16_phase-two-features.md。
 
 ## 27. FAQ Group Card
 
