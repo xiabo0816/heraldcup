@@ -1,25 +1,22 @@
 # 今晚就来社区 / Sitemap
 
+本文件只负责两件事：列出第一期页面树，汇总第一期主跳转。导航层级与设计原因统一见 01_information-architecture.md，第二期统一见 16_phase-two-features.md。
+
 ## 1. 页面树
 
-### 第一期
-
 ```text
-/
+/ 
 ├── /matches
-│   ├── 胶囊二级导航：全部 / 先锋杯 / 传奇杯 / 冠绝杯（页内切换）
-│   ├── 杯赛 Banner：位于二级导航下方，先锋杯 / 传奇杯 / 冠绝杯态按需出现
+│   ├── ?scope=all|pioneer|legend|crown
 │   ├── /matches/[slug]
 │   └── /matches/seasons/[slug]
 │       └── /matches/seasons/[slug]/final
-├── /teams
-│   ├── 胶囊二级导航：全部 / 先锋杯 / 传奇杯 / 冠绝杯（页内切换）
-│   ├── 杯赛 Banner：位于二级导航下方，先锋杯 / 传奇杯 / 冠绝杯态按需出现
-│   └── /teams/[slug]
 ├── /players
-│   ├── 胶囊二级导航：全部 / 先锋杯 / 传奇杯 / 冠绝杯（页内切换）
-│   ├── 杯赛 Banner：位于二级导航下方，先锋杯 / 传奇杯 / 冠绝杯态按需出现
+│   ├── ?scope=all|pioneer|legend|crown
 │   └── /players/[slug]
+├── /teams
+│   ├── ?scope=all|pioneer|legend|crown
+│   └── /teams/[slug]
 ├── /rules
 ├── /guide
 ├── /my
@@ -34,166 +31,58 @@
     ├── /admin/teams
     ├── /admin/matches
     ├── /admin/seasons
-    ├── /admin/tournaments
+    └── /admin/tournaments
 ```
 
-### 第二期追加
+说明：/matches、/players、/teams 共享范围态，但仍是同一对象频道的不同视图，不新增页面类型。
 
-- 第二期页面树统一见 16_phase-two-features.md
+## 2. 页面家族
 
-## 2. 页面层级说明
+| 页面家族 | 路由 | 说明 |
+| --- | --- | --- |
+| 首页 | / | 内容入口与主线导流 |
+| 对象频道页 | /matches、/players、/teams | 第一期开页，统一承载 scope 视图 |
+| 阅读页 | /rules、/guide | 静态说明与规则阅读 |
+| 详情页 | /matches/[slug]、/matches/seasons/[slug]、/matches/seasons/[slug]/final、/players/[slug]、/teams/[slug] | 关系跳转节点 |
+| 操作页 | /my、/my/claims、/my/team、/my/invitations、/login | 身份、认领、队伍管理 |
+| 后台页 | /admin 及其子路由 | 审核、维护、发布、高风险变更 |
 
-第一期落地页：
+## 3. 主跳转
 
-- /
-- /matches
-- /teams
-- /players
-- /my
-- /admin
-
-第二期落地页统一见 16_phase-two-features.md。
-
-第一期频道页：
-
-- /matches
-- /teams
-- /players
-
-第一期页内工作台：
-
-- /matches 内部固定为 8 + 4 的比赛对象工作台
-- /players 内部固定为 8 + 4 的选手对象目录
-- /teams 内部固定为 8 + 4 的战队对象目录
-- 三个页面统一共享胶囊二级导航：全部 / 先锋杯 / 传奇杯 / 冠绝杯
-- 右侧 4 栏统一为角色态与杯赛状态栏，根据游客 / 普通用户 / 选手 / 队长切换内容和动作
-
-第二期频道页统一见 16_phase-two-features.md。
-
-第一期阅读页：
-
-- /rules
-- /guide
-
-第二期阅读页统一见 16_phase-two-features.md。
-
-第一期详情页：
-
-- /matches/[slug]
-- /matches/seasons/[slug]
-- /matches/seasons/[slug]/final
-- /players/[slug]
-- /teams/[slug]
-
-第二期详情页统一见 16_phase-two-features.md。
-
-第一期操作页：
-
-- /my
-- /my/claims
-- /my/team
-- /login
-
-后台页：
-
-- /admin 及其所有子页面
-
-## 3. 跳转关系
-
-第一期主跳转：
+### 全站入口
 
 - 首页直达比赛、选手、战队、我的
-- 顶栏对象入口直达比赛、选手、战队
-- 顶栏工具入口直达搜索、我的、后台
-- 比赛、选手、战队 3 个页面都共享同一套胶囊二级导航：全部 / 先锋杯 / 传奇杯 / 冠绝杯
-- 切换胶囊二级导航只改变当前对象的杯赛上下文，不改变当前所在对象页面
-- 切换到具体杯赛态时，二级导航以下的频道内容壳层同步切换到对应主题色；切回“全部”态时，频道内容壳层回到中性
-- 搜索直达比赛、赛季、选手、战队
+- 顶部对象入口直达比赛、选手、战队
+- 顶部工具入口直达搜索、我的、后台
+- 搜索可直达比赛、赛季、选手、战队
 
-第二期主跳转统一见 16_phase-two-features.md。
+### 对象频道内跳转
 
-第一期关系跳转：
+- /matches、/players、/teams 共享全部、先锋杯、传奇杯、冠绝杯四个 scope
+- 切换 scope 只改变当前对象的范围上下文，不改变当前对象频道
+- 同一 scope 下横向切换对象频道时，默认保留当前范围
+- 具体杯赛态允许在二级导航下方出现唯一 Banner；全部态不出现 Banner
+
+### 关系跳转
 
 - 比赛详情 -> 赛季详情、战队详情、选手详情
 - 赛季详情 -> 比赛详情、战队详情
 - 选手详情 -> 战队详情、比赛详情
 - 战队详情 -> 选手详情、比赛详情
-- /matches 的范围工作区 -> 比赛详情、赛季详情
-- /players 的范围目录 -> 选手详情；队长态在详情页可发起组队邀请
-- /teams 的范围目录 -> 战队详情；队长态在详情页可发起训练赛邀请
+- /matches 工作台 -> 比赛详情、赛季详情
+- /players 目录 -> 选手详情
+- /teams 目录 -> 战队详情
 
-第二期关系跳转统一见 16_phase-two-features.md。
+### 任务跳转
 
-任务跳转：
+- 游客 -> 登录、认领、指引
+- 登录未认证 -> 我的主页、认领链路
+- 队长态 -> 我的队伍管理、邀请与训练赛相关动作
+- 被邀请选手 -> /my/invitations 查看并处理邀请
+- 后台首页 -> 审核列表、发布列表、高风险待办
 
-- 游客入口 -> 登录 / 认领 / 指引
-- 登录未认证 -> 我的主页 / 认领链路
-- 队长态 -> 我的队伍管理 / 招募管理
-- 普通用户 -> 成为选手弹层页
-- 已是选手 -> 建立队伍弹层页
-- 队长 -> 解散队伍确认弹层 / 邀请训练赛 / 邀请选手入队
-- 被邀请选手 -> /my/invitations 查看并处理组队邀请
-- 后台首页 -> 审核列表 / 发布列表 / 高风险待办
+## 4. 维护规则
 
-## 4. 导航层级与容器说明
-
-第一期导航组织原则：
-
-- 第一期开赛相关页面采用“顶部对象入口 + 二级导航”的结构，但这不是用户直接点击的额外栏目名称
-- 横轴是顶部对象入口：比赛 / 选手 / 战队
-- 纵轴是胶囊二级导航：全部 / 先锋杯 / 传奇杯 / 冠绝杯
-- 用户实际感知到的是“两层导航协同”，而不是看到一个额外的抽象概念栏目
-- 胶囊二级导航就是页面上的二级导航展开，因此它不能被简化成普通筛选条；当前范围的标题、统计和右栏说明在导航条之外的正文或侧栏中同步体现；页面表现采用 community 风格的胶囊按钮行
-- 比赛、选手、战队页的首屏固定顺序是顶部导航 -> 二级导航（胶囊按钮） -> Banner（仅具体杯赛态，可选） -> 主体
-- Banner 只允许存在 1 个；“全部”态不显示 Banner
-- 一级导航保持全站中性；当前范围一旦切到具体杯赛，二级导航以下的主体、右栏与回流区统一切换到对应主题色
-
-第一期二级导航视图：
-
-| 范围 \ 对象 | 比赛 | 选手 | 战队 |
-| --- | --- | --- | --- |
-| 全部 | /matches | /players | /teams |
-| 先锋杯 | /matches?scope=pioneer | /players?scope=pioneer | /teams?scope=pioneer |
-| 传奇杯 | /matches?scope=legend | /players?scope=legend | /teams?scope=legend |
-| 冠绝杯 | /matches?scope=crown | /players?scope=crown | /teams?scope=crown |
-
-矩阵外独立工具路径：
-
-- /my
-- /login
-- /admin
-
-全站导航层级：
-
-- 第一层：顶部对象入口，只负责比赛、选手、战队及后续第二期扩展频道
-- 并列工具层：搜索、我的、后台
-- 第二层：仅存在于 /matches、/players、/teams 的胶囊二级导航，负责全部 / 先锋杯 / 传奇杯 / 冠绝杯
-- 第二层以下的 Banner：仅存在于 /matches、/players、/teams 的具体杯赛态，负责承接当前杯赛摘要，且必须位于二级导航下方
-- 首页左侧 3 栏属于内容入口侧轨，不属于第一层全站导航
-
-第一期纯导航容器：
-
-- /admin 作为后台入口与模块分发页
-
-第二期导航容器统一见 16_phase-two-features.md。
-
-兼具落地与导航属性：
-
-- /matches
-- /players
-- /teams
-- /my
-
-第二期兼具落地与导航属性统一见 16_phase-two-features.md。
-
-不应成为独立强入口的页面：
-
-- /matches/seasons/[slug]/final 依赖赛季主线进入
-- /admin/claims/[id] 依赖列表页进入
-- /heroes/[slug] 更适合由第二期列表或关系跳转进入，详见 16_phase-two-features.md
-
-## 5. 查漏检查
-
-- 第一期先保证比赛、选手、战队、我的入口稳定可达
-- 第二期查漏与入口原则统一见 16_phase-two-features.md
-- 后台路径独立，不向前台复用视觉与结构规则
+- 新增或删除第一期页面时，只更新页面树和页面家族，不在这里重写 IA 解释
+- 改导航层级、对象维或范围维时，先更新 01_information-architecture.md，再同步这里的路由结果
+- 第二期页面、跳转和后台扩展统一维护在 16_phase-two-features.md

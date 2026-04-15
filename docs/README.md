@@ -2,213 +2,108 @@
 
 ## 目标
 
-这套文档不是为了留档，而是为了把产品目标、信息架构、页面结构、内容语气、视觉约束、组件边界和 AI 输出规则固定下来，减少后续设计与实现漂移。
+这套文档用于固定产品目标、信息架构、页面规格、视觉约束、组件边界和 AI 生成规则，减少设计与实现漂移。
 
 分期基线：
 
 - 第一期聚焦比赛、赛季、选手、战队、我的与后台核心维护链路
-- 第二期承接社区、内容、新闻、英雄及其运营关系网，统一收口到 16_phase-two-features.md
-- 读取文档时先判断当前需求属于第一期还是第二期，再进入对应 page brief 和 blueprint
+- 第二期聚焦社区、新闻、活动、招募、英雄与内容运营，统一收口到 16_phase-two-features.md
+- 先判断需求属于哪一期，再进入对应页面规格
 
-## 阅读顺序
+## 文档地图
 
-推荐按以下顺序阅读：
+### 1. 战略层
 
-第一期主链路：
+- 00_project-brief.md：站点目标、受众、风格边界
+- 06_content-standards.md：文案、标题、CTA、空态表达
 
-1. 00_project-brief.md
-2. 01_information-architecture.md
-3. 02_sitemap.md
-4. 03_page-briefs-home.md
-5. 04_page-briefs-channel-and-reading.md
-6. 05_page-briefs-detail-operation-admin.md
-7. 10_page-blueprint.md
-8. 11_section-specs.md
-9. 12_wireflow-and-state-spec.md
-10. 13_component-variant-matrix.md
+### 2. 结构层
 
-第二期统一入口：
+- 01_information-architecture.md：导航分层、对象维与范围维、命名原则
+- 02_sitemap.md：第一期页面树与主跳转，只负责查页面归属
+- 16_phase-two-features.md：第二期的 IA、Sitemap、Page Brief、Blueprint、Section、Wireflow 统一入口
 
-11. 16_phase-two-features.md
+### 3. 页面实施层
 
-第二期通用设计规则补充：
+- 03_page-briefs-home.md：首页目标、区块顺序、禁止项
+- 04_page-briefs-channel-and-reading.md：第一期频道页、阅读页、静态说明页
+- 05_page-briefs-detail-operation-admin.md：第一期详情页、操作页、后台页
+- 10_page-blueprint.md：页面级布局蓝图与实例
+- 11_section-specs.md：区块级硬约束与 promptframe
+- 12_wireflow-and-state-spec.md：交互流、状态切换、空错权限态
 
-13. 06_content-standards.md
-14. 07_visual-foundations.md
-15. 08_components-and-patterns.md
-16. 09_ai-promptbook.md
+### 4. 系统约束层
 
-阅读原则：
+- 07_visual-foundations.md：色彩 token、版式、层级、导航与 Footer 视觉规则
+- 08_components-and-patterns.md：共享组件与复用模式
+- 09_ai-promptbook.md：AI 执行顺序、输出格式、自检清单
+- 13_component-variant-matrix.md：组件变体矩阵
 
-- 先看业务目标，再看结构，再看页面任务，再看页面蓝图与区块规格，再看内容、视觉、组件，最后看 AI 执行规则
-- 第一期开发默认读 00 到 13；遇到社区、内容、新闻、英雄需求时，先读 16_phase-two-features.md，再回到通用设计规则
-- IA 负责解释为什么这样分组，Sitemap 负责把结构画出来，不要混用
-- Page Brief 负责单类页面目标与区块顺序，不替代组件文档和视觉规范
-- Page Blueprint 负责把单页落成可执行布局规格，Section Spec 负责把区块写成可复用的硬约束
-- 有交互的页面必须补 Wireflow / State Spec，不能只停在静态布局
-- 如果某个页面已经有真实 blueprint 实例，后续设计和实现优先引用实例，不再退回通用模板
+## 阅读路径
 
-## 每份文档解决什么问题
-
-### 00_project-brief.md
-
-回答这是什么站点、服务谁、追求什么结果、不允许走向什么风格。
-
-### 01_information-architecture.md
-
-定义第一期顶部对象入口、顶部工具入口、对象维与杯赛范围维的双轴关系、命名原则和核心内容层级，用来约束主线分组与入口命名；第二期统一见 16_phase-two-features.md。
-
-补充：第一期公开对象页的导航构成就是“顶部对象入口 + 顶栏下方的胶囊二级导航 + 对应杯赛上下文下的正文与侧栏”；不要再额外发明别的概念名或独立矩阵区块，胶囊二级导航本身就是这里的范围切换导航，不是普通筛选条。
-
-### 02_sitemap.md
-
-把第一期 IA 变成页面树和跳转关系图，用来查漏补缺并校验页面归属；第二期统一见 16_phase-two-features.md。
-
-### 03_page-briefs-home.md
-
-定义首页的目标用户状态、区块顺序、唯一主任务和禁止元素。
-
-补充：首页不参与这套二级导航结构；比赛、选手、战队页面的胶囊二级导航只属于对象页，不进入首页。首页与其他页面都应在文档中定义 Footer 收束规则。
-
-### 04_page-briefs-channel-and-reading.md
-
-定义第一期频道页、阅读页、静态说明页的结构模板与任务优先级；第二期统一见 16_phase-two-features.md。
-
-补充：比赛、选手、战队三个页面采用“顶部对象入口 + 二级导航”的设计：顶部对象入口承载对象维，顶栏下方的胶囊二级导航承载杯赛范围切换；首页、阅读页、操作页、后台页不参与这套二级导航结构。
-
-### 05_page-briefs-detail-operation-admin.md
-
-定义第一期详情页、操作页、后台页的结构、状态和风险控制要求；第二期统一见 16_phase-two-features.md。
-
-### 06_content-standards.md
-
-定义品牌语气、标题规则、按钮文案、长度约束、模板文案和禁用表达。
-
-### 10_page-blueprint.md
-
-定义每个核心页面的蓝图包：区块顺序、布局模式、注意力路径、主 CTA、响应式和 promptframe 约束。
-
-### 11_section-specs.md
-
-定义区块级规格表：布局、内容槽位、允许组件、禁止项、组件变体和 AI 生成约束。
-
-### 12_wireflow-and-state-spec.md
-
-定义有交互页面的流转和状态：触发条件、切换路径、表单反馈、空态、错态和权限态。
-
-### 13_component-variant-matrix.md
-
-定义共享组件的变体矩阵：size、tone、state、density、responsive 行为，避免页面各自发明组件。
-
-### 07_visual-foundations.md
-
-定义色彩、字体、间距、圆角、边框、阴影、栅格、断点和对比度底线。
-
-补充：其中包含胶囊二级导航与全站 Footer 的视觉规则，不要只定义主体区块而漏掉页底收束区。
-
-### 08_components-and-patterns.md
-
-定义共享组件、变体、状态、适用边界和常见页面 pattern，优先用于复用而不是重新发明区块。
-
-### 09_ai-promptbook.md
-
-定义 AI 的默认执行顺序、复用规则、输出格式、响应式要求和生成后的自检清单。
-
-## 常见使用场景
-
-### 新做一个页面
-
-先看：
+### 第一期默认路径
 
 1. 00_project-brief.md
 2. 01_information-architecture.md
 3. 02_sitemap.md
-4. 对应的 page brief
+4. 对应 page brief
 5. 10_page-blueprint.md
 6. 11_section-specs.md
-7. 如果有交互，再看 12_wireflow-and-state-spec.md
-8. 13_component-variant-matrix.md
-9. 07_visual-foundations.md
-10. 08_components-and-patterns.md
+7. 有交互时补 12_wireflow-and-state-spec.md
+8. 07_visual-foundations.md
+9. 08_components-and-patterns.md
+10. 13_component-variant-matrix.md
 11. 09_ai-promptbook.md
 
-优先级补充：
+### 第二期默认路径
 
-- 如果 10_page-blueprint.md 中已经存在该页面或同页面家族实例，先用实例，再用模板
-- 如果 11_section-specs.md 中已经存在同名区块实例，先套实例，不要重新造一个近似区块
-- 如果 12_wireflow-and-state-spec.md 中已经存在该交互流，状态命名必须复用现有定义
+1. 16_phase-two-features.md
+2. 06_content-standards.md
+3. 07_visual-foundations.md
+4. 08_components-and-patterns.md
+5. 09_ai-promptbook.md
+6. 13_component-variant-matrix.md
 
-### 先看现成实例再写
+说明：14_phase-two-extension.md 与 15_phase-two-blueprints-and-specs.md 仅保留归档说明，不再作为工作入口。
 
-目前已经有真实实例可直接参考的页面家族：
+## 按任务查文档
 
-1. 首页与比赛中心
-2. 选手、战队、新闻、社区四个频道页
-3. 赛季详情、比赛详情、选手详情、战队详情
-4. 话题详情、招募详情、活动详情、公告阅读页
-5. 我的主页、申请记录、登录页
-6. 英雄目录、FAQ、后台首页、后台列表/编辑/审核页家族
+| 你要做什么 | 先看 | 再看 |
+| --- | --- | --- |
+| 新做第一期页面 | 对应 page brief | 10 -> 11 -> 12 |
+| 新做第二期页面 | 16_phase-two-features.md | 07 -> 08 -> 09 |
+| 改导航、入口层级、栏目命名 | 01_information-architecture.md | 02_sitemap.md 与受影响 page brief |
+| 改页面结构、区块顺序、响应式 | 对应 page brief | 10_page-blueprint.md、11_section-specs.md |
+| 改表单、弹层、筛选、切换 | 对应 page brief | 12_wireflow-and-state-spec.md |
+| 改文案、CTA、空态 | 06_content-standards.md | 对应 page brief |
+| 改颜色、字号、间距、表面层级 | 07_visual-foundations.md | 08_components-and-patterns.md、13_component-variant-matrix.md |
+| 新增组件或 pattern | 08_components-and-patterns.md | 13_component-variant-matrix.md |
+| 让 AI 产出页面或代码 | 对应 page brief | 10、11、12、07、08、09、13 |
 
-### 改导航、栏目命名或入口层级
+## 唯一来源规则
 
-先看 01_information-architecture.md，再同步检查 02_sitemap.md 与受影响的 page brief。
-
-修改时先判断你改的是哪一层：顶部对象入口、顶部工具入口、对象页胶囊二级导航，还是首页内容入口侧轨；不要把四层写成同级。
-
-这套二级导航结构由对象导航、胶囊二级导航、唯一的 Banner 槽位、身份与资格侧栏、跨对象范围连续性共同构成，不需要再单独命名成别的概念区块。
-
-比赛、选手、战队页的二级导航不是单独的页内小组件，也不是普通筛选条；它采用与 community 频道一致的胶囊式子导航写法，紧接顶部导航下方，固定承载 4 个范围入口。“全部”态不展示 Banner，只有切到具体杯赛态时才按页面需要在二级导航下方展示对应 Banner。
-
-如果是改导航样式或主题色，不要直接改某个页面的局部视觉，先回到 07_visual-foundations.md 的两层 token 体系：一级导航继续使用 N0 N1 N2 N6 N8；/matches、/players、/teams 在切到具体杯赛态后，二级导航以下的频道内容壳层统一切换到对应主题组，只有“全部”态回到中性骨架。
-
-比赛、选手、战队三个页面的首屏层级必须固定读成“顶部导航 -> 胶囊二级导航 -> Banner（仅具体杯赛态，可选） -> 主工作台或主目录”；二级导航固定紧接顶部导航下方，不再做成贴顶整条范围带。
-
-页面首屏同一时刻只允许存在 1 个 Banner 槽位。如果该页要展示焦点人物、推荐战队或当前杯赛摘要，就必须把这些内容写进这个唯一 Banner 里，不能在它下面再起第二个正文 Banner。
-
-PageIntro / Hero 在对象频道里只可作为唯一 Banner 的内部形态，或作为二级导航之后直接承接进入的正文首块标题区；它不是独立插在二级导航与 Banner、或二级导航与正文之间的第二层页头。
-
-二级导航的 UI 层级必须服从“顶部导航主、二级导航次、Banner 再次、正文为主内容”的顺序：顶部导航在对比度、厚度和全站身份上最强；二级导航紧接其下但弱一档，不抢顶部导航；Banner 只做当前杯赛补充，不得长成第二个导航头。
-
-如果涉及社区、内容、新闻、英雄，默认先看 16_phase-two-features.md，再同步核对通用设计规则。
-
-### 改文案、CTA 或空态表达
-
-先看 06_content-standards.md，再回查对应 page brief，确认页面任务没有被文案覆盖掉。
-
-### 改颜色、字号、间距、表面层级
-
-先看 07_visual-foundations.md；如果涉及按钮、Tabs、Banner、频道内容主题壳层或导航状态，再补看 08_components-and-patterns.md、12_wireflow-and-state-spec.md 和 13_component-variant-matrix.md。
-
-### 改页面布局、区块顺序或响应式结构
-
-先看对应的 page brief，再看 10_page-blueprint.md 和 11_section-specs.md；如果页面涉及筛选、提交、弹层或切换，再同步看 12_wireflow-and-state-spec.md。
-
-### 新增组件或组合 pattern
-
-先看 08_components-and-patterns.md 和 13_component-variant-matrix.md，确认现有组件及其变体是否已经能承载。只有现有组件无法表达时，才允许新增。
-
-### 让 AI 直接产出页面结构或代码
-
-必须先提供对应 page brief，再附上 10_page-blueprint.md、11_section-specs.md；有交互时补 12_wireflow-and-state-spec.md，再附上 07_visual-foundations.md、08_components-and-patterns.md、13_component-variant-matrix.md、09_ai-promptbook.md 的约束。
-
-如果该页面已经在 10_page-blueprint.md 中有真实实例，提示里必须明确引用该实例，而不是只说“按频道页模板生成”。
+- 导航层级、对象维、范围维只在 01_information-architecture.md 定义
+- 第一期开页归属和主跳转只在 02_sitemap.md 汇总，不重复解释导航设计原因
+- 页面目标、主 CTA、必须区块、禁止项以 03 到 05 为准
+- 单页布局与实例以 10_page-blueprint.md 为准
+- 区块级硬约束与 promptframe 以 11_section-specs.md 为准
+- 交互流与状态命名以 12_wireflow-and-state-spec.md 为准
+- 视觉 token 与主题联动规则以 07_visual-foundations.md 为准
+- 第二期页面规格统一以 16_phase-two-features.md 为准
 
 ## 协作规则
 
-- 新页面先补或更新 page brief，再开始设计和实现
-- 新页面在进入设计稿或代码前，必须补 page blueprint；复杂页面同步补 section spec
+- 新页面先补或更新 page brief，再进入设计或实现
+- 新页面在进入设计稿或代码前，至少补 page blueprint；复杂页面同步补 section spec
 - 登录、筛选、表单、弹层、切换、后台编辑等页面，必须补 wireflow / state spec
-- 已有 blueprint / section / state / variant 实例的页面家族，后续必须直接复用实例命名和结构
-- 新组件先判断是否属于组件，还是只是某个 pattern 的实例
-- 组件变体变化必须同步更新组件变体矩阵，不要只改页面实现
-- 导航、命名、栏目归属的修改必须同时更新 IA 和 Sitemap
-- 文案策略变化必须同步更新内容规范，不要只改页面实现
-- 视觉 token 变化必须同步到视觉基础文档，不要只改样式文件
-- AI 生成结果如果连续两次偏移，优先补文档，不要反复口头修正
+- 有实例的页面家族优先复用实例命名和结构，不重新发明近似版本
+- 导航与栏目归属调整时，必须同时更新 IA 和 Sitemap
+- 视觉 token、文案策略、组件变体变化时，必须同步更新各自唯一来源文档
+- AI 结果连续偏移时，优先补文档，不反复口头纠偏
 
 ## 最小执行路径
 
-如果时间有限，至少按这条链路工作：
+时间有限时，至少按这条链路工作：
 
 1. Project Brief
 2. IA
@@ -220,4 +115,4 @@ PageIntro / Hero 在对象频道里只可作为唯一 Banner 的内部形态，�
 8. Components and Patterns
 9. AI Promptbook
 
-这条路径已经足够支撑大多数页面设计、实现和 AI 协作；如果页面存在交互流转，再额外补 Wireflow / State Spec。
+页面存在交互流转时，再补 Wireflow / State Spec。

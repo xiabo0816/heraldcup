@@ -59,6 +59,9 @@
 
 - celebration 只用于赛季结算、冠军宣告、重大活动页
 - channel 页默认使用 neutral 或 brand，但仅限唯一 Banner 的内部版式或正文首块的标题区，不得在二级导航后再单独起一层 Hero / PageIntro
+- 对 /matches、/players、/teams 而言，PageIntro 的默认优先级低于胶囊二级导航：不能把 PageIntro 当作频道页默认页头先渲染，再补 Tabs
+- 对 /matches、/players、/teams 而言，currentScope=all 时建议不用独立 PageIntro；currentScope=pioneer|legend|crown 时若要用，只能挂进唯一 Banner
+- channel 页中的“比赛工作台 / 选手目录 / 战队目录”如需出现，必须作为正文首块标题被 PageIntro 或 SectionIntro 承接，不能位于二级导航上方单独出现
 - 阅读页和后台正文区不使用 celebration
 - detail、reading、operation、admin 页面也应保留块面题头，但通过 neutral 或 brand 的克制变化体现，不做统一平条头部
 
@@ -90,6 +93,7 @@
 - 不把 Tabs 顶部区域重新做成 Hero
 - 范围 Tabs 只允许用于全部 / 先锋杯 / 传奇杯 / 冠绝杯 4 项切换
 - 范围 Tabs 必须由页面顶部的胶囊二级导航承接当前态，其中“全部”固定使用 neutral，且“全部”态不显示 Banner
+- 范围 Tabs 之前不允许再起任何频道题头；用户进入对象频道时，在顶部导航之后首先看到的必须就是这组 Tabs
 - Banner 只能挂在胶囊二级导航下方，不能包进 Tabs，也不能先于范围 Tabs 出现
 - currentScope 为 pioneer / legend / crown 时，二级导航以下的频道内容壳层统一切换到对应的 theme-a / theme-b / theme-c；currentScope=all 时整段内容壳层统一回退到 neutral
 - 人物推荐、战队推荐、赛程焦点只允许作为这个 Banner 槽位的内容变体存在；同一首屏不允许再出现第二个 Banner 组件实例
