@@ -32,6 +32,13 @@
 - 搜索 / 我的 / 后台仍固定停留在顶部工具入口，不与社区、英雄混排成另一套分组
 - 全部 / 先锋杯 / 传奇杯 / 冠绝杯的胶囊二级导航继续只属于第一期对象页面；第二期页面不复用这套 community 风格胶囊二级导航与 Banner 结构
 
+### 第二期配色总则
+
+- 第二期页面的背景、卡片、边框、正文和默认主 CTA 仍统一跟随 Radiant / Dire，不额外建立第三套全站主题
+- 社区、新闻、公告、话题、活动、招募、英雄页面默认不复用第一期对象频道的杯赛 Banner 结构，也不把三杯赛主色当作第二期默认主色
+- 如果某条新闻、活动、公告或招募明确属于某杯赛，只允许在标题标签、专题头图、模块入口或专题 CTA 中局部引入杯赛色，不把正文区、列表区和右栏整块染成杯赛色
+- 第二期页面仍遵守“全站看主题，模块看专题”的原则：Radiant / Dire 负责阅读与结构，专题色只负责识别与氛围
+
 ### 顶部对象入口扩展
 
 - 社区
@@ -162,7 +169,7 @@
 必须区块：
 
 - 页面说明与筛选区
-- featured 主稿区
+- 重点主稿区
 - 规则新闻矩阵
 - 关联对象标识
 
@@ -242,7 +249,7 @@
 
 必须区块：
 
-- featured 活动区
+- 重点活动区
 - 三列活动矩阵
 - 时间、类型、参与方式、状态
 
@@ -658,12 +665,12 @@
 | 属性 | 允许值 |
 | --- | --- |
 | kind | news | recap | champion | poster | custom |
-| emphasis | normal | featured |
+| emphasis | normal | strong |
 | metaLinks | none | topic | match | teams | mixed |
 
 规则：
 
-- featured 只给频道头条或首页推荐位
+- strong 只给频道头条或首页推荐位
 - poster 和 champion 只在归档语境使用
 - 单卡 meta 链接不超过 4 个
 - 头条卡必须先让人读懂标题、对象和看点，不允许海报风封面压过信息层级
@@ -715,26 +722,26 @@
 | 属性 | 允许值 |
 | --- | --- |
 | state | open | upcoming | finished | unavailable |
-| emphasis | normal | featured |
+| emphasis | normal | strong |
 | action | none | single |
 
 规则：
 
 - open 可以 action=single
 - finished 和 unavailable 必须 action=none
-- featured 只允许在活动详情侧栏第一块，不允许在正文重复出现
+- strong 只允许在活动详情侧栏第一块，不允许在正文重复出现
 
 ### 10.6 Hero Directory Card
 
 | 属性 | 允许值 |
 | --- | --- |
 | size | compact | default |
-| emphasis | normal | featured |
+| emphasis | normal | strong |
 | media | image | initial |
 
 规则：
 
-- featured 只用于焦点英雄或首屏推荐
+- strong 只用于焦点英雄或首屏推荐
 - 英雄目录卡优先可读性和识别度，不使用巨型海报式封面
 - 同一矩阵内不混用超过两种视觉权重
 

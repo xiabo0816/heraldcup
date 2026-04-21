@@ -6,6 +6,7 @@
 
 - 第二期 IA、Sitemap、Page Brief、Blueprint、Section Spec、Wireflow、组件模式统一见 16_phase-two-features.md
 - 第一期开发默认阅读 00 到 13；一旦涉及社区、新闻、公告、话题、活动、招募、英雄或第二期后台，再切换到 16_phase-two-features.md
+- 所有第二期页面的配色仍统一以 07_visual-foundations.md 为准：全站基础层使用 Radiant / Dire，杯赛色只在明确杯赛上下文中局部引入
 
 ## 为什么归档
 

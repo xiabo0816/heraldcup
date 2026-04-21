@@ -17,7 +17,7 @@
 7. 视觉层级与 token 使用
 8. 组件复用方案与允许变体
 9. 响应式策略
-10. 最后再输出 React + Tailwind 代码
+10. 最后再输出基于 MD3 语义 token 的 React + Tailwind 代码
 
 禁止直接跳到代码。
 
@@ -39,9 +39,10 @@
 
 ## 4. 默认视觉规则
 
-- 全站默认深色底盘
+- 全站默认支持 Radiant / Dire 双主题；未明确指定时，优先沿用当前页面或当前站点已选主题
 - 默认采用 14 栏栅格
 - 顶部导航默认全宽
+- 页面基础背景、卡片、边框、正文和默认主 CTA 先跟随 Radiant / Dire；先锋杯 `#236D5C`、传奇杯 `#563880`、冠绝杯 `#853454` 只主导 Banner、模块入口、专题头图、模块标签和专题 CTA
 - 顶部导航默认拆成对象入口与工具入口两组；胶囊二级导航只允许出现在 /matches、/players、/teams 顶栏下方，形式采用与 /community 一致的胶囊式子导航按钮行；一级导航保持中性骨架，“全部”态下二级导航以下内容也保持中性，具体杯赛态时则要求二级导航以下的 Banner、正文首块中的 PageIntro 形态、工具条、主列表、右栏与回流区统一切换到对应主题色。若该 Banner 承接人物、战队或赛程焦点内容，也必须直接复用这同一个 Banner 槽位，不得额外生成第二个正文 Banner，也不得在二级导航后再单独生成一层 Hero / PageIntro
 - 对 /matches、/players、/teams 而言，最容易出错的不是 Tabs 本身，而是误把 PageIntro 当成频道默认页头：AI 不得先生成一个独立 PageIntro，再在其下方放胶囊二级导航
 - 对 /matches、/players、/teams 而言，若 currentScope=all，直接输出“顶部导航 -> 胶囊二级导航 -> 正文首块”，不要额外补 PageIntro
@@ -52,10 +53,13 @@
 - 默认题材方向是 Dota 2 的远古史诗气质 + 现代内容平台可读性，不做 HUD 拟态
 - 默认普通区块间距为 24 到 32
 - 默认重区块间距为 48 到 64
-- 默认卡片圆角使用 xl 或 2xl
+- 默认先分配 MD3 shape scale：导航轨、工具条、页脚与密集列表优先 shape.none 到 shape.lg；标准卡片优先 shape.xl；只有首页主舞台、详情页主卡和单屏唯一主焦点块才使用 shape.2xl
+- 默认使用 MD3 的 color roles、container、on-*、outline、state-layer、elevation 来描述 Tailwind 实现，不直接写 emerald-600、violet-700、rounded-2xl 这类结果类名
 - 默认使用语义 token，不直接写零散色值命名
+- 全站双主题默认按 7 个项目级 token 思考：主背景色、副背景色、主色、副色、高光色、主文字色、副文字色；先定 token，再映射到 MD3 roles
 - hover 和进场反馈必须丝滑、克制、统一，优先用位移、描边、遮罩和局部高光，不要滥用缩放
 - 先锋杯、传奇杯、冠绝杯既有主色必须保留，新的 Dota 2 基底色只能做全站底盘和中性色层级
+- 不为材质和主题效果额外增加无意义 DOM 嵌套；优先复用现有块面，通过类名、token 和伪元素增强视觉
 
 ## 5. 默认页面模板
 
@@ -146,6 +150,7 @@
 ## 8. 代码输出规范
 
 - 使用 React + Tailwind
+- Tailwind 颜色、圆角、阴影必须先映射到 MD3 语义 token，再写组件类名；不要直接输出零散业务色类或把 rounded-2xl 铺满页面
 - 命名遵循现有组件与页面语义，不使用炫技命名
 - 优先抽取复用区块，不在页面内重复大段结构
 - 异步区域必须考虑 loading、empty、error、permission-denied
@@ -214,7 +219,8 @@
 
 约束：
 - 只复用现有组件
-- 使用深色底盘和既有 token
+- 先确定当前页面使用 Radiant 还是 Dire，再决定是否局部引入杯赛 Banner 色
+- 使用 MD3 role + Herald Cup token 描述 Tailwind 实现
 - 不发明新组件
 - 补齐 loading / empty / error / permission-denied
 ```

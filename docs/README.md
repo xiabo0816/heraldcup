@@ -34,7 +34,7 @@
 
 ### 4. 系统约束层
 
-- 07_visual-foundations.md：色彩 token、版式、层级、导航与 Footer 视觉规则
+- 07_visual-foundations.md：基于 Material Design 3 的色彩 role、shape scale、elevation、版式、导航与 Footer 视觉规则（含 Radiant / Dire 双主主题、先锋杯 / 传奇杯 / 冠绝杯 Banner 色、组件映射与 CSS variables）
 - 08_components-and-patterns.md：共享组件与复用模式
 - 09_ai-promptbook.md：AI 执行顺序、输出格式、自检清单
 - 13_component-variant-matrix.md：组件变体矩阵
@@ -88,7 +88,7 @@
 - 单页布局与实例以 10_page-blueprint.md 为准
 - 区块级硬约束与 promptframe 以 11_section-specs.md 为准
 - 交互流与状态命名以 12_wireflow-and-state-spec.md 为准
-- 视觉 token 与主题联动规则以 07_visual-foundations.md 为准
+- 视觉 token、Radiant / Dire 主题切换与三杯赛 Banner 色规则以 07_visual-foundations.md 为准
 - 第二期页面规格统一以 16_phase-two-features.md 为准
 
 ## 协作规则
@@ -99,6 +99,7 @@
 - 有实例的页面家族优先复用实例命名和结构，不重新发明近似版本
 - 导航与栏目归属调整时，必须同时更新 IA 和 Sitemap
 - 视觉 token、文案策略、组件变体变化时，必须同步更新各自唯一来源文档
+- 视觉与 Tailwind 实现描述统一先写 MD3 语义角色，再写本项目 token；避免在蓝图和 Prompt 中直接散写 hex、Tailwind 色系名或默认大圆角
 - AI 结果连续偏移时，优先补文档，不反复口头纠偏
 
 ## 最小执行路径

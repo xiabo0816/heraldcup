@@ -157,14 +157,13 @@ Dota 2 化而不 HUD 化：
 
 全站颜色 token 分层：
 
-- 所有颜色先拆成两层：全站基础色和二级导航主题色；禁止把所有业务色直接散落到一级导航、Banner 和正文中
+- 所有颜色先拆成两层：全站基础色（MD3 neutral / surface 系列）和赛事范围 scope 色（MD3 custom color 四件套）；禁止把所有业务色直接散落到一级导航、Banner 和正文中
 - 全站基础色只服务一级导航、正文骨架、分区边界和默认组件，它们必须足够中性，保证整站先站稳结构，再表达主题
-- 推荐基础代号固定为：N0 页面主背景，N1 浅底色或分区底色，N2 描边或分割线，N6 正文主文字，N8 标题深文字
-- 二级导航主题色服务 /matches、/players、/teams 中二级导航以下的频道内容壳层；它负责接管 Banner、标题区、工具条、主列表容器、右栏、回流区和频道内 CTA 的表面层级，但不破坏正文文字和数据的可读对比
-- 每组主题最少保留 4 个层级：A1 主题浅底色，A2 主题浅描边或 hover 辅助色，A5 主题主色，A7 主题深色文字或强强调；B 与 C 主题同理使用 B1 B2 B5 B7、C1 C2 C5 C7
-- A B C 是抽象主题槽位，不与具体业务命名绑死；第一期对象频道可把它们映射到当前范围主题，第二期也可映射到不同子模块主题
-- 页面样式实现时统一暴露为 theme 变量：theme-bg-soft = A1，theme-border = A2，theme-main = A5，theme-strong = A7；切换主题时只替换变量，不改布局与组件骨架
-- 页面样式实现时，/matches、/players、/teams 在 pioneer / legend / crown 任一具体杯赛态下，二级导航以下的外层内容容器统一挂接当前 theme 变量；切回“全部”态时，整段内容容器回到 N0 N1 N2 N6 N8
+- 基础色映射：surface 页面主背景，surface-container 分区底色，outline-variant 描边或分割线，on-surface 正文主文字，on-surface-variant 次要文字
+- 赛事范围 scope 色服务 /matches、/players、/teams 中二级导航以下的频道内容壳层；它负责接管 Banner、标题区、工具条、主列表容器、右栏、回流区和频道内 CTA 的表面层级，但不破坏正文文字和数据的可读对比
+- 每组 scope 通过 MD3 custom color 四件套实现：scope-primary、scope-on-primary、scope-primary-container、scope-on-primary-container
+- scope 是抽象主题槽位，通过 CSS class `.scope-pioneer`、`.scope-legend`、`.scope-crown` 切换变量值；切换主题时只替换变量，不改布局与组件骨架
+- 页面样式实现时，/matches、/players、/teams 在 pioneer / legend / crown 任一具体杯赛态下，二级导航以下的外层内容容器统一挂接当前 scope 变量；切回"全部"态时，整段内容容器回到 neutral surface 系列
 
 导航主次关系：
 
@@ -183,19 +182,19 @@ Dota 2 化而不 HUD 化：
 
 一级导航颜色规则：
 
-- 一级导航背景使用 N0，底部分割线使用 N2，默认文字使用 N6
-- 一级导航 hover 只允许使用 N1 的轻底色变化，不用主题主色整块铺底
-- 一级导航当前态优先通过 N8 文字、轻底色、细线或短条来表达，不依赖高饱和主题色
-- 一级导航不直接使用 A5 B5 C5；一级导航必须始终像全站骨架，而不是频道主题条
+- 一级导航背景使用 surface，底部分割线使用 outline-variant，默认文字使用 on-surface-variant
+- 一级导航 hover 使用 state layer（on-surface 8%），不用主题主色整块铺底
+- 一级导航当前态优先通过 on-surface 文字、surface-container-high 轻底色表达，不依赖高饱和主题色
+- 一级导航不直接使用任何杯赛 scope-primary；一级导航必须始终像全站骨架，而不是频道主题条
 - 一级导航的层级差主要靠字重变化、轻底色变化、细线提示、留白和间距来完成，而不是靠大面积高对比色块
 
 二级导航颜色规则：
 
-- 二级导航按钮默认态统一使用 N0 背景、N2 边框、N6 文字；默认态不预铺每个范围自己的主色
-- hover 态才切入当前主题：背景使用 theme-bg-soft，边框使用 theme-border，文字使用 theme-strong
-- active 态优先使用 theme-bg-soft、theme-border、theme-strong，再通过底边线、左色条或下划强调使用 theme-main
-- 如果页面需要更重的营销式表达，允许把 active 态做成 theme-main 实底 + 白字，但这不是后台和高密度频道页的默认方案
-- 最稳妥的频道页写法固定为：default = N0 N2 N6，hover = theme-bg-soft theme-border theme-strong，active = hover 规则加 theme-main 强提示线
+- 二级导航按钮默认态统一使用 surface 背景、outline-variant 边框、on-surface-variant 文字；默认态不预铺每个范围自己的主色
+- hover 态才切入当前主题：背景使用 scope-primary-container，边框使用 scope-primary，文字使用 scope-on-primary-container
+- active 态优先使用 scope-primary-container、scope-primary 边框、scope-on-primary-container 文字，再通过底边线使用 scope-primary 强调
+- 如果页面需要更重的营销式表达，允许把 active 态做成 scope-primary 实底 + scope-on-primary 文字，但这不是后台和高密度频道页的默认方案
+- 最稳妥的频道页写法固定为：default = surface + outline-variant + on-surface-variant，hover = scope-primary-container + scope-primary + scope-on-primary-container，active = hover 规则加 scope-primary 强提示线
 - 二级导航整体背景仍以中性色表面为主，主题色只应集中作用在按钮交互和当前态标记上
 - 二级导航自身不做整条实底染色；主题切换的主体发生在二级导航以下的频道内容壳层，而不是把第二条导航做成新的重头部
 
@@ -208,7 +207,7 @@ Dota 2 化而不 HUD 化：
 - “全部”固定使用中性色骨架，不参与主题色映射；具体杯赛或具体子模块态再挂接 A B C 主题槽位
 - 统计、资格和说明不放进二级导航本体；它们回到正文首块或右栏首卡，不把导航条写成复合信息块
 - “全部”态时，二级导航之后直接进入主工作台或主目录，不出现 Banner；具体范围态时，才允许保留 1 个对应 Banner，且它作为频道页头部摘要存在于二级导航之后
-- 当前杯赛的主题色应覆盖二级导航以下的页面背景雾面、标题区、工具条、主列表外壳、右栏首卡与回流区；局部重点再通过 theme-main 与 theme-strong 提升，不把高饱和主色直接铺满长文本区域
+- 当前杯赛的 scope 色应覆盖二级导航以下的页面背景雾面、标题区、工具条、主列表外壳、右栏首卡与回流区；局部重点再通过 scope-primary 提升，不把高饱和主色直接铺满长文本区域
 - xs 端二级导航继续使用胶囊按钮语法，允许换行，不必维持整条范围带或横向滚动条的强制语义
 - 二级导航与顶部导航仍属于同一导航体系的上下两级，但通过位置下沉到频道主区入口、轻描边和更弱阴影，让用户立刻看出主次
 - 二级导航整体不再使用整条背景壳层；不要做成与顶部导航同亮、同厚、同重量的第二条头部
@@ -219,236 +218,415 @@ Dota 2 化而不 HUD 化：
 页面主题联动规则：
 
 - /matches、/players、/teams 在切到 pioneer / legend / crown 任一具体杯赛态时，二级导航以下的频道内容壳层整体切换为当前主题；这包括页面背景雾面、分区底、描边、标题区、工具条、列表外壳、右栏、回流区与频道内 CTA
-- 主题切换后，正文段落文字、表格正文、表单输入内容和长阅读信息仍优先沿用 N6 N8 等中性色文字体系，避免牺牲可读性
+- 主题切换后，正文段落文字、表格正文、表单输入内容和长阅读信息仍优先沿用 on-surface / on-surface-variant 中性色文字体系，避免牺牲可读性
 - 跟主题联动的模块包括：页面外层背景、PageIntro（若作为 Banner 内部形态或正文首块标题区）、Banner、当前筛选项、主列表容器、右栏卡堆、主按钮、图标高亮、KPI 数字、图表主线、Tag 或 Badge、空状态点缀、Focus Ring、回流区
 - 不跟主题联动的模块包括：长正文段落文字、普通输入控件内文、表格大多数正文文本、跨页面复用的一级导航与全站 Footer 主骨架
 - 主题联动强度建议按 55 30 15 控制：55% 中性色，30% 主题浅色，15% 主题主色与深强调色
-- 大面积铺底优先使用 A1 B1 C1 这类浅底色及其低饱和渐变；A5 B5 C5 只用于主按钮、当前态线条、关键数字、焦点控件和少量强调面
+- 大面积铺底优先使用 scope-primary-container 浅底色；scope-primary 只用于主按钮、当前态线条、关键数字、焦点控件和少量强调面
 
-页面内颜色映射：
+全站双主主题规则（天辉 / 夜魇）：
 
-- 频道内容壳层：外层背景使用 theme-bg-soft 主导的低饱和渐变或雾面底，分区描边使用 theme-border，主标题与区块标题使用 theme-strong，正文文字继续使用 N6 N8
-- 页面标题区：背景使用 theme-bg-soft，主标题使用 theme-strong，副标题使用 N6，分割线使用 theme-border
-- 主按钮：背景使用 theme-main，文字使用白色，hover 使用更深一级同主题色或在原色上叠加轻阴影；disabled 回退到 N2 N6
-- 次按钮：背景使用 N0，边框使用 theme-border，文字使用 theme-strong，hover 背景使用 theme-bg-soft
-- 高亮卡片：卡片底色优先使用带轻主题雾面的 N0 或 theme-bg-soft，边框使用 theme-border，标题使用 theme-strong，局部装饰条或角标使用 theme-main
-- 标签与 Chip：浅标签使用 theme-bg-soft + theme-strong；描边标签使用 theme-border + theme-strong
-- 图表：主数据系列使用 theme-main，辅助高亮使用 theme-strong，面积填充与 hover 阴影使用 theme-bg-soft，网格线继续使用 N2
-- 链接与可点文本：默认使用 theme-strong，hover 保持同主题并增加下划线或描边反馈，避免与正文说明色混同
+- 全站基础主题拆分为两套：天辉模式（Radiant）与夜魇模式（Dire）；两者只替换基础色层，不改变信息架构、布局、组件层级和交互语义
+- 天辉模式用于明亮自然基调，参考风行者的林地配色：鼠尾草浅石、林地橄榄、皮革棕与箭羽琥珀；页面底色保持低饱和浅石与浅苔感，而不是发白的玉色或偏薄的青绿
+- 夜魇模式用于阴暗压迫基调，主色倾向赤红与暗灰黑，页面底色保持低亮深色岩质感
+- 依据 Dota 2 阵营设定：Radiant 为 bright, natural theme；Dire 为 dark, gloomy theme；在视觉映射上分别落为“亮面绿青系”与“暗面赤红系”
+- 基础主题切换只影响 MD3 neutral / surface / outline / primary 等全站基础 role；不直接改写赛事范围 scope 色
+- 切换主题后必须保证正文可读性：长正文、表格正文、表单输入文字仍优先使用 on-surface / on-surface-variant 对比体系
+- 主题切换优先服务全站骨架层（顶栏、页底、页面底盘、分区容器）；频道范围表达仍由 scope 层负责
+
+全站配色结构：
+
+- 全站只保留两套主主题：Radiant 与 Dire；页面背景、卡片、边框、正文和默认 CTA 先跟随当前全站主题
+- 先锋杯、传奇杯、冠绝杯只作为范围层，不替代全站主题主色；它们只主导 Banner、模块入口、专题头图、模块标签和模块内 CTA
+- “全部”态回到纯主题骨架；具体杯赛态时，二级导航以下进入当前杯赛的模块强调层，但正文区和功能区仍使用主题 surface / text 体系
+- 路由与状态仍沿用 `pioneer / legend / crown`；其中 `crown` 在视觉 token 上映射到冠绝杯的 `cup-immortal` 变量
+
+导航主次关系：
+
+- 顶部导航是全站主导航，品牌、对象入口、工具入口都在这里完成识别；它的视觉优先级必须高于二级导航
+- 二级导航是频道内范围切换，只解决“当前对象看哪个范围”；它要紧贴顶部导航，但整体视觉强度必须比顶部导航低一档
+- Banner 只是范围补充说明，不参与导航主次竞争；它的存在感低于二级导航，高于普通工具条
+- 正文首块是进入内容的主工作面；二级导航和 Banner 都不能抢走正文第一落点的注意力
+
+首屏一体化原则：
+
+- 顶部导航、二级导航、Banner、正文首块应共享同一条版心中轴、同一套表面层级和连续的上下边界
+- 用户进入 /matches、/players、/teams 时，应感到自己仍停留在同一页面系统内，只是从“对象识别”下沉到“范围识别”，再进入对应杯赛内容
+- 顶部导航负责全站身份，二级导航负责范围切换，Banner 负责当前杯赛摘要，正文首块负责实际任务；四者必须功能分层清楚，但视觉上属于一个连续首屏容器
+
+## 5. 色彩 Token
+
+总规则：
+
+- 文档中描述颜色时统一优先写语义 token 与 MD3 role；确需落到色值时，只使用本节定义的 Radiant / Dire 与 cup token
+- 页面基础层统一引用 `--bg`、`--bg-secondary`、`--surface`、`--surface-elevated`、`--border`、`--text`、`--text-secondary`、`--text-muted`
+- 范围层统一引用 `--cup-pioneer-*`、`--cup-legend-*`、`--cup-immortal-*`；不要再发明 `theme-a / theme-b / theme-c` 之类抽象代号
+
+### 5.1 Theme Architecture
+
+| 层级 | 颜色来源 | 主要作用 | 不承担 |
+| --- | --- | --- | --- |
+| 全站主题层 | Radiant / Dire | 页面背景、卡片、边框、正文、默认 CTA、一级导航、Footer | 杯赛识别 |
+| 杯赛范围层 | 先锋杯 / 传奇杯 / 冠绝杯 | Banner、模块入口、模块标签、专题头图、专题 CTA、当前态强调 | 正文区主背景、基础文字色、基础边框色 |
+
+落地原则：
+
+- 全站看主题，模块看杯赛
+- 主题负责阅读和结构，杯赛负责识别和氛围
+- 杯赛色用于 Banner / 标签 / 专题 CTA，不接管正文区
+
+### 5.2 Radiant Theme
+
+| Token | Color | 用途 |
+| --- | --- | --- |
+| `--bg` | `#111A12` | 页面主背景 |
+| `--bg-secondary` | `#18231A` | 二级背景 |
+| `--surface` | `#1E2B20` | 卡片背景 |
+| `--surface-elevated` | `#263629` | 弹层 / 悬浮卡片 |
+| `--border` | `#314535` | 边框 / 分割线 |
+| `--text` | `#EAF3E3` | 主文字 |
+| `--text-secondary` | `#B8C7B2` | 次文字 |
+| `--text-muted` | `#8B9A86` | 弱文字 |
+| `--primary` | `#79B84A` | 主按钮 / 品牌主色 |
+| `--primary-hover` | `#8DCA5C` | 主按钮 hover |
+| `--accent` | `#58B8D8` | 链接 / 信息高亮 |
+| `--success` | `#67C26F` | 成功态 |
+| `--warning` | `#D7B75A` | 警告态 |
+| `--danger` | `#C95C4B` | 危险态 |
+
+气质要求：自然、明亮、生命感。首页可用低透明度晨光绿调光带，但不得压住标题与统计文案。
+
+### 5.3 Dire Theme
+
+| Token | Color | 用途 |
+| --- | --- | --- |
+| `--bg` | `#111214` | 页面主背景 |
+| `--bg-secondary` | `#181A1D` | 二级背景 |
+| `--surface` | `#202327` | 卡片背景 |
+| `--surface-elevated` | `#2B2F34` | 弹层 / 悬浮卡片 |
+| `--border` | `#3A3F45` | 边框 / 分割线 |
+| `--text` | `#ECE7E1` | 主文字 |
+| `--text-secondary` | `#BEB7AF` | 次文字 |
+| `--text-muted` | `#8C857E` | 弱文字 |
+| `--primary` | `#C04A36` | 主按钮 / 品牌主色 |
+| `--primary-hover` | `#D45A45` | 主按钮 hover |
+| `--accent` | `#7B6A58` | 次级强调 |
+| `--success` | `#6D9A63` | 成功态 |
+| `--warning` | `#B88A45` | 警告态 |
+| `--danger` | `#D45A45` | 危险态 |
+
+气质要求：冷峻、压迫、硬核感。可以有余烬式暖红提亮，但不把整页做成纯红黑冲撞。
+
+### 5.4 Cup Module Banner Tokens
+
+| 模块 | 主色 | Hover / 高亮 | 深色背景 | 浅色描边 | 推荐文字 |
+| --- | --- | --- | --- | --- | --- |
+| 先锋杯 | `#236D5C` | `#2E8C77` | `#163F36` | `#4FA594` | `#F3FBF8` |
+| 传奇杯 | `#563880` | `#6D4AA1` | `#34214F` | `#8A69B5` | `#F7F3FD` |
+| 冠绝杯 | `#853454` | `#A24569` | `#552137` | `#BC6787` | `#FFF4F7` |
+
+实现映射：
+
+- `pioneer` -> `--cup-pioneer-*`
+- `legend` -> `--cup-legend-*`
+- `crown` -> `--cup-immortal-*`
+
+### 5.5 Banner Cheatsheet
+
+先锋杯 Banner：
+
+- 主背景：`#236D5C`
+- 渐变建议：`#163F36 -> #236D5C -> #2E8C77`
+- 标题文字：`#F3FBF8`
+- 副标题文字：`rgba(243,251,248,0.82)`
+- 按钮底色：`#2E8C77`
+- 按钮文字：`#F3FBF8`
+- 细描边 / 标签边框：`#4FA594`
+
+传奇杯 Banner：
+
+- 主背景：`#563880`
+- 渐变建议：`#34214F -> #563880 -> #6D4AA1`
+- 标题文字：`#F7F3FD`
+- 副标题文字：`rgba(247,243,253,0.82)`
+- 按钮底色：`#6D4AA1`
+- 按钮文字：`#F7F3FD`
+- 细描边 / 标签边框：`#8A69B5`
+
+冠绝杯 Banner：
+
+- 主背景：`#853454`
+- 渐变建议：`#552137 -> #853454 -> #A24569`
+- 标题文字：`#FFF4F7`
+- 副标题文字：`rgba(255,244,247,0.84)`
+- 按钮底色：`#A24569`
+- 按钮文字：`#FFF4F7`
+- 细描边 / 标签边框：`#BC6787`
+
+### 5.6 组件映射 Cheatsheet
+
+| 组件 | Radiant / Dire 规则 | 杯赛模块内规则 |
+| --- | --- | --- |
+| 页面背景 | 使用 `--bg` / `--bg-secondary` | 不变 |
+| 卡片背景 | 使用 `--surface` / `--surface-elevated` | 不变 |
+| 主标题 | 使用 `--text` | Banner 内改用对应杯赛文字色 |
+| 次标题 | 使用 `--text-secondary` | Banner 内使用对应文字色的 82% 到 84% 透明度 |
+| 主按钮 | 使用 `--primary` / `--primary-hover` | 专题 CTA 可切换到杯赛 hover 色 |
+| 链接 / 信息态 | 使用 `--accent` | 不变 |
+| 模块标签 | 默认使用主题描边与文字 | 使用对应杯赛描边和文字 |
+| Banner 背景 | 不在普通页面使用 | 直接使用对应杯赛色与渐变 |
+
+### 5.7 MD3 / Tailwind Semantic Mapping
+
+| 项目 token | 推荐 MD3 role | Tailwind 语义类 |
+| --- | --- | --- |
+| `--bg` | surface | `bg-surface` |
+| `--bg-secondary` | surface-container-low | `bg-surface-container-low` |
+| `--surface` | surface-container | `bg-surface-container` |
+| `--surface-elevated` | surface-container-high | `bg-surface-container-high` |
+| `--border` | outline-variant | `border-outline-variant` |
+| `--text` | on-surface | `text-on-surface` |
+| `--text-secondary` | on-surface-variant | `text-on-surface-variant` |
+| `--primary` | primary | `bg-primary` / `text-primary` |
+| `--primary-hover` | primary hover token | `hover:bg-primary-hover` |
+| `--accent` | tertiary / info accent | `text-accent` / `bg-accent` |
+
+补充说明：
+
+- `--cup-*-dark` 优先用于 Banner 内局部深底、图片遮罩和说明胶囊
+- `--cup-*-border` 优先用于 Banner 细描边、标签边框和局部强调线
+- `--cup-*-text` 只在杯赛 Banner 和杯赛专题块中使用，不替代全站正文文字色
+
+### 5.8 导航、Banner 与频道色彩规则
+
+一级导航规则：
+
+- 一级导航背景使用当前主题的 `--surface`，底部分割线使用 `--border`，默认文字使用 `--text-secondary`
+- 一级导航 hover 使用基于 `--text` 的弱 state layer，不用杯赛主色整块铺底
+- 一级导航当前态优先通过更高对比文字和轻底色表达，不直接使用杯赛色
+
+二级导航规则：
+
+- 默认态统一使用当前主题的 `--surface` 背景、`--border` 边框、`--text-secondary` 文字
+- hover / active 态才切入杯赛色；表达方式优先为浅底、细描边、底边强调线，不把整条导航染成杯赛色
+- “全部”始终使用中性骨架，不借任一杯赛主色
 
 Banner 规则：
 
 - Banner 只在先锋杯、传奇杯、冠绝杯三种具体范围态出现；“全部”态禁止显示 Banner
 - Banner 必须位于二级导航下方、主工作台上方，宽度与顶部导航及二级导航一致
-- Banner 高度建议为 96 到 128；它的视觉权重低于首页主舞台，高于普通列表工具条
-- Banner 用于承接该范围的当前摘要、焦点对象或轻说明，不承接第二套导航
-- 同一页面一次只允许出现 1 个范围 Banner；切回“全部”时 Banner 立即消失，主工作台上提
-- Banner 与二级导航之间默认直接贴边或仅保留极小过渡，不再额外插中性说明带；它应像二级导航后的轻补充层，而不是第三条导航条
-- Banner 色面优先使用 theme-bg-soft 与 theme-border 组合，局部高光或重点数字再使用 theme-main 与 theme-strong，避免整块 Banner 比导航和正文更花
-- Banner 底边进入正文时，优先让正文首块直接接住 Banner 的下缘；若正文采用 8 + 4 主副栏，则左 8 栏主工作台与右 4 栏首卡应共用 Banner 之后的首条顶线
-- Banner 可使用轻渐变、低噪点纹理、方向性光带，但其亮度峰值必须低于顶部导航当前态和正文首块主 CTA，避免在首屏中段重新夺回主位
+- Banner 用于承接当前范围摘要、焦点对象或轻说明，不承接第二套导航
+- 同一页面只允许 1 个范围 Banner；切回“全部”时 Banner 立即消失，主工作台上提
+- Banner 可使用轻渐变、低噪点纹理、方向性光带，但亮度峰值必须低于主 CTA
 
-胶囊二级导航尺寸规格：
+频道联动规则：
 
-- 宽度约束：二级导航行与频道主区共享 1240 版心，不再使用整条同宽外框
-- 桌面端按钮高度建议 36 到 44；md 端 36 到 40；xs 端 32 到 40
-- 二级导航外框改为一行按钮容器，使用 flex + gap 组织，不再额外包裹整条大舞台外框
-- 四个按钮按文案自适应宽度，按钮之间保留 8 到 12 的稳定间距；不再做 25% 等宽平分
-- 按钮圆角统一使用 radius.xl；按钮骨架与 community 子导航一致
-- 每个按钮保留 1px 描边；当前态按钮允许使用底边强调线与轻阴影；非当前态按钮默认无阴影
-- 按钮文字区只保留 1 行标题，不附加第二行说明
-- 二级导航整体视觉重量必须低于顶部导航，不建议通过加厚整条容器提高存在感
+- /matches、/players、/teams 在具体杯赛态时，Banner、模块标题区、工具条、右栏首卡、范围标签和专题 CTA 可切换到对应杯赛色
+- 正文段落、表格正文、表单输入和长阅读信息继续使用 `--text` / `--text-secondary`
+- 列表卡、关系卡和表格外壳仍以当前主题的 surface 系列为主，只允许局部引入杯赛边线或标签
 
-推荐落地方案：
+### 5.9 CSS Variables
 
-- 方案 A，默认桌面端：顶部导航高度 68；二级导航按钮高度 40；导航行位于频道主区顶部；有 Banner 时与 Banner 直接贴边或只保留极短过渡，无 Banner 时再直接进入正文首块
-- 方案 A，默认桌面端：顶部导航整体使用 N0 N2 N6 N8；二级导航按钮默认使用 N0 N2 N6，当前按钮按主题 token 切换，不给整行铺主题主色
-- 方案 A，默认桌面端：有 Banner 时二级导航之后进入 Banner；无 Banner 时二级导航之后直接进入正文首块
-- 方案 B，紧凑桌面端：顶部导航高度 64；二级导航高度 56；若顶部导航已有明显描边，二级导航只保留底边描线，不重复做厚描边
-- 方案 C，移动端：顶部导航高度 56；二级导航高度 48；当前态按钮不靠放大处理，只用更高亮底色、更强文字对比和底边色条拉开层级
-- 方案 D，一体化频道页首屏：顶部导航、二级导航、Banner、正文首块共享 1240 版心与同一纵向中心线；顶部导航与二级导航保持直线贴合，Banner 用主题浅色承接当前范围，正文首块立即回落到中性工作台
+```css
+:root[data-theme="radiant"] {
+	--bg: #111A12;
+	--bg-secondary: #18231A;
+	--surface: #1E2B20;
+	--surface-elevated: #263629;
+	--border: #314535;
 
-胶囊二级导航实现底线：
+	--text: #EAF3E3;
+	--text-secondary: #B8C7B2;
+	--text-muted: #8B9A86;
 
-- 不允许把二级导航做成带大底盘的整条营销条
-- 不允许把 4 个范围入口做成大小失衡或风格不一致的按钮
-- 不允许当前态只剩文字高亮而无更强底色、描边或底边强调
-- 不允许把统计格、说明文和按钮混排进同一条二级导航里，导致结构失焦
-- 不允许“全部”态出现任何杯赛 Banner
-- 不允许把二级导航做成与顶部导航同强度、同厚度、同视觉重心的第二主导航
+	--primary: #79B84A;
+	--primary-hover: #8DCA5C;
+	--accent: #58B8D8;
 
-设计验收三问：
+	--success: #67C26F;
+	--warning: #D7B75A;
+	--danger: #C95C4B;
 
-- 只看导航时，是否能明显感到一级导航更轻、二级导航更有主题识别
-- 切换二级主题时，页面是否有进入另一个子模块的感觉，但仍然像同一个网站
-- 即使临时去掉主题主色，是否仍能靠字重、边框、底色和位置看出当前项
+	--cup-pioneer: #236D5C;
+	--cup-legend: #563880;
+	--cup-immortal: #853454;
+}
+
+:root[data-theme="dire"] {
+	--bg: #111214;
+	--bg-secondary: #181A1D;
+	--surface: #202327;
+	--surface-elevated: #2B2F34;
+	--border: #3A3F45;
+
+	--text: #ECE7E1;
+	--text-secondary: #BEB7AF;
+	--text-muted: #8C857E;
+
+	--primary: #C04A36;
+	--primary-hover: #D45A45;
+	--accent: #7B6A58;
+
+	--success: #6D9A63;
+	--warning: #B88A45;
+	--danger: #D45A45;
+
+	--cup-pioneer: #236D5C;
+	--cup-legend: #563880;
+	--cup-immortal: #853454;
+}
+
+:root {
+	--cup-pioneer-hover: #2E8C77;
+	--cup-pioneer-dark: #163F36;
+	--cup-pioneer-border: #4FA594;
+	--cup-pioneer-text: #F3FBF8;
+
+	--cup-legend-hover: #6D4AA1;
+	--cup-legend-dark: #34214F;
+	--cup-legend-border: #8A69B5;
+	--cup-legend-text: #F7F3FD;
+
+	--cup-immortal-hover: #A24569;
+	--cup-immortal-dark: #552137;
+	--cup-immortal-border: #BC6787;
+	--cup-immortal-text: #FFF4F7;
+}
+```
+
+### 5.10 状态与无障碍底线
+
+- hover / focus / pressed 优先使用当前主题文字色或主色的弱 state layer；不要通过高饱和整块换底制造交互感
+- Radiant 与 Dire 两套主题下，正文、正文链接、辅助文字与背景的对比度都必须满足 4.5:1
+- 杯赛 Banner 内的标题、副文案与按钮也必须满足基本可读性；不要因渐变、纹理或光带牺牲对比
+- 后台和高密度表格区不使用杯赛色做大面积底色；危险操作只使用 danger 语义，不借用杯赛红紫色制造伪风险感
 
 Footer 视觉规则：
 
-- Footer 是全站统一收束带，不参与这套二级导航结构，也不继承胶囊二级导航样式
-- Footer 跟随页面版心：首页可在 fluid 舞台内收成稳定信息带，其他页面默认跟随 1240 版心
-- Footer 建议使用中性深色面：bg.stage.raised 或 bg.surface.panel，避免使用任何杯赛主色做大面积铺底
-- Footer 与上一区块之间建议保留 space-7 到 space-8 的收束间距，或通过 1 条清晰边界线直接收口
-- Footer 桌面端建议 3 到 4 列信息组，列间距建议 space-6 到 space-7；xs 端改为单列，组间距建议 space-5
-- Footer 标题使用 title 或 caption 级别，不允许出现 display 级大标题；正文说明使用 body 小号或 caption
-- Footer 链接采用低对比中性色，hover 或当前态只允许轻度提亮，不做大色块按钮墙
-- Footer 圆角优先直角或单侧小圆角，不使用首页主舞台级大圆角块
-- Footer 中可以出现品牌名、对象频道、工具入口、规则入口、版权与署名；不出现主 CTA、赛事状态统计、杯赛选择按钮
-- Footer 底部版权带建议高度 44 到 56，可用 1px border.subtle 与上方信息组分层
+- Footer 使用当前主题的 `--surface` 或 `--bg-secondary`，不使用任何杯赛主色做大面积铺底
+- Footer 链接使用 `--text-secondary`，hover 轻度提亮到 `--text`
+- Footer 圆角使用 shape-none 或 shape-extra-small
+### 6.3 Tailwind 类名映射
 
-## 4. 间距 Token
+```
+text-display-lg / text-display-md / text-display-sm
+text-headline-lg / text-headline-md / text-headline-sm
+text-title-lg / text-title-md / text-title-sm
+text-body-lg / text-body-md / text-body-sm
+text-label-lg / text-label-md / text-label-sm
+```
 
-- space-1: 4
-- space-2: 8
-- space-3: 12
-- space-4: 16
-- space-5: 20
-- space-6: 24
-- space-7: 32
-- space-8: 48
-- space-9: 64
+### 6.4 规则
 
-使用规则：
-
-- 卡片内标准间距使用 12 到 20
-- 普通区块间距使用 24 到 32
-- 重区块间距使用 48 到 64
-- 移动端外边距 16，区块间距 20 到 24
-- 页面 Blueprint 和 Section Spec 中必须直接引用这些间距 token，而不是写“适当留白”
-
-## 5. 色彩 Token
-
-推荐基底：
-
-- bg.canvas.deep = #0E1013
-- bg.stage.raised = #151922
-- bg.surface.panel = #1B2029
-- text.primary.warm = #E7E0D2
-- text.secondary.warm = #A7A29A
-- text.tertiary.warm = #7F7A74
-- metal.old-gold = #9B7A45
-- metal.highlight = #C39A5A
-- faction.dire = #A33B35
-- faction.radiant = #3E7B6F
-- state.info.blue = #466C8E
-
-基础语义色：
-
-- bg.canvas
-- bg.stage
-- bg.surface.strong
-- bg.surface.default
-- bg.surface.soft
-- bg.surface.overlay
-- border.subtle
-- border.default
-- border.emphasis
-- text.primary
-- text.secondary
-- text.tertiary
-- text.disabled
-
-状态色：
-
-- state.success
-- state.info
-- state.warning
-- state.danger
-- state.muted
-
-赛事品牌色：
-
-- cup.pioneer.primary = emerald
-- cup.pioneer.secondary = sky
-- cup.legend.primary = violet
-- cup.legend.secondary = amber
-- cup.crown.primary = rose
-- cup.crown.secondary = amber-deep
-
-杯赛主色保留原则：
-
-- 先锋杯、传奇杯、冠绝杯的既有主色调继续保留，不因新视觉方向改色
-- 新增的 Dota 2 世界观基底色只负责做全站底盘、材质和中性色层级，不替代杯赛识别色
-- 杯赛品牌色只在对应赛事上下文里作为高亮层使用，避免全站被赛事色污染
-- 对象页面顶部的胶囊二级导航必须按当前范围切换按钮主色：全部使用中性色；先锋杯使用 emerald + sky，传奇杯使用 violet + amber，冠绝杯使用 rose + amber-deep
-- 胶囊二级导航必须清楚表达 4 项范围切换，不允许只用一条下划线或一枚小 badge 表达范围切换
-- 比赛、选手、战队三个对象页面都共享同一套胶囊二级导航骨架：同样的 community 式胶囊二级导航行，只切换按钮强弱与 Banner 内容
-
-使用底线：
-
-- 品牌色只进入胶囊二级导航按钮、Banner、头图、顶边、徽章、按钮、图形光带和关键数字
-- Banner 允许使用范围主色渐变或同色系块面作为背景，但仍须保证标题、统计、状态和 CTA 的可读性
-- Banner 优先使用整块纯色面、渐变面或低噪点纹理面，不使用碎图拼贴或装饰性底图
-- 列表卡和正文工作区仍以中性色为主，只在 badge、描边、关键数字和资格标签上继承当前范围色
-- 同一屏允许 1 个主色块、1 到 2 个辅色块和少量中性色承托，但色块必须服务分区识别
-- 后台不使用赛事品牌色做大面积底色
-- 大色块优先使用整面渐变、纯色面或低噪点纹理，不使用碎背景图堆叠
-- 推荐配色比例：80% 深色中性色、15% 金属暖色、5% 功能亮色
-- 避免纯黑电竞站、霓虹赛博色、高饱和纯金大面积铺底
-
-## 6. 字体 Token
-
-角色：
-
-- font.display: 展示标题
-- font.body: 正文系统字体
-- font.data: 数据与标签字体
-
-字号：
-
-- display-xl: 48-64 / 1.05-1.1
-- display-lg: 32-40 / 1.1-1.2
-- heading-md: 24-28 / 1.2
-- heading-sm: 20-24 / 1.25
-- title: 16-18 / 1.35
-- body: 14-16 / 1.6
-- caption: 12-13 / 1.5
-
-规则：
-
-- 标题允许带一点史诗、雕刻、赛事感，但只用于题头、专题和赛事大标题
-- 正文、评论、攻略、筛选、按钮和后台全部优先现代无衬线
+- 标题允许带一点史诗、雕刻、赛事感，但只用于 display 和 headline 级别
+- 正文、评论、攻略、筛选、按钮和后台全部使用 body / label / title 级别
 - 数字信息如版本号、胜率、更新时间、比分必须一眼可读
 - 中文正文单列建议 28 到 36 字一行
 - 阅读页不得出现 900+ 宽度的长行正文
-- caption 只承担补充信息，不承担主引导
-- 原则是“标题有世界观，正文有产品感”
+- label-small 只承担补充信息，不承担主引导
+- 原则是"标题有世界观，正文有产品感"
 
-## 7. 圆角、边框、阴影
+## 7. Shape 与 Elevation
 
-- radius.lg: 工具条和轻输入区
-- radius.xl: 小卡片
-- radius.2xl: 大卡片
+### 7.1 MD3 Shape Scale
 
-规则：
+MD3 定义六级 shape token，本站映射如下：
 
-- 优先使用弱描边，不依赖重阴影堆层次
-- 普通卡片只允许轻阴影或无阴影
-- 主视觉卡和冠军卡可用低强度彩色阴影
+| MD3 shape | 圆角值 | Tailwind 类名 | 适用场景 |
+| --- | --- | --- | --- |
+| shape-none | 0dp | rounded-none | 导航轨、表格壳层、Footer 收束带、贴边 Banner 顶边 |
+| shape-extra-small | 4dp | rounded | 侧栏收口、列表项边缘、单侧圆角过渡 |
+| shape-small | 8dp | rounded-lg | 工具条、输入框、密集摘要卡 |
+| shape-medium | 12dp | rounded-xl | 标准卡片、胶囊二级导航按钮、对话框、普通 Banner 内卡 |
+| shape-large | 16dp | rounded-2xl | 首页主舞台、Detail Hero 主卡、FAB、单屏唯一主焦点块 |
+| shape-extra-large | 28dp | rounded-3xl | Sheet 顶部圆角 |
+| shape-full | 50% | rounded-full | Chip、Pill badge、Avatar |
+
+### 7.2 Border（描边）
+
+- 描边统一使用 outline-variant 色，宽度 1px
+- 重要边界（输入框、高对比分区）使用 outline 色
+- 不依赖重阴影堆层次；普通卡片只用描边或 tonal elevation
 - 禁止玻璃拟态和高反光边框
 
-布局相关补充：
+### 7.3 MD3 Elevation（表面层级）
 
-- 同一屏的圆角类型不超过两档
-- 信息密度高的后台区域优先 radius.lg
-- 详情页主卡和首页焦点卡可使用 radius.2xl，列表密集区优先 radius.xl
+MD3 dark theme 优先使用 tonal color（surface-container 梯度）表达层级，shadow 仅在必要时辅助使用。
+
+| Elevation level | MD3 surface role | 用途 | Shadow |
+| --- | --- | --- | --- |
+| Level 0 | surface | 页面背景 | 无 |
+| Level 1 | surface-container-low | 卡片默认、列表区域 | 无 |
+| Level 2 | surface-container | 导航栏、面板、抬升容器 | 无 |
+| Level 3 | surface-container-high | 对话框、高亮面板、Search bar | 可选轻阴影 |
+| Level 4 | surface-container-highest | 浮层、下拉菜单 | 需要阴影 |
+| Level 5 | surface-container-highest + scrim | 全屏覆盖层 | scrim 遮罩 |
+
+Shadow token（仅在需要时使用）：
+
+- shadow-sm: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15)
+- shadow-md: 0 1px 2px rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15)
+- shadow-lg: 0 4px 8px 3px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.3)
+- shadow-xl: 0 6px 10px 4px rgba(0,0,0,0.15), 0 2px 3px rgba(0,0,0,0.3)
+
+### 7.4 规则
+
+- 同一屏的 shape token 不超过两档（如 shape-small + shape-medium）
+- 同一屏最多同时出现三层 elevation
+- 信息密度高的后台区域优先 shape-none 到 shape-small
+- 详情页主卡和首页焦点卡可使用 shape-large，列表密集区优先 shape-small 到 shape-medium
 - 禁止全页统一全圆角，也禁止全页统一全直角
-- 推荐交叉规则：中轨主块和重点 CTA 块可用大圆角，左右侧轨、筛选条、表格壳层、页脚带优先直角或单侧小圆角
+- 推荐交叉规则：中轨主块和重点 CTA 块用 shape-medium 到 shape-large，侧轨、筛选条、表格、页脚用 shape-none 到 shape-extra-small
+- 列表页优先 Level 1 / Level 2
+- 详情页允许局部 Level 3
+- 浮层统一使用 Level 4
 
-## 8. 表面层级
+## 8. Motion（MD3 动效）
 
-- L0 = bg.canvas
-- L1 = bg.surface.soft
-- L2 = bg.surface.default
-- L3 = bg.surface.strong
-- L4 = bg.surface.overlay
+MD3 motion 体系基于 duration 和 easing 两组 token。
 
-规则：
+### 8.1 Duration Token
 
-- 同一屏最多同时出现三层表面
-- 列表页优先 L1/L2
-- 详情页允许局部 L3
-- 浮层统一使用 L4
+| Token | 值 | 用途 |
+| --- | --- | --- |
+| duration-short1 | 50ms | 微交互（selection、toggle） |
+| duration-short2 | 100ms | 快速反馈（fade in/out） |
+| duration-short3 | 150ms | 按钮、chip、state layer |
+| duration-short4 | 200ms | 小型展开（dropdown） |
+| duration-medium1 | 250ms | 卡片 hover 位移、tooltip |
+| duration-medium2 | 300ms | 导航切换、面板展开 |
+| duration-medium3 | 350ms | 页面内容切换 |
+| duration-medium4 | 400ms | 大面积展开 |
+| duration-long1 | 450ms | 首屏入场 stagger |
+| duration-long2 | 500ms | 全屏转场 |
+
+### 8.2 Easing Token
+
+| Token | 值 | 用途 |
+| --- | --- | --- |
+| easing-standard | cubic-bezier(0.2, 0, 0, 1) | 通用进出场 |
+| easing-standard-decelerate | cubic-bezier(0, 0, 0, 1) | 进场（从远到近） |
+| easing-standard-accelerate | cubic-bezier(0.3, 0, 1, 1) | 退场（从近到远） |
+| easing-emphasized | cubic-bezier(0.2, 0, 0, 1) | 强调进出（hero 展开、page transition） |
+| easing-emphasized-decelerate | cubic-bezier(0.05, 0.7, 0.1, 1) | 强调进场 |
+| easing-emphasized-accelerate | cubic-bezier(0.3, 0, 0.8, 0.15) | 强调退场 |
+
+### 8.3 规则
+
+- hover 反馈优先使用位移、亮度、描边变化，不依赖夸张缩放
+- 卡片 hover 位移建议控制在 Y 轴 -4 到 -8，duration 使用 medium1，easing 使用 standard
+- hover/active/focus-visible 的 easing 优先使用 easing-standard，不使用生硬 linear
+- 主卡、入口卡可增加局部 reveal 或遮罩滑移，duration 控制在 short4 到 medium2
+- 页面首屏入场允许轻量 stagger，间隔 50ms，总时长不超过 long1
+- 必须为 prefers-reduced-motion 提供降级：保留颜色和描边反馈，关闭位移与连续动画
+- 交互感受应当是稳、准、硬朗，不是轻、弹、甜
+
+动效禁止项：
+
+- 禁止大幅缩放导致文字跳动
+- 禁止 hover 时重新排版或导致周围卡片抖动
+- 禁止连续漂浮、呼吸灯、随机闪烁等无信息价值动效
+- 禁止高频扫光、全站粒子雨、过度金属翻折和注意力轰炸式特效
 
 ## 9. 组件尺寸基线
 
@@ -478,24 +656,7 @@ Footer 视觉规则：
 - 不同英雄并排时必须保持轮廓、明度和色块的可分辨性
 - 英雄识别优先于整张插画完整展示
 
-## 10. 动效基线
-
-- hover 反馈优先使用位移、亮度、描边、阴影和局部光带，不依赖夸张缩放
-- 卡片 hover 位移建议控制在 Y 轴 -4 到 -8 内
-- hover/active/focus-visible 的 easing 优先使用 smooth ease-out，不使用生硬线性切换
-- 主卡、入口卡、拼贴块可增加局部 reveal、遮罩滑移或角标推进，但总时长建议控制在 180 到 280ms
-- 页面首屏和区块入场允许轻量 stagger，但不能影响任务可读性
-- 必须为 prefers-reduced-motion 提供降级：保留颜色和描边反馈，关闭位移与连续动画
-- 交互感受应当是稳、准、硬朗，不是轻、弹、甜
-
-动效禁止项：
-
-- 禁止大幅缩放导致文字跳动
-- 禁止 hover 时重新排版或导致周围卡片抖动
-- 禁止连续漂浮、呼吸灯、随机闪烁等无信息价值动效
-- 禁止高频扫光、全站粒子雨、过度金属翻折和注意力轰炸式特效
-
-## 11. 无障碍底线
+## 10. 无障碍底线
 
 - 正文、正文链接、辅助文字与背景对比度至少 4.5:1
 - focus-visible 必须清晰可见

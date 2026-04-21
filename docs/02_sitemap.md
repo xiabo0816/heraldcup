@@ -36,6 +36,8 @@
 
 说明：/matches、/players、/teams 共享范围态，但仍是同一对象频道的不同视图，不新增页面类型。
 
+补充：`scope=all|pioneer|legend|crown` 只表示对象频道的杯赛范围与 Banner 主题；Radiant / Dire 是全站显示主题，不进入页面树和 URL。
+
 ## 2. 页面家族
 
 | 页面家族 | 路由 | 说明 |
@@ -85,4 +87,5 @@
 
 - 新增或删除第一期页面时，只更新页面树和页面家族，不在这里重写 IA 解释
 - 改导航层级、对象维或范围维时，先更新 01_information-architecture.md，再同步这里的路由结果
+- 调整全站主题或杯赛配色时，先更新 07_visual-foundations.md 与受影响的 page brief，不在 sitemap 中追加主题路由
 - 第二期页面、跳转和后台扩展统一维护在 16_phase-two-features.md

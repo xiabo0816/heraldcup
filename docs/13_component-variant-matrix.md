@@ -10,6 +10,7 @@
 - 页面只能使用矩阵里已经定义的变体组合
 - 如果现有变体不够，先补矩阵，再改页面
 - 不允许页面私自发明新的 tone、size、state 命名
+- 组件的色彩、圆角与阴影在描述上统一使用 MD3 role、shape scale、elevation；Tailwind 只实现语义 token，不直接散写业务色类
 
 ## 3. Button
 
@@ -25,8 +26,11 @@
 - 每屏最多一个 primary 主动作簇
 - danger 只用于不可逆或高风险动作
 - loading 态必须保留按钮尺寸，避免布局跳动
-- primary 在主题页默认映射到 theme-main；secondary 映射到 N0 + theme-border + theme-strong；ghost 保持中性骨架，只在 hover 使用 theme-bg-soft
-- disabled 统一回退到 N2 N6，不保留主题高亮
+- primary 在主题页默认映射到 scope-primary 或 theme-primary 底 + scope-on-primary 或 on-primary 文字；hover 允许用 theme-highlight 做轻提亮，但不改主动作语义
+- secondary 映射到 surface + scope-primary 或 theme-secondary 描边 + scope-on-primary-container 或 theme-text-primary 文字；hover 可切入少量 theme-highlight
+- ghost 保持中性骨架，只在 hover 使用 scope-primary-container 或 theme-highlight 的弱提亮，不做高饱和整块铺底
+- 重要提示或重要但非危险的确认动作可以借用 theme-highlight 作为边框、hover 或浅底强调，但不能与 danger 混淆
+- disabled 统一回退到 outline-variant + on-surface-variant，不保留主题高亮
 
 ## 4. SurfaceCard
 
@@ -69,7 +73,7 @@
 
 | 属性 | 允许值 |
 | --- | --- |
-| tone | neutral | info | success | warning | danger | brand |
+| tone | neutral | info | success | warning | danger | brand | pioneer | legend | crown |
 | size | sm | md |
 | shape | rounded | pill |
 
@@ -77,6 +81,7 @@
 
 - Badge 只表达状态、类型、分组，不表达主 CTA
 - 同一信息群内最多使用两种 tone
+- pioneer、legend、crown 只在明确杯赛上下文中使用，不替代全站默认的 brand
 
 ## 7. Tabs
 
@@ -84,7 +89,7 @@
 | --- | --- |
 | style | underline | segmented |
 | size | sm | md |
-| tone | neutral | theme-a | theme-b | theme-c |
+| tone | neutral | pioneer | legend | crown |
 | state | default | hover | active | disabled |
 
 规则：
@@ -95,12 +100,12 @@
 - 范围 Tabs 必须由页面顶部的胶囊二级导航承接当前态，其中“全部”固定使用 neutral，且“全部”态不显示 Banner
 - 范围 Tabs 之前不允许再起任何频道题头；用户进入对象频道时，在顶部导航之后首先看到的必须就是这组 Tabs
 - Banner 只能挂在胶囊二级导航下方，不能包进 Tabs，也不能先于范围 Tabs 出现
-- currentScope 为 pioneer / legend / crown 时，二级导航以下的频道内容壳层统一切换到对应的 theme-a / theme-b / theme-c；currentScope=all 时整段内容壳层统一回退到 neutral
+- currentScope 为 pioneer / legend / crown 时，二级导航以下只切换到对应杯赛的模块强调层；currentScope=all 时整段内容壳层统一回退到 neutral
 - 人物推荐、战队推荐、赛程焦点只允许作为这个 Banner 槽位的内容变体存在；同一首屏不允许再出现第二个 Banner 组件实例
 - 对象导航与范围 Tabs 不能混成一排，也不能共享同一个当前态样式
 - 范围 Tabs 的整体视觉强度必须低于顶部导航；主次关系靠整条层级控制，不靠缩小文字硬压
 - 首页左侧内容入口侧轨不复用范围 Tabs 语义；它属于 Link / SurfaceCard 组合，不属于顶栏导航或范围切换组件
-- theme-a theme-b theme-c 是抽象主题槽位；第一期可以分别映射到当前范围主题，后续也可映射到其他二级子模块主题，但组件写法不跟业务文案耦合
+- pioneer、legend、crown 直接对应三杯赛色；其中 `crown` 在视觉 token 层可映射到 `cup-immortal`，但组件写法仍沿用既有范围命名
 
 推荐组合：
 
@@ -110,14 +115,10 @@
 
 状态细化：
 
-- neutral.default：N0 背景 + N2 边框 + N6 文字
-- neutral.hover：N1 背景 + N2 边框 + N8 文字
-- theme-a.hover：A1 背景 + A2 边框 + A7 文字
-- theme-b.hover：B1 背景 + B2 边框 + B7 文字
-- theme-c.hover：C1 背景 + C2 边框 + C7 文字
-- theme-a.active：A1 背景 + A2 边框 + A7 文字 + A5 底边线或左色条
-- theme-b.active：B1 背景 + B2 边框 + B7 文字 + B5 底边线或左色条
-- theme-c.active：C1 背景 + C2 边框 + C7 文字 + C5 底边线或左色条
+- neutral.default：surface 背景 + outline-variant 边框 + on-surface-variant 文字
+- neutral.hover：surface-container 背景 + outline-variant 边框 + on-surface 文字
+- scope.hover：scope-primary-container 背景 + scope-primary 边框 + scope-on-primary-container 文字
+- scope.active：scope-primary-container 背景 + scope-primary 边框 + scope-on-primary-container 文字 + scope-primary 底边线
 - disabled：回退中性骨架并降低到 40% 到 56% 可见度，但仍保留文本可读性
 
 不推荐组合：
@@ -242,13 +243,13 @@
 | 属性 | 允许值 |
 | --- | --- |
 | size | sm | md | lg |
-| emphasis | default | featured |
+| emphasis | normal | strong |
 | shape | rounded |
 
 规则：
 
 - lg 只用于首屏 Banner、推荐卡和详情页头部
-- featured 只用于焦点人物、推荐战队等单对象主卡
+- strong 只用于焦点人物、推荐战队等单对象主卡
 - 目录列表默认使用 sm 或 md，避免视觉抢权
 - 裁切优先保留头部、肩线、武器特征、队标和技能符号，不优先保留完整插画
 
@@ -362,7 +363,7 @@
 
 - scopeTabs 固定为全部 / 先锋杯 / 传奇杯 / 冠绝杯
 - currentScope=all 时固定使用中性色块面，不借任一杯赛主色
-- 先锋杯、传奇杯、冠绝杯不改对象频道的 layout 骨架，但会统一切换二级导航以下频道内容壳层、分区底、描边、标题和 CTA 的 theme tone
+- 先锋杯、传奇杯、冠绝杯不改对象频道的 layout 骨架，但会统一切换二级导航以下 Banner、分区标题、标签、专题 CTA 和局部强调线的杯赛 tone
 - objectType 决定下方对象区使用的模式：match=MatchRow/SeasonCard，player=PlayerCard，team=TeamCard
 
 ## 21B. MatchWorkspace Pattern
@@ -409,7 +410,7 @@
 
 规则：
 
-- FAQ 默认不需要 featured 或 accent 情绪化变体
+- FAQ 默认不需要 strong 或 accent 情绪化变体
 - inline-link 只用于“查看规则/指引”这类轻转向
 - 每组问题数保持 2-4 条，超过后应拆组而不是继续加高
 
@@ -462,12 +463,12 @@
 | 属性 | 允许值 |
 | --- | --- |
 | state | live | finished | archived |
-| emphasis | normal | featured |
+| emphasis | normal | strong |
 | relation | none | topic | content |
 
 规则：
 
-- featured 只给赛季详情中的焦点比赛或结算页冠军之路首卡
+- strong 只给赛季详情中的焦点比赛或结算页冠军之路首卡
 - live 可使用 warning 或 info 状态层，但不升格为主舞台
 - Season Schedule Groups 中的 MatchSeriesCard 按实际比赛数量逐条渲染，多场全部列出，单场也按单条列出
 - 比赛频道列表态只显示名称、参赛队伍、状态，不展示时间轴、比分拆解或长摘要
@@ -479,12 +480,12 @@
 | 属性 | 允许值 |
 | --- | --- |
 | kind | announcement | news | recap | champion | custom |
-| emphasis | normal | featured |
+| emphasis | normal | strong |
 | meta | none | date | topic | mixed |
 
 规则：
 
-- champion 和 featured 不应同时大量出现，同屏最多 1-2 张
+- champion 和 strong 不应同时大量出现，同屏最多 1-2 张
 - mixed 只在详情页关系回流里使用
 - 第一期比赛、选手、战队详情默认不使用 ContentRelayCard 作为内容页或战报入口
 - 已完赛比赛若需要页尾回流，优先使用海报页入口；点击后进入恭喜海报页

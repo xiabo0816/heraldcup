@@ -1,0 +1,603 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Theme Tokens: Radiant / Dire ─── */
+:root,
+html[data-theme="radiant"] {
+  --bg: #111a12;
+  --bg-secondary: #18231a;
+  --surface: #1e2b20;
+  --surface-elevated: #263629;
+  --border: #314535;
+  --text: #eaf3e3;
+  --text-secondary: #b8c7b2;
+  --text-muted: #8b9a86;
+  --primary: #79b84a;
+  --primary-hover: #8dca5c;
+  --accent: #58b8d8;
+  --success: #67c26f;
+  --warning: #d7b75a;
+  --danger: #c95c4b;
+  --shadow-rgb: 5 11 7;
+  --on-primary: #0f180a;
+  --on-primary-container: #eaf3e3;
+  --on-accent: #081319;
+
+  --cup-pioneer-main: #236d5c;
+  --cup-pioneer-hover: #2e8c77;
+  --cup-pioneer-dark: #163f36;
+  --cup-pioneer-border: #4fa594;
+  --cup-pioneer-text: #f3fbf8;
+  --cup-legend-main: #563880;
+  --cup-legend-hover: #6d4aa1;
+  --cup-legend-dark: #34214f;
+  --cup-legend-border: #8a69b5;
+  --cup-legend-text: #f7f3fd;
+  --cup-immortal-main: #853454;
+  --cup-immortal-hover: #a24569;
+  --cup-immortal-dark: #552137;
+  --cup-immortal-border: #bc6787;
+  --cup-immortal-text: #fff4f7;
+
+  --hc-theme-bg-main: var(--bg);
+  --hc-theme-bg-sub: var(--bg-secondary);
+  --hc-theme-primary: var(--primary);
+  --hc-theme-secondary: color-mix(in srgb, var(--accent) 40%, var(--border) 60%);
+  --hc-theme-highlight: var(--primary-hover);
+  --hc-theme-text-primary: var(--text);
+  --hc-theme-text-secondary: var(--text-secondary);
+  --hc-theme-shadow-rgb: var(--shadow-rgb);
+  --hc-stage-mist: color-mix(in srgb, var(--primary) 12%, transparent);
+  --hc-stage-beam: color-mix(in srgb, var(--accent) 18%, transparent);
+  --hc-stage-etch: color-mix(in srgb, var(--border) 42%, transparent);
+
+  --md-sys-color-surface: var(--bg);
+  --md-sys-color-surface-dim: color-mix(in srgb, var(--bg) 92%, black 8%);
+  --md-sys-color-surface-bright: color-mix(in srgb, var(--surface-elevated) 84%, white 16%);
+  --md-sys-color-surface-container-lowest: color-mix(in srgb, var(--bg) 88%, black 12%);
+  --md-sys-color-surface-container-low: var(--bg-secondary);
+  --md-sys-color-surface-container: var(--surface);
+  --md-sys-color-surface-container-high: var(--surface-elevated);
+  --md-sys-color-surface-container-highest: color-mix(in srgb, var(--surface-elevated) 72%, white 28%);
+  --md-sys-color-on-surface: var(--text);
+  --md-sys-color-on-surface-variant: var(--text-secondary);
+
+  --md-sys-color-outline: color-mix(in srgb, var(--border) 76%, var(--text-muted) 24%);
+  --md-sys-color-outline-variant: var(--border);
+
+  --md-sys-color-primary: var(--primary);
+  --md-sys-color-on-primary: var(--on-primary);
+  --md-sys-color-primary-container: color-mix(in srgb, var(--primary) 18%, var(--surface) 82%);
+  --md-sys-color-on-primary-container: var(--on-primary-container);
+
+  --md-sys-color-secondary: var(--accent);
+  --md-sys-color-on-secondary: var(--on-accent);
+  --md-sys-color-secondary-container: color-mix(in srgb, var(--accent) 16%, var(--surface) 84%);
+  --md-sys-color-on-secondary-container: var(--text);
+
+  --md-sys-color-tertiary: var(--accent);
+  --md-sys-color-on-tertiary: var(--on-accent);
+  --md-sys-color-tertiary-container: color-mix(in srgb, var(--accent) 14%, var(--surface-elevated) 86%);
+  --md-sys-color-on-tertiary-container: var(--text);
+
+  --md-sys-color-error: var(--danger);
+  --md-sys-color-on-error: #fff1ee;
+  --md-sys-color-error-container: color-mix(in srgb, var(--danger) 22%, var(--surface) 78%);
+  --md-sys-color-on-error-container: #f8d8d2;
+
+  --md-sys-color-warning: var(--warning);
+  --md-sys-color-warning-container: color-mix(in srgb, var(--warning) 18%, var(--surface) 82%);
+  --md-sys-color-on-warning-container: #fbefcc;
+  --md-sys-color-success: var(--success);
+  --md-sys-color-success-container: color-mix(in srgb, var(--success) 18%, var(--surface) 82%);
+  --md-sys-color-on-success-container: #e6f7e7;
+  --md-sys-color-info: var(--accent);
+  --md-sys-color-info-container: color-mix(in srgb, var(--accent) 18%, var(--surface) 82%);
+  --md-sys-color-on-info-container: #e8f6fb;
+
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: color-mix(in srgb, var(--text) 92%, var(--surface) 8%);
+  --md-sys-color-inverse-on-surface: var(--bg);
+  --md-sys-color-inverse-primary: var(--primary-hover);
+
+  --md-sys-color-scope-primary: color-mix(in srgb, var(--primary) 38%, var(--text-secondary) 62%);
+  --md-sys-color-scope-on-primary: var(--text);
+  --md-sys-color-scope-primary-container: color-mix(in srgb, var(--surface-elevated) 72%, var(--bg-secondary) 28%);
+  --md-sys-color-scope-on-primary-container: var(--text);
+}
+
+html[data-theme="dire"],
+html[data-theme="night"] {
+  --bg: #111214;
+  --bg-secondary: #181a1d;
+  --surface: #202327;
+  --surface-elevated: #2b2f34;
+  --border: #3a3f45;
+  --text: #ece7e1;
+  --text-secondary: #beb7af;
+  --text-muted: #8c857e;
+  --primary: #c04a36;
+  --primary-hover: #d45a45;
+  --accent: #7b6a58;
+  --success: #6d9a63;
+  --warning: #b88a45;
+  --danger: #d45a45;
+  --shadow-rgb: 4 5 6;
+  --on-primary: #fff4f1;
+  --on-primary-container: #f3ded9;
+  --on-accent: #f7efe8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+.app-shell {
+  position: relative;
+  isolation: isolate;
+}
+
+.app-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--primary) 16%, transparent) 0%, transparent 34%),
+    radial-gradient(circle at 88% 12%, color-mix(in srgb, var(--accent) 18%, transparent) 0%, transparent 30%),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface-elevated) 58%, var(--bg) 42%) 0%, var(--bg) 18%, color-mix(in srgb, var(--bg) 94%, black 6%) 100%);
+}
+
+.app-shell::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--primary) 4%, transparent) 0%, transparent 45%),
+    linear-gradient(315deg, color-mix(in srgb, var(--accent) 4%, transparent) 0%, transparent 50%),
+    repeating-linear-gradient(125deg, color-mix(in srgb, var(--hc-stage-etch) 18%, transparent) 0 1px, transparent 1px 32px);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.scope-all {
+  --hc-scope-main: color-mix(in srgb, var(--primary) 24%, var(--border) 76%);
+  --hc-scope-hover: color-mix(in srgb, var(--primary-hover) 42%, var(--accent) 58%);
+  --hc-scope-dark: color-mix(in srgb, var(--bg-secondary) 76%, black 24%);
+  --hc-scope-border: color-mix(in srgb, var(--border) 86%, var(--primary) 14%);
+  --hc-scope-text: var(--text);
+  --md-sys-color-scope-primary: var(--hc-scope-main);
+  --md-sys-color-scope-on-primary: var(--hc-scope-text);
+  --md-sys-color-scope-primary-container: color-mix(in srgb, var(--surface-elevated) 76%, var(--bg-secondary) 24%);
+  --md-sys-color-scope-on-primary-container: var(--text);
+  --hc-scope-shell-soft: color-mix(in srgb, var(--surface) 92%, var(--bg-secondary) 8%);
+  --hc-scope-shell-strong: color-mix(in srgb, var(--surface-elevated) 88%, var(--bg-secondary) 12%);
+  --hc-scope-beam: color-mix(in srgb, var(--primary) 18%, transparent);
+  --hc-scope-glow: color-mix(in srgb, var(--accent) 14%, transparent);
+  --hc-scope-outline: var(--hc-scope-border);
+}
+
+.scope-pioneer {
+  --hc-scope-main: var(--cup-pioneer-main);
+  --hc-scope-hover: var(--cup-pioneer-hover);
+  --hc-scope-dark: var(--cup-pioneer-dark);
+  --hc-scope-border: var(--cup-pioneer-border);
+  --hc-scope-text: var(--cup-pioneer-text);
+  --md-sys-color-scope-primary: var(--hc-scope-main);
+  --md-sys-color-scope-on-primary: var(--hc-scope-text);
+  --md-sys-color-scope-primary-container: color-mix(in srgb, var(--hc-scope-main) 20%, var(--surface) 80%);
+  --md-sys-color-scope-on-primary-container: var(--hc-scope-text);
+  --hc-scope-shell-soft: color-mix(in srgb, var(--hc-scope-dark) 22%, var(--surface) 78%);
+  --hc-scope-shell-strong: color-mix(in srgb, var(--hc-scope-main) 44%, var(--surface) 56%);
+  --hc-scope-beam: color-mix(in srgb, var(--hc-scope-hover) 42%, transparent);
+  --hc-scope-glow: color-mix(in srgb, var(--hc-scope-hover) 24%, transparent);
+  --hc-scope-outline: var(--hc-scope-border);
+}
+
+.scope-legend {
+  --hc-scope-main: var(--cup-legend-main);
+  --hc-scope-hover: var(--cup-legend-hover);
+  --hc-scope-dark: var(--cup-legend-dark);
+  --hc-scope-border: var(--cup-legend-border);
+  --hc-scope-text: var(--cup-legend-text);
+  --md-sys-color-scope-primary: var(--hc-scope-main);
+  --md-sys-color-scope-on-primary: var(--hc-scope-text);
+  --md-sys-color-scope-primary-container: color-mix(in srgb, var(--hc-scope-main) 20%, var(--surface) 80%);
+  --md-sys-color-scope-on-primary-container: var(--hc-scope-text);
+  --hc-scope-shell-soft: color-mix(in srgb, var(--hc-scope-dark) 22%, var(--surface) 78%);
+  --hc-scope-shell-strong: color-mix(in srgb, var(--hc-scope-main) 44%, var(--surface) 56%);
+  --hc-scope-beam: color-mix(in srgb, var(--hc-scope-hover) 42%, transparent);
+  --hc-scope-glow: color-mix(in srgb, var(--hc-scope-hover) 24%, transparent);
+  --hc-scope-outline: var(--hc-scope-border);
+}
+
+.scope-crown {
+  --hc-scope-main: var(--cup-immortal-main);
+  --hc-scope-hover: var(--cup-immortal-hover);
+  --hc-scope-dark: var(--cup-immortal-dark);
+  --hc-scope-border: var(--cup-immortal-border);
+  --hc-scope-text: var(--cup-immortal-text);
+  --md-sys-color-scope-primary: var(--hc-scope-main);
+  --md-sys-color-scope-on-primary: var(--hc-scope-text);
+  --md-sys-color-scope-primary-container: color-mix(in srgb, var(--hc-scope-main) 20%, var(--surface) 80%);
+  --md-sys-color-scope-on-primary-container: var(--hc-scope-text);
+  --hc-scope-shell-soft: color-mix(in srgb, var(--hc-scope-dark) 22%, var(--surface) 78%);
+  --hc-scope-shell-strong: color-mix(in srgb, var(--hc-scope-main) 44%, var(--surface) 56%);
+  --hc-scope-beam: color-mix(in srgb, var(--hc-scope-hover) 42%, transparent);
+  --hc-scope-glow: color-mix(in srgb, var(--hc-scope-hover) 24%, transparent);
+  --hc-scope-outline: var(--hc-scope-border);
+}
+
+.text-secondary {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.text-soft {
+  color: var(--md-sys-color-outline);
+}
+
+.brand-mark {
+  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary) 46%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.site-header {
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 88%, var(--accent) 12%);
+  background: color-mix(in srgb, var(--surface) 90%, var(--bg-secondary) 10%);
+  box-shadow: 0 16px 36px rgb(var(--hc-theme-shadow-rgb) / 0.16);
+}
+
+.site-footer {
+  border-top: 1px solid color-mix(in srgb, var(--border) 88%, var(--accent) 12%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 76%, var(--bg-secondary) 24%) 0%, color-mix(in srgb, var(--bg) 84%, black 16%) 100%);
+  box-shadow: 0 -16px 36px rgb(var(--hc-theme-shadow-rgb) / 0.08);
+}
+
+.theme-outline-button {
+  border: 1px solid color-mix(in srgb, var(--border) 86%, var(--accent) 14%);
+  background: color-mix(in srgb, var(--surface) 80%, var(--bg-secondary) 20%);
+  color: var(--text-secondary);
+}
+
+.theme-outline-button:hover {
+  border-color: color-mix(in srgb, var(--primary) 56%, var(--border) 44%);
+  background: color-mix(in srgb, var(--primary) 14%, var(--surface-elevated) 86%);
+  color: var(--text);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--primary) 16%, transparent);
+}
+
+.theme-highlight-button {
+  border: 1px solid color-mix(in srgb, var(--primary) 80%, var(--border) 20%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--primary) 70%, var(--surface-elevated) 30%) 0%, color-mix(in srgb, var(--primary-hover) 86%, var(--primary) 14%) 100%);
+  color: var(--md-sys-color-on-primary);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 16%, transparent), 0 14px 30px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+.theme-highlight-button:hover {
+  border-color: color-mix(in srgb, var(--primary-hover) 84%, var(--border) 16%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--primary-hover) 88%, white 12%) 0%, var(--primary-hover) 100%);
+  color: var(--md-sys-color-on-primary);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 20%, transparent), 0 16px 34px color-mix(in srgb, var(--primary-hover) 22%, transparent);
+}
+
+.theme-link {
+  color: var(--accent);
+}
+
+.theme-link:hover {
+  color: color-mix(in srgb, var(--primary-hover) 40%, var(--accent) 60%);
+}
+
+.theme-highlight-shell {
+  border: 1px solid color-mix(in srgb, var(--primary) 46%, var(--border) 54%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-primary-container) 84%, var(--surface) 16%) 0%, color-mix(in srgb, var(--surface) 76%, var(--md-sys-color-primary-container) 24%) 100%);
+  color: var(--text);
+}
+
+.theme-neutral-shell {
+  border: 1px solid color-mix(in srgb, var(--border) 90%, var(--accent) 10%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 78%, var(--bg-secondary) 22%) 0%, color-mix(in srgb, var(--bg) 76%, var(--surface) 24%) 100%);
+}
+
+.theme-info-shell {
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-info) 42%, var(--border) 58%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-info-container) 82%, var(--surface) 18%) 0%, color-mix(in srgb, var(--surface) 72%, var(--md-sys-color-info-container) 28%) 100%);
+}
+
+.theme-success-shell {
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-success) 44%, var(--border) 56%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-success-container) 82%, var(--surface) 18%) 0%, color-mix(in srgb, var(--surface) 72%, var(--md-sys-color-success-container) 28%) 100%);
+}
+
+.theme-danger-button {
+  border: 1px solid color-mix(in srgb, var(--danger) 60%, var(--border) 40%);
+  background: color-mix(in srgb, var(--md-sys-color-error-container) 86%, var(--surface) 14%);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.theme-danger-button:hover {
+  border-color: color-mix(in srgb, var(--danger) 76%, var(--border) 24%);
+  background: color-mix(in srgb, var(--danger) 24%, var(--md-sys-color-error-container) 76%);
+}
+
+.modal-surface {
+  border: 1px solid color-mix(in srgb, var(--border) 84%, var(--accent) 16%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface-elevated) 90%, var(--surface) 10%) 0%, var(--surface-elevated) 100%);
+  box-shadow: 0 28px 80px rgb(var(--hc-theme-shadow-rgb) / 0.28);
+}
+
+.login-stage {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 76%, var(--surface) 24%) 0%, color-mix(in srgb, var(--bg-secondary) 72%, var(--surface) 28%) 100%);
+  border-top: 1px solid color-mix(in srgb, var(--border) 88%, var(--accent) 12%);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 88%, var(--accent) 12%);
+}
+
+.home-stage {
+  position: relative;
+  isolation: isolate;
+}
+
+.home-stage > * {
+  position: relative;
+  z-index: 1;
+}
+
+.home-rail-shell {
+  border: 1px solid color-mix(in srgb, var(--border) 88%, var(--accent) 12%);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 74%, var(--bg-secondary) 26%) 0%, color-mix(in srgb, var(--bg) 72%, var(--surface) 28%) 100%),
+    linear-gradient(135deg, color-mix(in srgb, var(--primary) 10%, transparent) 0%, transparent 44%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 14%, transparent), 0 18px 40px rgb(var(--hc-theme-shadow-rgb) / 0.14);
+}
+
+.home-module-shell {
+  border: 1px solid color-mix(in srgb, var(--border) 82%, var(--accent) 18%);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--accent) 16%, transparent) 0%, transparent 22%),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 82%, var(--bg-secondary) 18%) 0%, color-mix(in srgb, var(--surface-elevated) 76%, var(--surface) 24%) 100%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 12%, transparent), 0 18px 40px rgb(var(--hc-theme-shadow-rgb) / 0.12);
+}
+
+.channel-stage {
+  position: relative;
+  isolation: isolate;
+}
+
+.channel-stage > * {
+  position: relative;
+  z-index: 1;
+}
+
+.surface-card {
+  border: 1px solid color-mix(in srgb, var(--border) 90%, var(--accent) 10%);
+  background:
+    linear-gradient(140deg, color-mix(in srgb, var(--accent) 8%, transparent) 0%, transparent 34%),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 88%, var(--bg-secondary) 12%) 0%, var(--surface) 100%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 10%, transparent), 0 18px 40px rgb(var(--hc-theme-shadow-rgb) / 0.12);
+}
+
+.surface-panel {
+  border: 1px solid color-mix(in srgb, var(--border) 86%, var(--accent) 14%);
+  background:
+    linear-gradient(140deg, color-mix(in srgb, var(--primary) 6%, transparent) 0%, transparent 36%),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface-elevated) 68%, var(--surface) 32%) 0%, color-mix(in srgb, var(--surface) 78%, var(--bg-secondary) 22%) 100%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 10%, transparent);
+}
+
+.scope-panel {
+  position: relative;
+  overflow: hidden;
+  color: var(--hc-scope-text);
+  background:
+    radial-gradient(circle at 88% 14%, color-mix(in srgb, var(--hc-scope-glow) 34%, transparent) 0%, transparent 24%),
+    linear-gradient(116deg, color-mix(in srgb, var(--hc-scope-beam) 26%, transparent) 0%, transparent 36%, color-mix(in srgb, var(--accent) 16%, transparent) 64%, transparent 88%),
+    linear-gradient(135deg, var(--hc-scope-dark) 0%, var(--hc-scope-main) 58%, var(--hc-scope-hover) 100%);
+  border-color: var(--hc-scope-outline);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 12%, transparent), 0 20px 48px rgb(var(--hc-theme-shadow-rgb) / 0.18);
+}
+
+.scope-panel .eyebrow {
+  color: color-mix(in srgb, var(--hc-scope-text) 76%, transparent);
+}
+
+.scope-panel .text-secondary {
+  color: color-mix(in srgb, var(--hc-scope-text) 82%, transparent);
+}
+
+.scope-panel .text-soft {
+  color: color-mix(in srgb, var(--hc-scope-text) 68%, transparent);
+}
+
+.scope-accent {
+  color: var(--md-sys-color-scope-primary);
+}
+
+.scope-badge {
+  border: 1px solid color-mix(in srgb, var(--hc-scope-outline) 84%, transparent);
+  background: color-mix(in srgb, var(--md-sys-color-scope-primary-container) 82%, var(--surface) 18%);
+  color: var(--md-sys-color-scope-on-primary-container);
+}
+
+.scope-tab,
+.scope-tab-active {
+  position: relative;
+  overflow: hidden;
+}
+
+.scope-tab {
+  border: 1px solid color-mix(in srgb, var(--border) 88%, var(--accent) 12%);
+  background: color-mix(in srgb, var(--surface) 84%, var(--bg-secondary) 16%);
+  color: var(--text-secondary);
+}
+
+.scope-tab:hover {
+  border-color: var(--md-sys-color-scope-primary);
+  background: color-mix(in srgb, var(--md-sys-color-scope-primary-container) 88%, var(--surface) 12%);
+  color: var(--md-sys-color-scope-on-primary-container);
+}
+
+.scope-tab-active {
+  border: 1px solid var(--md-sys-color-scope-primary);
+  background:
+    linear-gradient(118deg, color-mix(in srgb, var(--hc-scope-beam) 20%, transparent) 0%, transparent 56%, color-mix(in srgb, var(--accent) 14%, transparent) 100%),
+    color-mix(in srgb, var(--md-sys-color-scope-primary-container) 88%, var(--surface) 12%);
+  color: var(--md-sys-color-scope-on-primary-container);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 12%, transparent), 0 12px 28px color-mix(in srgb, var(--md-sys-color-scope-primary) 16%, transparent);
+}
+
+.scope-tab-active:hover {
+  border-color: var(--hc-scope-hover);
+  background:
+    linear-gradient(118deg, color-mix(in srgb, var(--hc-scope-beam) 26%, transparent) 0%, transparent 52%, color-mix(in srgb, var(--hc-scope-hover) 14%, transparent) 100%),
+    color-mix(in srgb, var(--md-sys-color-scope-primary-container) 78%, var(--hc-scope-main) 22%);
+}
+
+.scope-tab-active::after {
+  content: "";
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--md-sys-color-scope-primary);
+}
+
+.eyebrow {
+  color: color-mix(in srgb, var(--primary-hover) 68%, var(--accent) 32%);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.input-shell {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 76%, var(--surface) 24%);
+  color: var(--text);
+}
+
+.input-shell:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
+}
+
+.grid-shell {
+  display: grid;
+  gap: 1rem;
+}
+
+.page-shell {
+  margin: 0 auto;
+  width: min(1280px, calc(100vw - 32px));
+}
+
+.hero-shell {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--border) 74%, var(--primary) 26%);
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--primary) 26%, transparent) 0%, transparent 30%),
+    radial-gradient(circle at 92% 14%, color-mix(in srgb, var(--accent) 22%, transparent) 0%, transparent 24%),
+    linear-gradient(122deg, color-mix(in srgb, var(--accent) 12%, transparent) 0%, transparent 28%, color-mix(in srgb, var(--primary) 16%, transparent) 56%, transparent 82%),
+    linear-gradient(135deg, color-mix(in srgb, var(--bg-secondary) 92%, var(--primary) 8%) 0%, color-mix(in srgb, var(--surface) 84%, var(--accent) 16%) 56%, color-mix(in srgb, var(--surface-elevated) 88%, var(--bg) 12%) 100%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 10%, transparent), 0 26px 60px rgb(var(--hc-theme-shadow-rgb) / 0.18);
+}
+
+.hero-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(124deg, color-mix(in srgb, var(--hc-stage-etch) 40%, transparent) 0 1px, transparent 1px 30px);
+  opacity: 0.42;
+}
+
+.hero-shell > * {
+  position: relative;
+  z-index: 1;
+}
+
+.scope-banner {
+  background:
+    radial-gradient(circle at 88% 14%, color-mix(in srgb, var(--hc-scope-hover) 28%, transparent) 0%, transparent 22%),
+    linear-gradient(116deg, color-mix(in srgb, var(--hc-scope-beam) 32%, transparent) 0%, transparent 34%, color-mix(in srgb, white 8%, transparent) 60%, transparent 84%),
+    linear-gradient(135deg, var(--hc-scope-dark) 0%, var(--hc-scope-main) 58%, var(--hc-scope-hover) 100%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 14%, transparent), 0 24px 56px rgb(var(--hc-theme-shadow-rgb) / 0.22);
+}
+
+.scope-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(122deg, color-mix(in srgb, var(--hc-scope-beam) 14%, transparent) 0 1px, transparent 1px 34px);
+  opacity: 0.4;
+}
+
+.scope-banner > * {
+  position: relative;
+  z-index: 1;
+}
+
+.scope-card-shell {
+  border: 1px solid color-mix(in srgb, var(--border) 76%, var(--hc-scope-outline) 24%);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--hc-scope-glow) 12%, transparent) 0%, transparent 22%),
+    linear-gradient(142deg, color-mix(in srgb, var(--hc-scope-beam) 8%, transparent) 0%, transparent 58%),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 88%, var(--bg-secondary) 12%) 0%, color-mix(in srgb, var(--surface-elevated) 72%, var(--surface) 28%) 100%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 10%, transparent), 0 18px 42px rgb(var(--hc-theme-shadow-rgb) / 0.12);
+}
+
+.danger-shell {
+  border: 1px solid color-mix(in srgb, var(--danger) 58%, transparent);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-error-container) 86%, var(--surface) 14%) 0%, color-mix(in srgb, var(--surface) 74%, var(--md-sys-color-error-container) 26%) 100%);
+}
+
+.table-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.table-row {
+  display: grid;
+  gap: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--border) 88%, var(--accent) 12%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 84%, var(--bg-secondary) 16%) 0%, color-mix(in srgb, var(--surface-elevated) 66%, var(--surface) 34%) 100%);
+}
+
+@media (max-width: 768px) {
+  .page-shell {
+    width: min(100vw - 20px, 1280px);
+  }
+}

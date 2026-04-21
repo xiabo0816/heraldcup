@@ -6,6 +6,7 @@
 
 - 第二期 Blueprint、Section Spec、Wireflow 与组件模式统一见 16_phase-two-features.md
 - 第一期开页与全站通用规则仍分别维护在 10_page-blueprint.md、11_section-specs.md、12_wireflow-and-state-spec.md、13_component-variant-matrix.md
+- 第二期页面如需确定主题与配色，统一回到 07_visual-foundations.md 的 Radiant / Dire + cup banner 体系，不在归档文档里重复维护
 
 ## 为什么归档
 

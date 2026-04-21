@@ -67,6 +67,18 @@ enum ClaimRequestStatus {
   CANCELLED
 }
 
+enum InvitationType {
+  TEAM_MEMBER
+  SCRIM
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  CANCELLED
+}
+
 model User {
   id                   String         @id @default(cuid())
   name                 String
@@ -81,6 +93,7 @@ model User {
   steamBinding         PlayerBinding?
   claimRequests        ClaimRequest[] @relation("ClaimRequestApplicant")
   reviewedClaimRequests ClaimRequest[] @relation("ClaimRequestReviewer")
+  sentInvitations      Invitation[]   @relation("InvitationSender")
 }
 
 model AuthSession {
@@ -147,6 +160,8 @@ model Team {
   gameWinnerMatches MatchGame[]            @relation("GameWinnerTeam")
   matchParticipants MatchParticipant[]
   gameParticipants  MatchGameParticipant[]
+  sentInvitations   Invitation[]           @relation("InvitationSourceTeam")
+  receivedInvitations Invitation[]         @relation("InvitationTargetTeam")
   createdAt         DateTime               @default(now())
   updatedAt         DateTime               @updatedAt
 }
@@ -192,6 +207,7 @@ model Player {
   receivedReviews   PlayerReview[]   @relation("PlayerReviewTarget")
   highlights        MatchHighlight[]
   claimRequests     ClaimRequest[]
+  receivedInvitations Invitation[]      @relation("InvitationTargetPlayer")
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
 }
@@ -508,4 +524,28 @@ model RecruitmentPost {
   topic       CommunityTopic? @relation(fields: [topicId], references: [id], onDelete: SetNull)
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
+}
+
+model Invitation {
+  id              String           @id @default(cuid())
+  type            InvitationType
+  status          InvitationStatus @default(PENDING)
+  title           String
+  message         String?
+  sourceTeamId    String?
+  targetTeamId    String?
+  targetPlayerId  String?
+  createdByUserId String
+  respondedAt     DateTime?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  sourceTeam      Team?            @relation("InvitationSourceTeam", fields: [sourceTeamId], references: [id], onDelete: SetNull)
+  targetTeam      Team?            @relation("InvitationTargetTeam", fields: [targetTeamId], references: [id], onDelete: SetNull)
+  targetPlayer    Player?          @relation("InvitationTargetPlayer", fields: [targetPlayerId], references: [id], onDelete: SetNull)
+  createdBy       User             @relation("InvitationSender", fields: [createdByUserId], references: [id], onDelete: Cascade)
+
+  @@index([status, type])
+  @@index([targetPlayerId, status])
+  @@index([targetTeamId, status])
+  @@index([sourceTeamId, status])
 }
