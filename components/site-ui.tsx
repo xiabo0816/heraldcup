@@ -16,12 +16,18 @@ import { cn } from "@/lib/site-utils";
 
 export function SectionCard({
   children,
-  className
+  className,
+  id
 }: {
   children: ReactNode;
   className?: string;
+  id?: string;
 }) {
-  return <section className={cn("surface-card rounded-2xl p-5", className)}>{children}</section>;
+  return (
+    <section className={cn("surface-card rounded-2xl p-5", className)} id={id}>
+      {children}
+    </section>
+  );
 }
 
 export function SectionTitle({
@@ -78,6 +84,7 @@ export function ScopeTabs({
           <Link
             className={cn(
               "rounded-xl px-4 py-2 text-sm transition",
+              `scope-${scope}`,
               isCurrent ? "scope-tab-active" : "scope-tab"
             )}
             href={scope === "all" ? basePath : `${basePath}?scope=${scope}`}
@@ -114,7 +121,7 @@ export function InfoList({
     <div className="mt-4 grid gap-3">
       {items.map((item) => {
         const content = (
-          <div className="surface-panel rounded-xl px-4 py-4 transition hover:border-[color:var(--md-sys-color-scope-primary)]">
+          <div className="surface-panel rounded-xl px-4 py-4 transition hover:border-[color:color-mix(in_srgb,var(--md-sys-color-scope-primary)_22%,var(--border)_78%)] hover:bg-[color:color-mix(in_srgb,var(--surface)_96%,var(--md-sys-color-scope-primary-container)_4%)]">
             <div className="font-semibold">{item.title}</div>
             <div className="mt-1 text-sm text-secondary">{item.meta}</div>
             {item.sub ? <div className="mt-2 text-sm text-soft">{item.sub}</div> : null}
@@ -196,7 +203,7 @@ function AccountSummaryCard({ viewer, currentPath }: { viewer: Viewer | null; cu
         <>
           <div className="mt-2 text-xl font-semibold">先登录后继续</div>
           <div className="mt-1 text-sm text-secondary">登录后可以认领选手身份、创建战队，并处理收到的邀请。</div>
-          <Link className="theme-highlight-button mt-4 inline-block rounded-xl px-4 py-3 text-sm" href={`/login?redirectTo=${encodeURIComponent(path)}`}>
+          <Link className="scope-highlight-button mt-4 inline-block rounded-xl px-4 py-3 text-sm" href={`/login?redirectTo=${encodeURIComponent(path)}`}>
             去登录
           </Link>
         </>
@@ -227,7 +234,7 @@ function BecomePlayerCard({ viewer, currentPath, title, description }: { viewer:
         <>
           <div className="mt-2 text-lg font-semibold">登录后继续申请</div>
           <div className="mt-2 text-sm text-secondary">{description}</div>
-          <Link className="theme-highlight-button mt-4 inline-block rounded-xl px-4 py-3 text-sm" href={`/login?redirectTo=${encodeURIComponent(path)}`}>
+          <Link className="scope-highlight-button mt-4 inline-block rounded-xl px-4 py-3 text-sm" href={`/login?redirectTo=${encodeURIComponent(path)}`}>
             去登录并继续
           </Link>
         </>
@@ -250,7 +257,7 @@ function BecomePlayerCard({ viewer, currentPath, title, description }: { viewer:
             申请说明
             <textarea className="input-shell mt-2 min-h-24 rounded-xl px-3 py-2" name="note" placeholder="补充你的比赛经历、战绩来源或说明。" />
           </label>
-          <button className="theme-highlight-button rounded-xl px-4 py-3 text-sm" type="submit">
+          <button className="scope-highlight-button rounded-xl px-4 py-3 text-sm" type="submit">
             提交成为选手申请
           </button>
         </form>
@@ -303,7 +310,7 @@ function ClaimExistingPlayerCard({
           认领说明
           <textarea className="input-shell mt-2 min-h-24 rounded-xl px-3 py-2" name="note" placeholder="说明你和该选手的对应关系，或补充近期比赛信息。" />
         </label>
-        <button className="theme-highlight-button rounded-xl px-4 py-3 text-sm" type="submit">
+        <button className="scope-highlight-button rounded-xl px-4 py-3 text-sm" type="submit">
           提交认领该选手
         </button>
       </form>
@@ -365,7 +372,7 @@ function JoinTeamCard({ currentPath, teamId, teamName }: { currentPath?: string;
       <form action={joinTeamAction} className="mt-4">
         <input name="teamId" type="hidden" value={teamId} />
         <input name="redirectTo" type="hidden" value={path} />
-        <button className="theme-highlight-button rounded-xl px-4 py-3 text-sm" type="submit">
+        <button className="scope-highlight-button rounded-xl px-4 py-3 text-sm" type="submit">
           申请加入该战队
         </button>
       </form>
@@ -530,7 +537,7 @@ export function RoleRail({
               队伍摘要
               <textarea className="input-shell mt-2 min-h-24 rounded-xl px-3 py-2" name="summary" />
             </label>
-            <button className="theme-highlight-button rounded-xl px-4 py-3 text-sm" type="submit">
+            <button className="scope-highlight-button rounded-xl px-4 py-3 text-sm" type="submit">
               创建队伍
             </button>
           </form>

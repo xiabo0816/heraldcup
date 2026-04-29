@@ -634,6 +634,10 @@ export async function reviewClaimAction(formData: FormData) {
   const decision = required(formData.get("decision"), "缺少审核结果");
   const reviewNote = typeof formData.get("reviewNote") === "string" ? (formData.get("reviewNote") as string).trim() : null;
 
+  if (decision !== "approve" && decision !== "reject") {
+    throw new Error("无效的审核结果");
+  }
+
   const claim = await prisma.claimRequest.findUnique({
     where: {
       id: claimId
@@ -642,6 +646,10 @@ export async function reviewClaimAction(formData: FormData) {
 
   if (!claim) {
     throw new Error("认领记录不存在");
+  }
+
+  if (claim.status !== "PENDING") {
+    throw new Error("这条认领申请已经处理过了");
   }
 
   await prisma.$transaction(async (transaction) => {

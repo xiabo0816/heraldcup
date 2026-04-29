@@ -118,7 +118,7 @@
 - neutral.default：surface 背景 + outline-variant 边框 + on-surface-variant 文字
 - neutral.hover：surface-container 背景 + outline-variant 边框 + on-surface 文字
 - scope.hover：scope-primary-container 背景 + scope-primary 边框 + scope-on-primary-container 文字
-- scope.active：scope-primary-container 背景 + scope-primary 边框 + scope-on-primary-container 文字 + scope-primary 底边线
+- scope.active：scope-primary-container 背景 + scope-primary 边框 + scope-on-primary-container 文字 + 局部抬升阴影
 - disabled：回退中性骨架并降低到 40% 到 56% 可见度，但仍保留文本可读性
 
 不推荐组合：

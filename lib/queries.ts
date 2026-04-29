@@ -351,10 +351,10 @@ export async function getHomePageData(viewer: Viewer | null) {
         ]
       },
       leftRail: [
-        { title: "比赛中心", meta: "查看当前赛季、焦点对阵和已录入结果。", sub: `${latestMatches.length} 场焦点对阵`, href: "/matches" },
-        { title: "人物档案", meta: "从认证选手、位置标签和代表比赛进入人物页。", sub: `${featuredPlayers.length} 位已入库人物`, href: "/players" },
-        { title: "战队名册", meta: "按阵容、杯赛归属和近期战绩浏览战队。", sub: `${teams.length} 支活跃战队`, href: "/teams" },
-        { title: "身份链路", meta: "登录后继续完成认领、建队、入队和邀请处理。", sub: viewer ? "进入我的主页继续" : "从游客到正式身份", href: viewer ? "/my" : "/login" }
+        { title: "比赛中心", meta: "跳到中栏查看当前赛季、焦点对阵和已录入结果。", sub: `${latestMatches.length} 场焦点对阵`, href: "#home-matches" },
+        { title: "人物档案", meta: "跳到中栏查看认证选手、位置标签和代表比赛摘要。", sub: `${featuredPlayers.length} 位已入库人物`, href: "#home-players" },
+        { title: "战队名册", meta: "跳到中栏查看阵容、杯赛归属和近期战绩摘要。", sub: `${teams.length} 支活跃战队`, href: "#home-teams" },
+        { title: "身份链路", meta: "跳到中栏查看登录、认领、建队和邀请的下一步。", sub: viewer ? "回到身份步骤继续处理" : "从游客到正式身份", href: "#home-identity" }
       ],
       rightRail: {
         title: viewer ? viewer.roleState : "visitor",

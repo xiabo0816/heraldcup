@@ -193,9 +193,11 @@
 
 	优先检查 .env 中的 DATABASE_URL 是否正确，以及本地 PostgreSQL 是否已经启动。
 
+	当前版本在数据库不可达时，会把已有登录态降级为访客态以避免页面直接崩溃；但登录、注册、后台写入和所有 Prisma 写操作仍然要求 PostgreSQL 正常运行。
+
 - 如果执行 Prisma 命令时报 DATABASE_URL 缺失：
 
-	当前项目使用 prisma.config.ts。请先确认 .env 已正确配置，并在执行迁移时让 shell 加载环境变量。
+	当前项目使用 prisma.config.ts，并会自动加载仓库根目录下的 .env。若仍提示缺失，请先确认你是在项目根目录执行命令，且 .env 中确实存在 DATABASE_URL。
 
 - 如果提示 createdb 或 psql command not found：
 

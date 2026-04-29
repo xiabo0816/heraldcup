@@ -72,6 +72,16 @@
 - 杯赛范围切换不进入 Navbar，只存在于对象页顶栏下方的胶囊二级导航
 - 一级导航只使用当前 Radiant / Dire 的中性色骨架，不直接铺主题主色，也不使用杯赛色做大面积高亮
 
+### Footer
+
+- 与 Navbar 相对称，是全页下方的收束块，形成上下 bracket 视觉平衡
+- 采用分段式布局：品牌说明、对象频道回流、工具与规则回流、版权信息
+- Footer 中的对象频道和工具入口必须与 Navbar 的主导航保持一致，避免导航差异
+- Footer 链接行为与 Navbar 一致：使用 `text-secondary` 基础态，hover 时提亮到 `text`
+- Footer 圆角使用 shape-none 或 shape-extra-small（与 Navbar 的 shape-medium 形成对比）
+- 保持 1240 版心约束，与 Navbar 的容器对齐；上方应有明确分界线或淡化背景区隔
+- Footer 只承担导航回流和版权说明，不做主 CTA、表单输入或交互事件的主承载
+
 ### PageIntro / DetailHero
 
 - 用于建立对象认知和承接唯一主 CTA

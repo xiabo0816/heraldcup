@@ -2,7 +2,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { cookies } from "next/headers";
 import { cache } from "react";
 import type { InvitationStatus, InvitationType, Prisma, UserRole } from "@prisma/client";
-import { prisma } from "@/lib/prisma";
+import { isPrismaConnectionError, prisma } from "@/lib/prisma";
 
 export const SESSION_COOKIE_NAME = "heraldcup_session";
 const REMEMBER_ME_DURATION_DAYS = 7;
@@ -188,86 +188,93 @@ export const getViewer = cache(async (): Promise<Viewer | null> => {
     return null;
   }
 
-  const session = await prisma.authSession.findFirst({
-    where: {
-      tokenHash: hashSessionToken(token),
-      expiresAt: {
-        gt: new Date()
+  try {
+    const session = await prisma.authSession.findFirst({
+      where: {
+        tokenHash: hashSessionToken(token),
+        expiresAt: {
+          gt: new Date()
+        }
+      },
+      include: {
+        user: {
+          include: viewerInclude
+        }
       }
-    },
-    include: {
+    });
+
+    if (!session) {
+      return null;
+    }
+
+    await prisma.authSession.update({
+      where: {
+        id: session.id
+      },
+      data: {
+        lastSeenAt: new Date()
+      }
+    });
+
+    const captainTeam = session.user.player?.captainOfTeams[0] ?? null;
+    const currentMembershipTeam = session.user.player?.teamMemberships[0]?.team ?? null;
+    const currentTeam = currentMembershipTeam ?? captainTeam ?? null;
+    const currentTeamCaptainPlayerId = currentMembershipTeam?.captainPlayerId ?? (captainTeam && currentTeam?.id === captainTeam.id ? session.user.player?.id ?? null : null);
+    const invitationStats = await getInvitationCounts(captainTeam?.id, session.user.player?.id);
+    const roleState = session.user.playerId
+      ? captainTeam
+        ? "captain"
+        : "player"
+      : "user";
+
+    return {
       user: {
-        include: viewerInclude
-      }
+        id: session.user.id,
+        name: session.user.name,
+        email: session.user.email,
+        role: session.user.role
+      },
+      player: session.user.player
+        ? {
+            id: session.user.player.id,
+            displayName: session.user.player.displayName,
+            slug: session.user.player.slug
+          }
+        : null,
+      team: captainTeam,
+      currentTeam: currentTeam
+        ? {
+            id: currentTeam.id,
+            name: currentTeam.name,
+            slug: currentTeam.slug,
+            captainPlayerId: currentTeamCaptainPlayerId
+          }
+        : null,
+      captainTeam: captainTeam
+        ? {
+            id: captainTeam.id,
+            name: captainTeam.name,
+            slug: captainTeam.slug
+          }
+        : null,
+      pendingClaim: session.user.claimRequests[0] ?? null,
+      binding: session.user.steamBinding
+        ? {
+            id: session.user.steamBinding.id,
+            steamId: session.user.steamBinding.steamId,
+            status: session.user.steamBinding.status
+          }
+        : null,
+      roleState,
+      invitationStats
+    };
+  } catch (error) {
+    if (isPrismaConnectionError(error)) {
+      return null;
     }
-  });
 
-  if (!session) {
-    cookieStore.delete(SESSION_COOKIE_NAME);
-    return null;
+    throw error;
   }
-
-  await prisma.authSession.update({
-    where: {
-      id: session.id
-    },
-    data: {
-      lastSeenAt: new Date()
-    }
-  });
-
-  const captainTeam = session.user.player?.captainOfTeams[0] ?? null;
-  const currentMembershipTeam = session.user.player?.teamMemberships[0]?.team ?? null;
-  const currentTeam = currentMembershipTeam ?? captainTeam ?? null;
-  const currentTeamCaptainPlayerId = currentMembershipTeam?.captainPlayerId ?? (captainTeam && currentTeam?.id === captainTeam.id ? session.user.player?.id ?? null : null);
-  const invitationStats = await getInvitationCounts(captainTeam?.id, session.user.player?.id);
-  const roleState = session.user.playerId
-    ? captainTeam
-      ? "captain"
-      : "player"
-    : "user";
-
-  return {
-    user: {
-      id: session.user.id,
-      name: session.user.name,
-      email: session.user.email,
-      role: session.user.role
-    },
-    player: session.user.player
-      ? {
-          id: session.user.player.id,
-          displayName: session.user.player.displayName,
-          slug: session.user.player.slug
-        }
-      : null,
-    team: captainTeam,
-    currentTeam: currentTeam
-      ? {
-          id: currentTeam.id,
-          name: currentTeam.name,
-          slug: currentTeam.slug,
-          captainPlayerId: currentTeamCaptainPlayerId
-        }
-      : null,
-    captainTeam: captainTeam
-      ? {
-          id: captainTeam.id,
-          name: captainTeam.name,
-          slug: captainTeam.slug
-        }
-      : null,
-    pendingClaim: session.user.claimRequests[0] ?? null,
-    binding: session.user.steamBinding
-      ? {
-          id: session.user.steamBinding.id,
-          steamId: session.user.steamBinding.steamId,
-          status: session.user.steamBinding.status
-        }
-      : null,
-    roleState,
-    invitationStats
-  };
 });
 
 export function isAdmin(viewer: Viewer | null) {

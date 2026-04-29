@@ -116,34 +116,62 @@ export function SiteShell({
         </div>
       </header>
       <main className="page-shell py-8">{children}</main>
-      <footer className="site-footer page-shell mt-12 pt-8 text-sm text-secondary">
-        <div className="grid gap-6 md:grid-cols-4">
-          <div>
-            <div className="eyebrow">品牌</div>
-            <div className="mt-2 text-base font-semibold text-[color:var(--md-sys-color-on-surface)]">今晚就来社区</div>
-            <p className="mt-2">第一期围绕比赛、选手、战队、我的与后台审核链路组织。</p>
-          </div>
-          <div>
-            <div className="eyebrow">对象频道</div>
-            <div className="mt-2 grid gap-2">
-              {objectNav.map((item) => (
-                <Link href={buildHref(item.href, true)} key={item.href}>
-                  {item.label}
-                </Link>
-              ))}
+      <footer className="site-footer border-t border-[var(--md-sys-color-outline-variant)]">
+        <div className="page-shell pt-10 pb-10">
+          <div className="grid gap-8 text-sm md:grid-cols-4">
+            <div>
+              <div className="eyebrow text-xs uppercase tracking-[0.16em] text-[var(--md-sys-color-on-surface-variant)]">品牌</div>
+              <div className="mt-3 text-base font-semibold text-[color:var(--md-sys-color-on-surface)]">今晚就来社区</div>
+              <p className="mt-3 text-[var(--md-sys-color-on-surface-variant)]">第一期围绕比赛、选手、战队、我的与后台审核链路组织。</p>
             </div>
-          </div>
-          <div>
-            <div className="eyebrow">工具与规则</div>
-            <div className="mt-2 grid gap-2">
-              <Link href={buildHref("/my")}>我的主页</Link>
-              <Link href={buildHref("/guide")}>新手指引</Link>
-              <Link href={buildHref("/rules")}>规则</Link>
+            <div>
+              <div className="eyebrow text-xs uppercase tracking-[0.16em] text-[var(--md-sys-color-on-surface-variant)]">对象频道</div>
+              <div className="mt-3 space-y-2">
+                {objectNav.map((item) => (
+                  <div key={item.href}>
+                    <Link 
+                      className="text-secondary transition hover:text-[color:var(--md-sys-color-on-surface)]"
+                      href={buildHref(item.href, true)}
+                    >
+                      {item.label}
+                    </Link>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-          <div>
-            <div className="eyebrow">版权</div>
-            <div className="mt-2">Herald Cup · 社区赛事、选手归属与队伍协作入口。</div>
+            <div>
+              <div className="eyebrow text-xs uppercase tracking-[0.16em] text-[var(--md-sys-color-on-surface-variant)]">工具与规则</div>
+              <div className="mt-3 space-y-2">
+                <div>
+                  <Link 
+                    className="text-secondary transition hover:text-[color:var(--md-sys-color-on-surface)]"
+                    href={buildHref("/my")}
+                  >
+                    我的主页
+                  </Link>
+                </div>
+                <div>
+                  <Link 
+                    className="text-secondary transition hover:text-[color:var(--md-sys-color-on-surface)]"
+                    href={buildHref("/guide")}
+                  >
+                    新手指引
+                  </Link>
+                </div>
+                <div>
+                  <Link 
+                    className="text-secondary transition hover:text-[color:var(--md-sys-color-on-surface)]"
+                    href={buildHref("/rules")}
+                  >
+                    规则
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="eyebrow text-xs uppercase tracking-[0.16em] text-[var(--md-sys-color-on-surface-variant)]">版权</div>
+              <p className="mt-3 text-[var(--md-sys-color-on-surface-variant)]">Herald Cup · 社区赛事、选手归属与队伍协作入口。</p>
+            </div>
           </div>
         </div>
       </footer>

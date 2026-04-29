@@ -3,7 +3,7 @@
 ## 1. 视觉方向
 
 - Dota 2 世界观气质优先于游戏 HUD 模仿
-- 深色竞技底盘
+- 全站底盘允许随阵营切换：天辉为浅色石白底盘，夜魇为深色竞技底盘
 - 秩序感大于花哨感
 - 荣誉感大于庆典噪音
 - 社区参与感大于纯资讯陈列
@@ -190,11 +190,14 @@ Dota 2 化而不 HUD 化：
 
 二级导航颜色规则：
 
-- 二级导航按钮默认态统一使用 surface 背景、outline-variant 边框、on-surface-variant 文字；默认态不预铺每个范围自己的主色
-- hover 态才切入当前主题：背景使用 scope-primary-container，边框使用 scope-primary，文字使用 scope-on-primary-container
-- active 态优先使用 scope-primary-container、scope-primary 边框、scope-on-primary-container 文字，再通过底边线使用 scope-primary 强调
+- 二级导航 4 个按钮必须分别拥有独立色系；默认态、hover 态、active 态都要按按钮所属范围区分，不再允许 4 个按钮默认态长成同一套中性底色
+- “全部”按钮继续使用 neutral 体系，但要有自己独立的默认底色、hover 底色和 active 高亮色，不与三个杯赛按钮共用同一组交互面
+- 先锋杯按钮固定使用 pioneer 系列：default 使用 pioneer 的低强度底色与描边，hover 提升到 pioneer primary-container，active 再切到更强的 pioneer 主色高亮
+- 传奇杯按钮固定使用 legend 系列：default 使用 legend 的低强度底色与描边，hover 提升到 legend primary-container，active 再切到更强的 legend 主色高亮
+- 冠绝杯按钮固定使用 crown 系列：default 使用 crown 的低强度底色与描边，hover 提升到 crown primary-container，active 再切到更强的 crown 主色高亮
+- active 态优先通过更高对比的范围底色、强调描边和局部抬升共同建立；不再给按钮额外挂底部把手线或底边强调线
 - 如果页面需要更重的营销式表达，允许把 active 态做成 scope-primary 实底 + scope-on-primary 文字，但这不是后台和高密度频道页的默认方案
-- 最稳妥的频道页写法固定为：default = surface + outline-variant + on-surface-variant，hover = scope-primary-container + scope-primary + scope-on-primary-container，active = hover 规则加 scope-primary 强提示线
+- 最稳妥的频道页写法固定为：每个按钮 default = 本范围低强度 container / outline / 对应文字色，hover = 同范围更亮的 primary-container / primary / on-primary-container，active = 同范围主高亮底色 + 强描边 + 局部阴影
 - 二级导航整体背景仍以中性色表面为主，主题色只应集中作用在按钮交互和当前态标记上
 - 二级导航自身不做整条实底染色；主题切换的主体发生在二级导航以下的频道内容壳层，而不是把第二条导航做成新的重头部
 
@@ -204,7 +207,7 @@ Dota 2 化而不 HUD 化：
 - 同一频道页首屏只保留 1 个 Banner 槽位；范围摘要、焦点人物、推荐战队、焦点赛程等内容只能合并进这一个 Banner，不得再叠加第二个正文 Banner
 - 胶囊二级导航作为二级导航，必须做成与 community 一致的胶囊按钮行：紧接顶部导航下方，和页面主体共享 1240 版心
 - 二级导航内部固定为 4 个胶囊按钮，顺序固定为全部、先锋杯、传奇杯、冠绝杯
-- “全部”固定使用中性色骨架，不参与主题色映射；具体杯赛或具体子模块态再挂接 A B C 主题槽位
+- “全部”固定使用中性色按钮语义；先锋杯、传奇杯、冠绝杯三个按钮从默认态开始就分别挂接各自范围色系，不再等到 hover 才出现差异
 - 统计、资格和说明不放进二级导航本体；它们回到正文首块或右栏首卡，不把导航条写成复合信息块
 - “全部”态时，二级导航之后直接进入主工作台或主目录，不出现 Banner；具体范围态时，才允许保留 1 个对应 Banner，且它作为频道页头部摘要存在于二级导航之后
 - 当前杯赛的 scope 色应覆盖二级导航以下的页面背景雾面、标题区、工具条、主列表外壳、右栏首卡与回流区；局部重点再通过 scope-primary 提升，不把高饱和主色直接铺满长文本区域
@@ -227,7 +230,7 @@ Dota 2 化而不 HUD 化：
 全站双主主题规则（天辉 / 夜魇）：
 
 - 全站基础主题拆分为两套：天辉模式（Radiant）与夜魇模式（Dire）；两者只替换基础色层，不改变信息架构、布局、组件层级和交互语义
-- 天辉模式用于明亮自然基调，参考风行者的林地配色：鼠尾草浅石、林地橄榄、皮革棕与箭羽琥珀；页面底色保持低饱和浅石与浅苔感，而不是发白的玉色或偏薄的青绿
+- 天辉模式用于明亮自然基调，参考风行者的林地配色：石白、鼠尾草、林地橄榄与少量箭羽琥珀；页面底色以低饱和石白和浅苔白为主，允许明显偏白，但必须保留一点自然灰绿感，避免做成医院白或薄荷糖色
 - 夜魇模式用于阴暗压迫基调，主色倾向赤红与暗灰黑，页面底色保持低亮深色岩质感
 - 依据 Dota 2 阵营设定：Radiant 为 bright, natural theme；Dire 为 dark, gloomy theme；在视觉映射上分别落为“亮面绿青系”与“暗面赤红系”
 - 基础主题切换只影响 MD3 neutral / surface / outline / primary 等全站基础 role；不直接改写赛事范围 scope 色
@@ -279,22 +282,22 @@ Dota 2 化而不 HUD 化：
 
 | Token | Color | 用途 |
 | --- | --- | --- |
-| `--bg` | `#111A12` | 页面主背景 |
-| `--bg-secondary` | `#18231A` | 二级背景 |
-| `--surface` | `#1E2B20` | 卡片背景 |
-| `--surface-elevated` | `#263629` | 弹层 / 悬浮卡片 |
-| `--border` | `#314535` | 边框 / 分割线 |
-| `--text` | `#EAF3E3` | 主文字 |
-| `--text-secondary` | `#B8C7B2` | 次文字 |
-| `--text-muted` | `#8B9A86` | 弱文字 |
-| `--primary` | `#79B84A` | 主按钮 / 品牌主色 |
-| `--primary-hover` | `#8DCA5C` | 主按钮 hover |
-| `--accent` | `#58B8D8` | 链接 / 信息高亮 |
+| `--bg` | `#F6F8F2` | 页面主背景 |
+| `--bg-secondary` | `#EDF2E8` | 二级背景 |
+| `--surface` | `#FFFFFF` | 卡片背景 |
+| `--surface-elevated` | `#F8FBF5` | 弹层 / 悬浮卡片 |
+| `--border` | `#CDD7C4` | 边框 / 分割线 |
+| `--text` | `#172114` | 主文字 |
+| `--text-secondary` | `#4F5F49` | 次文字 |
+| `--text-muted` | `#788772` | 弱文字 |
+| `--primary` | `#5E9141` | 主按钮 / 品牌主色 |
+| `--primary-hover` | `#73A952` | 主按钮 hover |
+| `--accent` | `#7BAA67` | 链接 / 信息高亮 |
 | `--success` | `#67C26F` | 成功态 |
 | `--warning` | `#D7B75A` | 警告态 |
 | `--danger` | `#C95C4B` | 危险态 |
 
-气质要求：自然、明亮、生命感。首页可用低透明度晨光绿调光带，但不得压住标题与统计文案。
+气质要求：自然、明亮、生命感。天辉默认应呈现白色相关底盘，绿色只承担强调、按钮、焦点和局部光带，不把整页重新染成深绿或高饱和青绿。
 
 ### 5.3 Dire Theme
 
@@ -501,11 +504,27 @@ Banner 规则：
 - 杯赛 Banner 内的标题、副文案与按钮也必须满足基本可读性；不要因渐变、纹理或光带牺牲对比
 - 后台和高密度表格区不使用杯赛色做大面积底色；危险操作只使用 danger 语义，不借用杯赛红紫色制造伪风险感
 
-Footer 视觉规则：
+Footer 视觉规则与导航栏呼应：
 
-- Footer 使用当前主题的 `--surface` 或 `--bg-secondary`，不使用任何杯赛主色做大面积铺底
-- Footer 链接使用 `--text-secondary`，hover 轻度提亮到 `--text`
-- Footer 圆角使用 shape-none 或 shape-extra-small
+**设计职能：** Footer 是与导航栏相对称的页脚收束块，形成全页上下 bracket 的视觉平衡。不是装饰，而是内容回流和快速导航的实质性工具区。
+
+**结构呼应：**
+- 导航栏采用三段式（左品牌、中对象导航、右工具），Footer 也采用分段式（品牌说明、对象频道、工具与规则、版权）
+- 导航栏的所有主要导航入口（对象频道、工具）必须在 Footer 中有对应的回流链接
+- Footer 保持 1240 版心约束，与导航栏的 page-shell 容器宽度对齐
+- Footer 上方应有明确的分界线，与正文区形成视觉断层
+
+**颜色与层级：**
+- 背景使用当前主题的 `--bg` 或 `--surface` 做淡化底色，与导航栏使用 backdrop-blur 的透光感形成对比
+- 主文字（品牌名、栏目标题）使用 `--text` 或 `--text-secondary` 
+- Footer 链接使用 `--text-secondary`，hover 轻度提亮到 `--text`，与导航栏的链接交互状态保持一致
+- Footer 不使用任何杯赛主色做大面积铺底
+
+**形状与间距：**
+- Footer 圆角使用 shape-none 或 shape-extra-small，与导航栏的 shape-medium (rounded-xl) 形成对比
+- 上下 padding 建议 pt-8 pb-10，给予充分呼吸感
+- 栏目间距保持 gap-6 以上，避免拥挤感
+- 链接行高 > 32px，确保 touch target 可用性
 ### 6.3 Tailwind 类名映射
 
 ```

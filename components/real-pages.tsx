@@ -155,80 +155,103 @@ function EmptyState({ title, description, action }: { title: string; description
 export function HomePageView({ viewer, data }: { viewer: Viewer | null; data: HomeData }) {
   return (
     <div className="space-y-6">
-      <section className="home-stage grid gap-4 lg:grid-cols-[3fr_6fr_3fr]">
-        <SectionCard className="home-rail-shell rounded-xl p-4">
-          <SectionTitle eyebrow="首页导览" title="先看这四条主线" description="比赛、人物、战队和身份入口固定在同一屏里，方便你直接回到主线内容。" />
-          <InfoList items={data.leftRail} />
-        </SectionCard>
+      <section className="home-stage grid gap-4 lg:grid-cols-[2.2fr_6.6fr_3.2fr] lg:items-start">
+        <aside className="home-left-rail-shell lg:sticky lg:top-24 lg:self-start">
+          <nav aria-label="首页模块目录" className="grid gap-2">
+            {data.leftRail.map((item) => (
+              <Link
+                className="home-left-rail-button"
+                href={item.href ?? "#"}
+                key={item.title}
+              >
+                {item.title}
+              </Link>
+            ))}
+          </nav>
+        </aside>
 
-        <SectionCard className="hero-shell rounded-[28px] p-6">
-          <div className="eyebrow">Herald Cup</div>
-          <h1 className="mt-2 max-w-3xl text-4xl font-semibold leading-tight">{data.hero.title}</h1>
-          <p className="mt-4 max-w-3xl text-base text-secondary">{data.hero.body}</p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <Link className="theme-highlight-button rounded-xl px-4 py-3 text-sm" href="/matches">
-              进入比赛中心
-            </Link>
-            <Link className="scope-tab rounded-xl px-4 py-3 text-sm" href="/players">
-              查看人物档案
-            </Link>
-            <Link className="scope-tab rounded-xl px-4 py-3 text-sm" href="/teams">
-              查看战队名册
-            </Link>
-          </div>
-          <StatGrid items={data.hero.stats} />
+        <div className="grid gap-4">
+          <SectionCard className="hero-shell rounded-[28px] p-6">
+            <div className="eyebrow">Herald Cup</div>
+            <h1 className="mt-2 max-w-3xl text-4xl font-semibold leading-tight">{data.hero.title}</h1>
+            <p className="mt-4 max-w-3xl text-base text-secondary">{data.hero.body}</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link className="theme-highlight-button rounded-xl px-4 py-3 text-sm" href="/matches">
+                进入比赛中心
+              </Link>
+              <Link className="scope-tab rounded-xl px-4 py-3 text-sm" href="/players">
+                查看人物档案
+              </Link>
+              <Link className="scope-tab rounded-xl px-4 py-3 text-sm" href="/teams">
+                查看战队名册
+              </Link>
+            </div>
+            <StatGrid items={data.hero.stats} />
+          </SectionCard>
 
-          <div className="mt-6 grid gap-4 xl:grid-cols-2">
-            <SectionCard className="home-module-shell rounded-xl p-4">
-              <SectionTitle eyebrow="比赛中心" title="当前赛季与焦点对阵" />
-              <InfoList items={data.modules.matches} />
-            </SectionCard>
-            <SectionCard className="home-module-shell rounded-xl p-4">
-              <SectionTitle eyebrow="人物档案" title="认证选手与代表比赛" />
-              <InfoList items={data.modules.players} />
-            </SectionCard>
-            <SectionCard className="home-module-shell rounded-xl p-4">
-              <SectionTitle eyebrow="战队名册" title="活跃阵容与当前归属" />
-              <InfoList items={data.modules.teams} />
-            </SectionCard>
-            <SectionCard className="home-module-shell rounded-xl p-4">
-              <SectionTitle eyebrow="身份链路" title="从登录到上场的下一步" />
-              <InfoList items={data.modules.identity} />
-            </SectionCard>
-          </div>
-        </SectionCard>
+          <SectionCard className="home-module-shell scroll-mt-28 rounded-xl p-4" id="home-matches">
+            <SectionTitle eyebrow="比赛中心" title="当前赛季与焦点对阵" />
+            <InfoList items={data.modules.matches} />
+          </SectionCard>
+          <SectionCard className="home-module-shell scroll-mt-28 rounded-xl p-4" id="home-players">
+            <SectionTitle eyebrow="人物档案" title="认证选手与代表比赛" />
+            <InfoList items={data.modules.players} />
+          </SectionCard>
+          <SectionCard className="home-module-shell scroll-mt-28 rounded-xl p-4" id="home-teams">
+            <SectionTitle eyebrow="战队名册" title="活跃阵容与当前归属" />
+            <InfoList items={data.modules.teams} />
+          </SectionCard>
+          <SectionCard className="home-module-shell scroll-mt-28 rounded-xl p-4" id="home-identity">
+            <SectionTitle eyebrow="身份链路" title="从登录到上场的下一步" />
+            <InfoList items={data.modules.identity} />
+          </SectionCard>
+        </div>
 
-        <SectionCard className="home-rail-shell rounded-xl p-4">
-          <SectionTitle
-            eyebrow="身份进度"
-            title={viewer ? `${viewer.user.name} 的身份进度` : "登录后继续你的身份进度"}
-            description={viewer ? "你的账号、认领、队伍与邀请状态会在这里先做一次摘要。" : "登录后可以继续认领、建队和邀请处理，身份链路会固定收口到这里。"}
-          />
-          <div className="mt-4 space-y-3">
-            <div className="theme-neutral-shell rounded-xl px-4 py-4 text-sm">
+        <aside className="grid gap-3 lg:sticky lg:top-24 lg:self-start">
+          <section className="home-right-rail-module">
+            <div className="eyebrow">身份进度</div>
+            <div className="mt-2 text-lg font-semibold">{viewer ? `${viewer.user.name} 的身份进度` : "登录后继续你的身份进度"}</div>
+            <p className="mt-2 text-sm text-secondary">
+              {viewer ? "你的账号、认领、队伍与邀请状态会在这里先做一次摘要。" : "登录后可以继续认领、建队和邀请处理，身份链路会固定收口到这里。"}
+            </p>
+          </section>
+
+          <section className="home-right-rail-module theme-neutral-shell">
+            <div className="text-sm leading-6">
               {viewer
                 ? `当前身份：${viewer.roleState} · ${viewer.user.email ?? "未设置邮箱"}`
                 : "你现在可以先浏览比赛、人物和战队，准备好后再登录继续。"}
             </div>
+          </section>
+
+          <section className={viewer ? "home-right-rail-module theme-neutral-shell" : "home-right-rail-module"}>
+            <div className="text-sm leading-6">
+              {viewer
+                ? `认领进度：${viewer.pendingClaim ? "有一条审核中的选手认领" : viewer.player ? "已完成选手认领" : "尚未提交认领"}`
+                : "身份链路会按登录、认领、建队和邀请四步向下收口，不需要先跳去别的入口。"}
+            </div>
+          </section>
+
+          <section className={viewer ? "home-right-rail-module theme-neutral-shell" : "home-right-rail-module"}>
             {viewer ? (
               <>
-                <div className="theme-info-shell rounded-xl px-4 py-4 text-sm">
-                  认领进度：{viewer.pendingClaim ? "有一条审核中的选手认领" : viewer.player ? "已完成选手认领" : "尚未提交认领"}
-                </div>
-                <div className="theme-success-shell rounded-xl px-4 py-4 text-sm">
+                <div className="text-sm leading-6">
                   队伍与邀请：{viewer.currentTeam ? `当前队伍为 ${viewer.currentTeam.name}。` : "当前还没有队伍。"} 共有 {data.rightRail.invitations} 条需要你留意的邀请。
                 </div>
-                <Link className="theme-highlight-button inline-block rounded-xl px-4 py-3 text-sm" href="/my">
+                <Link className="theme-highlight-button mt-4 inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm" href="/my">
                   进入我的主页
                 </Link>
               </>
             ) : (
-              <Link className="theme-highlight-button inline-block rounded-xl px-4 py-3 text-sm" href="/login">
-                去登录或注册
-              </Link>
+              <>
+                <div className="text-sm leading-6">准备好后，从这里登录并继续你的身份与队伍链路。</div>
+                <Link className="theme-highlight-button mt-4 inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm" href="/login">
+                  去登录或注册
+                </Link>
+              </>
             )}
-          </div>
-        </SectionCard>
+          </section>
+        </aside>
       </section>
     </div>
   );
@@ -733,7 +756,42 @@ export function AdminClaimsPageView({ claims }: { claims: AdminClaimsData }) {
   return (
     <SectionCard className="rounded-xl p-6">
       <SectionTitle eyebrow="认领审核" title="全部认领申请" description="按状态和提交时间排序，优先处理待审申请。" />
-      {claims.length ? <SimpleTable columns={["申请人", "选手", "状态", "提交时间", "详情"]} rows={claims.map((claim) => [claim.user.name, claim.player.displayName, claimStatusLabel(claim.status), formatDate(claim.submittedAt), <Link className="text-[color:var(--md-sys-color-primary)]" href={`/admin/claims/${claim.id}`} key={claim.id}>打开</Link>])} /> : <div className="mt-4 text-sm text-secondary">当前没有认领申请。</div>}
+      {claims.length ? (
+        <SimpleTable
+          columns={["申请人", "选手", "状态", "提交时间", "操作"]}
+          rows={claims.map((claim) => [
+            claim.user.name,
+            claim.player.displayName,
+            claimStatusLabel(claim.status),
+            formatDate(claim.submittedAt),
+            claim.status === "PENDING" ? (
+              <div className="flex flex-wrap gap-2" key={claim.id}>
+                <form action={reviewClaimAction}>
+                  <input name="claimId" type="hidden" value={claim.id} />
+                  <input name="decision" type="hidden" value="approve" />
+                  <input name="reviewNote" type="hidden" value="后台列表快速通过" />
+                  <button className="theme-highlight-button rounded-xl px-3 py-2 text-sm" type="submit">通过</button>
+                </form>
+                <form action={reviewClaimAction}>
+                  <input name="claimId" type="hidden" value={claim.id} />
+                  <input name="decision" type="hidden" value="reject" />
+                  <input name="reviewNote" type="hidden" value="后台列表快速拒绝" />
+                  <button className="theme-danger-button rounded-xl border px-3 py-2 text-sm font-semibold" type="submit">拒绝</button>
+                </form>
+                <Link className="self-center text-sm text-[color:var(--md-sys-color-primary)]" href={`/admin/claims/${claim.id}`}>
+                  详情
+                </Link>
+              </div>
+            ) : (
+              <Link className="text-[color:var(--md-sys-color-primary)]" href={`/admin/claims/${claim.id}`} key={claim.id}>
+                查看详情
+              </Link>
+            )
+          ])}
+        />
+      ) : (
+        <div className="mt-4 text-sm text-secondary">当前没有认领申请。</div>
+      )}
     </SectionCard>
   );
 }
