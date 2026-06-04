@@ -140,7 +140,7 @@ export function SiteShell({
               </div>
             </div>
             <div>
-              <div className="eyebrow text-xs uppercase tracking-[0.16em] text-[var(--md-sys-color-on-surface-variant)]">工具与规则</div>
+              <div className="eyebrow text-xs uppercase tracking-[0.16em] text-[var(--md-sys-color-on-surface-variant)]">工具与社区文化</div>
               <div className="mt-3 space-y-2">
                 <div>
                   <Link 
@@ -163,7 +163,7 @@ export function SiteShell({
                     className="text-secondary transition hover:text-[color:var(--md-sys-color-on-surface)]"
                     href={buildHref("/rules")}
                   >
-                    规则
+                    社区文化
                   </Link>
                 </div>
               </div>

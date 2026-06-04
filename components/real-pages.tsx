@@ -190,19 +190,19 @@ export function HomePageView({ viewer, data }: { viewer: Viewer | null; data: Ho
           </SectionCard>
 
           <SectionCard className="home-module-shell scroll-mt-28 rounded-xl p-4" id="home-matches">
-            <SectionTitle eyebrow="比赛中心" title="当前赛季与焦点对阵" />
+            <SectionTitle eyebrow="比赛中心" title="这周在打什么" />
             <InfoList items={data.modules.matches} />
           </SectionCard>
           <SectionCard className="home-module-shell scroll-mt-28 rounded-xl p-4" id="home-players">
-            <SectionTitle eyebrow="人物档案" title="认证选手与代表比赛" />
+            <SectionTitle eyebrow="人物档案" title="最近常见的选手" />
             <InfoList items={data.modules.players} />
           </SectionCard>
           <SectionCard className="home-module-shell scroll-mt-28 rounded-xl p-4" id="home-teams">
-            <SectionTitle eyebrow="战队名册" title="活跃阵容与当前归属" />
+            <SectionTitle eyebrow="战队名册" title="现在有哪些固定队" />
             <InfoList items={data.modules.teams} />
           </SectionCard>
           <SectionCard className="home-module-shell scroll-mt-28 rounded-xl p-4" id="home-identity">
-            <SectionTitle eyebrow="身份链路" title="从登录到上场的下一步" />
+            <SectionTitle eyebrow="怎么上场" title="想上场，从这里开始" />
             <InfoList items={data.modules.identity} />
           </SectionCard>
         </div>
@@ -210,9 +210,9 @@ export function HomePageView({ viewer, data }: { viewer: Viewer | null; data: Ho
         <aside className="grid gap-3 lg:sticky lg:top-24 lg:self-start">
           <section className="home-right-rail-module">
             <div className="eyebrow">身份进度</div>
-            <div className="mt-2 text-lg font-semibold">{viewer ? `${viewer.user.name} 的身份进度` : "登录后继续你的身份进度"}</div>
+            <div className="mt-2 text-lg font-semibold">{viewer ? `${viewer.user.name} 的身份进度` : "登录后继续你的社区进度"}</div>
             <p className="mt-2 text-sm text-secondary">
-              {viewer ? "你的账号、认领、队伍与邀请状态会在这里先做一次摘要。" : "登录后可以继续认领、建队和邀请处理，身份链路会固定收口到这里。"}
+              {viewer ? "你的账号、认领、队伍和邀请会先在这里帮你理一遍。" : "登录后可以认领、找队、处理邀请；想先看看、先听听语音，再决定怎么参与也完全没问题。"}
             </p>
           </section>
 
@@ -220,7 +220,7 @@ export function HomePageView({ viewer, data }: { viewer: Viewer | null; data: Ho
             <div className="text-sm leading-6">
               {viewer
                 ? `当前身份：${viewer.roleState} · ${viewer.user.email ?? "未设置邮箱"}`
-                : "你现在可以先浏览比赛、人物和战队，准备好后再登录继续。"}
+                : "第一次来也没关系，先看看比赛、人物和战队；不会进语音、不会切区服，群里都可以问。"}
             </div>
           </section>
 
@@ -228,7 +228,7 @@ export function HomePageView({ viewer, data }: { viewer: Viewer | null; data: Ho
             <div className="text-sm leading-6">
               {viewer
                 ? `认领进度：${viewer.pendingClaim ? "有一条审核中的选手认领" : viewer.player ? "已完成选手认领" : "尚未提交认领"}`
-                : "身份链路会按登录、认领、建队和邀请四步向下收口，不需要先跳去别的入口。"}
+                : "想上场的时候，再按登录、认领、建队和邀请往下走；别着急，先找到适合自己的位置。"}
             </div>
           </section>
 
@@ -244,7 +244,7 @@ export function HomePageView({ viewer, data }: { viewer: Viewer | null; data: Ho
               </>
             ) : (
               <>
-                <div className="text-sm leading-6">准备好后，从这里登录并继续你的身份与队伍链路。</div>
+                <div className="text-sm leading-6">准备好了再登录。大家来这儿是一起玩，不是互相怼；有边界，也有人会接你一把。</div>
                 <Link className="theme-highlight-button mt-4 inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm" href="/login">
                   去登录或注册
                 </Link>
@@ -853,16 +853,34 @@ export function AdminEntityPageView({
 
 export function RulesPageView() {
   return (
-    <div className="space-y-4">
-      <SectionCard className="rounded-xl p-6">
-        <SectionTitle eyebrow="规则" title="参赛与社区规则" description="这些规则直接面向参赛、协作、处罚和社区安全。" />
-      </SectionCard>
-      {ruleSections.map((section) => (
-        <SectionCard className="rounded-xl p-5" key={section.title}>
-          <SectionTitle eyebrow="规则章节" title={section.title} description={section.body} />
-          <InfoList items={[{ title: section.title, meta: section.body }]} />
+    <div className="grid gap-4 lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start">
+      <aside className="grid gap-4 lg:sticky lg:top-24 lg:self-start">
+        <SectionCard className="rounded-xl p-5">
+          <SectionTitle eyebrow="目录" title="规则索引" description="先看你现在最需要的那一段，再回到对应活动或身份流程继续。" />
+          <div className="mt-4 grid gap-2">
+            {ruleSections.map((section) => (
+              <Link className="scope-tab rounded-xl px-4 py-3 text-sm" href={`#${section.id}`} key={section.id}>
+                {section.title}
+              </Link>
+            ))}
+          </div>
         </SectionCard>
-      ))}
+        <SectionCard className="rounded-xl p-5">
+          <SectionTitle eyebrow="文化底线" title="先讲配合，再讲输赢" description="这页不是单纯处罚清单，而是把社区怎么一起玩、怎么互相照应写清楚。" />
+        </SectionCard>
+      </aside>
+
+      <div className="space-y-4">
+        <SectionCard className="rounded-xl p-6">
+          <SectionTitle eyebrow="规则" title="社区公告与参赛规则" description="规则来自社区长期使用的群公告口径，重点说明怎么进群、怎么开黑、怎么参赛，以及哪些行为会直接破坏大家的体验。" />
+        </SectionCard>
+        {ruleSections.map((section) => (
+          <SectionCard className="scroll-mt-28 rounded-xl p-5" id={section.id} key={section.id}>
+            <SectionTitle eyebrow="规则章节" title={section.title} description={section.body} />
+            <InfoList items={section.items} />
+          </SectionCard>
+        ))}
+      </div>
     </div>
   );
 }

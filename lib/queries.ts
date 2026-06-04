@@ -59,20 +59,20 @@ function buildHomeIdentityItems(viewer: Viewer | null, invitationCount: number) 
     return [
       {
         title: "登录账号",
-        meta: "保留个人入口、认领记录和邀请通知。",
-        sub: "先登录后继续你的身份进度。",
+        meta: "先把账号登上，后面认领、组队和邀请才有地方接得住。",
+        sub: "不用一次全做完，先登录就够了。",
         href: "/login"
       },
       {
         title: "认领选手",
-        meta: "提交 Steam 与身份说明，通过后进入正式人物链路。",
-        sub: "审核进度会持续显示在个人页。",
+        meta: "准备好 Steam 和身份说明，就可以把自己正式挂到社区里。",
+        sub: "提交后别反复催，进度会一直显示在个人页。",
         href: "/guide"
       },
       {
         title: "建立队伍",
-        meta: "完成认领后创建战队，开始处理阵容与邀请。",
-        sub: "队长动作统一收口到个人页。",
+        meta: "等认领过了，再决定是自己拉队，还是先看看有没有合适的队伍。",
+        sub: "不着急建队，先把人认清也行。",
         href: "/guide"
       }
     ];
@@ -82,20 +82,20 @@ function buildHomeIdentityItems(viewer: Viewer | null, invitationCount: number) 
     return [
       {
         title: "我的主页",
-        meta: "账号已创建，可以继续查看认领和邀请摘要。",
-        sub: "从这里继续处理身份入口。",
+        meta: "账号已经有了，接下来认领、邀请和个人状态都会先放在这里。",
+        sub: "先去看看你现在还差哪一步。",
         href: "/my"
       },
       {
         title: "认领选手",
-        meta: viewer.pendingClaim ? "你的认领申请正在审核中。" : "现在可以提交认领申请，完成正式身份绑定。",
-        sub: viewer.pendingClaim ? "前往认领历史查看处理进度。" : "准备 Steam 信息与身份说明。",
+        meta: viewer.pendingClaim ? "你的认领已经在排队审核了。" : "想正式上场，现在就可以把认领提上去。",
+        sub: viewer.pendingClaim ? "去认领记录里看看进度，等结果就行。" : "把 Steam 信息和身份说明准备好，会顺很多。",
         href: viewer.pendingClaim ? "/my/claims" : "/my"
       },
       {
         title: "建立队伍",
-        meta: "完成选手认领后即可创建战队并进入队长链路。",
-        sub: "当前尚未解锁建队能力。",
+        meta: "等选手认领通过后，你就能自己拉一支队伍。",
+        sub: "现在先别急，先把认领这一步走完。",
         href: "/guide"
       }
     ];
@@ -105,19 +105,19 @@ function buildHomeIdentityItems(viewer: Viewer | null, invitationCount: number) 
     return [
       {
         title: "我的主页",
-        meta: "你已经完成选手认领，可以回到个人页查看比赛与邀请。",
+        meta: "你已经能以上场玩家的身份继续玩了，比赛和邀请都会先回到个人页。",
         sub: `当前待处理邀请 ${invitationCount} 条。`,
         href: "/my"
       },
       {
         title: "创建战队",
-        meta: "已解锁队长链路，可以建立自己的战队。",
-        sub: "建队后可继续管理阵容与训练赛。",
+        meta: "如果你想自己拉人开打，现在已经可以建队了。",
+        sub: "建好以后，就能继续管阵容和训练赛。",
         href: "/my/team"
       },
       {
         title: "处理邀请",
-        meta: "你的入队或训练赛邀请会持续汇总在个人页。",
+        meta: "别人拉你入队，或者约你们打训练赛，都会先汇总到这里。",
         sub: invitationCount ? "进入个人页处理当前邀请。" : "当前没有待处理邀请。",
         href: "/my"
       }
@@ -128,20 +128,20 @@ function buildHomeIdentityItems(viewer: Viewer | null, invitationCount: number) 
     return [
       {
         title: "我的主页",
-        meta: "你已经完成选手认领，可以继续查看人物、比赛和邀请摘要。",
+        meta: "你已经在队里了，人物、比赛和邀请也都能继续从个人页接着看。",
         sub: `当前所属战队：${viewer.currentTeam.name}`,
         href: "/my"
       },
       {
         title: "当前战队",
-        meta: `${viewer.currentTeam.name} 已经是你的当前归属战队。`,
+        meta: `${viewer.currentTeam.name} 就是你现在一起打的队伍。`,
         sub: invitationCount ? `当前有 ${invitationCount} 条与你相关的邀请。` : "当前没有待处理邀请。",
         href: `/teams/${viewer.currentTeam.slug}`
       },
       {
         title: "队伍关系",
-        meta: "你当前是队员身份，队伍管理和训练赛动作由队长链路处理。",
-        sub: "需要时可回到人物页或战队页继续查看上下文。",
+        meta: "你现在是队员身份，拉人、改阵容这类事主要还是队长在处理。",
+        sub: "想看清现在的队伍情况，回人物页或战队页都行。",
         href: "/my"
       }
     ];
@@ -150,20 +150,20 @@ function buildHomeIdentityItems(viewer: Viewer | null, invitationCount: number) 
   return [
     {
       title: "我的主页",
-      meta: "从个人页继续查看战绩、身份状态和队伍动作。",
+      meta: "个人页会先帮你把战绩、身份状态和队伍动静理在一起。",
       sub: `当前身份：${viewer.roleState}`,
       href: "/my"
     },
     {
       title: "队伍管理",
-      meta: `${viewer.captainTeam.name} 已进入队长链路，可以继续维护阵容与说明。`,
+      meta: `${viewer.captainTeam.name} 现在由你带着走，阵容和说明都可以继续维护。`,
       sub: invitationCount ? `当前有 ${invitationCount} 条邀请待处理。` : "当前没有待处理邀请。",
       href: "/my/team"
     },
     {
       title: "邀请处理",
-      meta: "训练赛与入队邀请统一在身份链路里继续。",
-      sub: "需要时可直接回到个人页处理。",
+      meta: "训练赛和入队邀请都会堆到这里，不会让你四处找。",
+      sub: "需要处理的时候，回个人页点开就行。",
       href: "/my"
     }
   ];
@@ -280,7 +280,7 @@ export async function getHeaderSearchIndex() {
         group: "战队",
         meta: `${team.summary ?? "战队主页"} · ${team.seasonEntries[0] ? scopeMeta[kindToScope(team.seasonEntries[0].season.tournament.kind)].label : "未入池"}`
       })),
-      { title: "规则", href: "/rules", group: "阅读", meta: "处罚、边界与社区安全" },
+      { title: "社区文化", href: "/rules", group: "阅读", meta: "处罚、边界与社区安全" },
       { title: "新手指引", href: "/guide", group: "阅读", meta: "账号、认领与参赛流程" },
       { title: "我的主页", href: "/my", group: "操作", meta: "身份状态、队伍与邀请" }
     ];
@@ -341,20 +341,20 @@ export async function getHomePageData(viewer: Viewer | null) {
 
     return {
       hero: {
-        title: "Herald Cup 把比赛、人物、战队和身份放回同一条主线",
-        body: "先看当前赛季与焦点对阵，再进入人物档案和战队名册；登录后继续完成认领、建队与邀请处理。",
+        title: "今晚想开黑？先来看看这周谁在打",
+        body: "这里能看这周的比赛、常来玩的选手和正在组队的队伍。第一次来也没关系，想观战、想找人、想下场都可以慢慢来；但别吵架、别乱上压力，大家先把气氛玩舒服。",
         stats: [
-          { label: "推荐赛季", value: String(featuredSeasons.length || 0), hint: "首页重点赛季" },
-          { label: "焦点对阵", value: String(latestMatches.length || 0), hint: "当前已入库比赛" },
-          { label: "人物入口", value: String(featuredPlayers.length || 0), hint: "认证与焦点人物" },
-          { label: "战队入口", value: String(teams.length || 0), hint: "当前活跃战队" }
+          { label: "推荐赛季", value: String(featuredSeasons.length || 0), hint: "周五晚常见赛程" },
+          { label: "焦点对阵", value: String(latestMatches.length || 0), hint: "这周有人在打" },
+          { label: "活跃人物", value: String(featuredPlayers.length || 0), hint: "常来开黑的伙伴" },
+          { label: "活跃战队", value: String(teams.length || 0), hint: "固定队和公会" }
         ]
       },
       leftRail: [
-        { title: "比赛中心", meta: "跳到中栏查看当前赛季、焦点对阵和已录入结果。", sub: `${latestMatches.length} 场焦点对阵`, href: "#home-matches" },
-        { title: "人物档案", meta: "跳到中栏查看认证选手、位置标签和代表比赛摘要。", sub: `${featuredPlayers.length} 位已入库人物`, href: "#home-players" },
-        { title: "战队名册", meta: "跳到中栏查看阵容、杯赛归属和近期战绩摘要。", sub: `${teams.length} 支活跃战队`, href: "#home-teams" },
-        { title: "身份链路", meta: "跳到中栏查看登录、认领、建队和邀请的下一步。", sub: viewer ? "回到身份步骤继续处理" : "从游客到正式身份", href: "#home-identity" }
+        { title: "比赛中心", meta: "先看看这周打到哪了，今晚有没有你想看的局。", sub: `${latestMatches.length} 场这周有动静的比赛`, href: "#home-matches" },
+        { title: "人物档案", meta: "认认人：谁常来玩、打什么位置、最近跟谁一起上场。", sub: `${featuredPlayers.length} 位活跃选手`, href: "#home-players" },
+        { title: "战队名册", meta: "看看现在有哪些固定队、公会和常驻阵容。", sub: `${teams.length} 支活跃战队`, href: "#home-teams" },
+        { title: "怎么上场", meta: "想从围观到下场，这里告诉你下一步怎么走。", sub: viewer ? "继续把你的资料补完" : "先看看，再决定要不要上场", href: "#home-identity" }
       ],
       rightRail: {
         title: viewer ? viewer.roleState : "visitor",
@@ -363,32 +363,43 @@ export async function getHomePageData(viewer: Viewer | null) {
         invitations: invitationCount
       },
       modules: {
-        matches: latestMatches.map((match) => ({
+        matches: latestMatches.length
+          ? latestMatches.map((match) => ({
           title: match.title,
           meta: `${match.season?.title ?? "未归属赛季"} · ${match.participants.map((item) => item.team.name).join(" vs ")}`,
-          sub: match.summary ?? "查看状态、比分与阶段详情。",
+          sub: match.summary ?? "点进去就能看到这场打到哪了、比分怎么样、值不值得继续追。",
           href: `/matches/${match.slug}`
-        })),
-        players: featuredPlayers.map((player) => ({
+        }))
+          : [{ title: "这周比赛还没挂上来", meta: "现在还没有可看的焦点对阵。", sub: "先去比赛中心逛一圈，赛程补进来后这里会第一时间更新。", href: "/matches" }],
+        players: featuredPlayers.length
+          ? featuredPlayers.map((player) => ({
           title: player.displayName,
           meta: `${player.primaryRole ?? "暂未填写位置"} · ${player.teamMemberships[0]?.team.name ?? "自由选手"}`,
-          sub: player.bio ?? "查看人物简介、代表比赛和数据摘要。",
+          sub: player.bio ?? "先认认这个人平时打什么、最近跟谁一起玩，再决定要不要继续点进去。",
           href: `/players/${player.slug}`
-        })),
-        teams: teams.map((team) => ({
+        }))
+          : [{ title: "活跃人物还在补", meta: "暂时还没有放到首页的人物卡。", sub: "先去人物页逛逛，等资料补齐后这里会更好认人。", href: "/players" }],
+        teams: teams.length
+          ? teams.map((team) => ({
           title: team.name,
           meta: `${team.seasonEntries[0] ? scopeMeta[kindToScope(team.seasonEntries[0].season.tournament.kind)].label : "未入池"} · ${team.championshipCount ? `${team.championshipCount} 次冠军` : "查看当前阵容与战绩"}`,
-          sub: team.summary ?? "查看队长、成员和近期成绩。",
+          sub: team.summary ?? "先看看这支队平时是什么风格、最近跟谁一起打，再决定要不要点进去细看。",
           href: `/teams/${team.slug}`
-        })),
+        }))
+          : [{ title: "还没有挂到首页的固定队", meta: "目前首页这块先留空。", sub: "别急，去战队页看看，等更多队伍资料补齐后这里会慢慢热起来。", href: "/teams" }],
         identity: buildHomeIdentityItems(viewer, invitationCount)
       }
     };
   }, {
-    hero: { title: "内容正在整理中", body: "比赛、选手和战队信息会在准备完成后显示在这里。", stats: [] },
+    hero: { title: "今晚想开黑？先从这里看看", body: "比赛、人物和战队资料还在慢慢补，但你已经可以先逛逛社区，认认人，看看这儿平时怎么玩。", stats: [] },
     leftRail: [],
     rightRail: { title: "visitor", opendota: null, pendingClaim: null, invitations: 0 },
-    modules: { matches: [], players: [], teams: [], identity: [] }
+    modules: {
+      matches: [{ title: "这周比赛还没挂上来", meta: "现在还没有可看的焦点对阵。", sub: "先去比赛中心逛一圈，赛程补进来后这里会第一时间更新。", href: "/matches" }],
+      players: [{ title: "活跃人物还在补", meta: "暂时还没有放到首页的人物卡。", sub: "先去人物页逛逛，等资料补齐后这里会更好认人。", href: "/players" }],
+      teams: [{ title: "固定队资料还在整理", meta: "首页这块暂时还没有合适的队伍卡。", sub: "可以先去战队页看看，等更多队伍资料补齐后这里会慢慢热起来。", href: "/teams" }],
+      identity: buildHomeIdentityItems(null, 0)
+    }
   });
 }
 

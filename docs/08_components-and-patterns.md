@@ -75,7 +75,7 @@
 ### Footer
 
 - 与 Navbar 相对称，是全页下方的收束块，形成上下 bracket 视觉平衡
-- 采用分段式布局：品牌说明、对象频道回流、工具与规则回流、版权信息
+- 采用分段式布局：品牌说明、对象频道回流、工具与社区文化回流、版权信息
 - Footer 中的对象频道和工具入口必须与 Navbar 的主导航保持一致，避免导航差异
 - Footer 链接行为与 Navbar 一致：使用 `text-secondary` 基础态，hover 时提亮到 `text`
 - Footer 圆角使用 shape-none 或 shape-extra-small（与 Navbar 的 shape-medium 形成对比）

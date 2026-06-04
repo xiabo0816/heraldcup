@@ -411,7 +411,7 @@
 规则：
 
 - FAQ 默认不需要 strong 或 accent 情绪化变体
-- inline-link 只用于“查看规则/指引”这类轻转向
+- inline-link 只用于“查看社区文化/指引”这类轻转向
 - 每组问题数保持 2-4 条，超过后应拆组而不是继续加高
 
 ## 28. AdminWorkspace / Review Layout
